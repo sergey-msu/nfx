@@ -12,12 +12,6 @@ namespace NFX.PDF
 	/// </summary>
 	public class PdfWriter
 	{
-		#region Fields
-
-		private readonly Stream m_Stream;
-
-		#endregion Fields
-
 		#region .ctor
 
 		public PdfWriter(Stream stream)
@@ -26,6 +20,12 @@ namespace NFX.PDF
 		}
 
 		#endregion .ctor
+		
+		#region Fields
+
+		private readonly Stream m_Stream;
+
+		#endregion Fields
 
 		#region Public
 

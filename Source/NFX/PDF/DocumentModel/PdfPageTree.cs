@@ -7,12 +7,6 @@ namespace NFX.PDF.DocumentModel
 	/// </summary>
 	internal class PdfPageTree : PdfDocumentObjectBase
 	{
-		#region Fields
-
-		private readonly List<PdfPage> m_Pages;
-
-		#endregion Fields
-
 		#region .ctor
 
 		public PdfPageTree()
@@ -21,6 +15,12 @@ namespace NFX.PDF.DocumentModel
 		}
 
 		#endregion .ctor
+		
+		#region Fields
+
+		private readonly List<PdfPage> m_Pages;
+
+		#endregion Fields
 
 		#region Properties
 

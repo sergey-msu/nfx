@@ -5,14 +5,6 @@ namespace NFX.PDF.Styling
 	/// </summary>
 	public class Font : IPdfDocumentObject
 	{
-		#region Fields
-
-		private readonly string m_Name;
-
-		private readonly int m_Number;
-
-		#endregion Fileds
-
 		#region .ctor
 
 		private Font(string name, int number)
@@ -22,6 +14,14 @@ namespace NFX.PDF.Styling
 		}
 
 		#endregion .ctor
+		 
+		#region Fields
+
+		private readonly string m_Name;
+
+		private readonly int m_Number;
+
+		#endregion Fileds
 
 		#region Properties
 

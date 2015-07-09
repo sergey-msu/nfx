@@ -8,17 +8,11 @@ namespace NFX.PDF.Styling
 	/// </summary>
 	public class Color
 	{
-		#region Fields
+		#region Constants
 
 		private const string TO_STRING_FORMAT = "{0} {1} {2}";
 														 
-		private readonly byte m_R;
-													
-		private readonly byte m_G;
-
-		private readonly byte m_B;
-
-		#endregion Fields
+		#endregion Constants
 
 		#region .ctor
 
@@ -30,6 +24,16 @@ namespace NFX.PDF.Styling
 		}
 
 		#endregion .ctor
+
+		#region Fields
+
+		private readonly byte m_R;
+													
+		private readonly byte m_G;
+
+		private readonly byte m_B;
+
+		#endregion Fields
 
 		#region Properties
 

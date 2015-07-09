@@ -11,6 +11,20 @@ namespace NFX.PDF.DocumentModel
 	/// </summary>
 	public class PdfDocument
 	{
+		#region .ctor
+
+		public PdfDocument(string title, string author)
+		{
+			m_Fonts = new List<Font>();
+			m_Info = new PdfInfo(title, author);
+			m_OutLines = new PdfOutlines();
+			m_Header = new PdfHeader();
+			m_PageTree = new PdfPageTree();
+			m_Trailer = new PdfTrailer();
+		}
+
+		#endregion .ctor
+		
 		#region Fields
 
 		private readonly List<Font> m_Fonts;
@@ -26,20 +40,6 @@ namespace NFX.PDF.DocumentModel
 		private readonly PdfTrailer m_Trailer;
 
 		#endregion Fields
-
-		#region .ctor
-
-		public PdfDocument(string title, string author)
-		{
-			m_Fonts = new List<Font>();
-			m_Info = new PdfInfo(title, author);
-			m_OutLines = new PdfOutlines();
-			m_Header = new PdfHeader();
-			m_PageTree = new PdfPageTree();
-			m_Trailer = new PdfTrailer();
-		}
-
-		#endregion .ctor
 
 		#region Properties
 

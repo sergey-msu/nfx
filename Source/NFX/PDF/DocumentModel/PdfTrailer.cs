@@ -7,12 +7,6 @@ namespace NFX.PDF.DocumentModel
 	/// </summary>
 	public class PdfTrailer : PdfDocumentObjectBase
 	{
-		#region Fields
-
-		private readonly List<string> m_ObjectOffsets;
-
-		#endregion Fields
-
 		#region .ctor
 
 		public PdfTrailer()
@@ -21,6 +15,12 @@ namespace NFX.PDF.DocumentModel
 		}
 
 		#endregion .ctor
+
+		#region Fields
+
+		private readonly List<string> m_ObjectOffsets;
+
+		#endregion Fields
 
 		#region Properties
 

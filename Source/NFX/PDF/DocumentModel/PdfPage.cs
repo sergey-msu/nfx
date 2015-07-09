@@ -9,16 +9,6 @@ namespace NFX.PDF.DocumentModel
 	/// </summary>
 	public class PdfPage : PdfDocumentObjectBase
 	{
-		#region Fields
-
-		private readonly List<PdfElementBase> m_Elements;
-
-		private readonly PdfPageTree m_PageTree;
-
-		private readonly List<Font> m_Fonts;
-
-		#endregion Fields
-
 		#region .ctor
 
 		internal PdfPage(PdfPageTree pageTree, double height = Constants.DEFAULT_PAGE_HEIGHT, double width = Constants.DEFAULT_PAGE_WIDTH)
@@ -32,6 +22,16 @@ namespace NFX.PDF.DocumentModel
 		}
 
 		#endregion .ctor
+		
+		#region Fields
+
+		private readonly List<PdfElementBase> m_Elements;
+
+		private readonly PdfPageTree m_PageTree;
+
+		private readonly List<Font> m_Fonts;
+
+		#endregion Fields
 
 		#region Properties
 
