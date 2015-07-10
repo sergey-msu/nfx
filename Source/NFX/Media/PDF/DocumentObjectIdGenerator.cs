@@ -1,4 +1,4 @@
-﻿namespace NFX.Media.PDF.Processing
+﻿namespace NFX.Media.PDF
 {
   /// <summary>
   /// Class that generates document-wide unique Id-s

@@ -214,7 +214,9 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
-    <Compile Include="Media\PDF\Processing\DocumentObjectIdGenerator.cs" />
+    <Compile Include="Media\PDF\DocumentObjectIdGenerator.cs" />
+    <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
+    <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
     <Compile Include="Media\TagCodes\QR\QRImageRenderer.cs" />
     <Compile Include="Media\TagCodes\QR\QRMatrix.cs" />
@@ -279,10 +281,10 @@
     <Compile Include="Media\PDF\Elements\PdfElementBase.cs" />
     <Compile Include="Media\PDF\Elements\TextElement.cs" />
     <Compile Include="Media\PDF\IPdfDocumentObject.cs" />
-    <Compile Include="Media\PDF\Processing\PdfWriter.cs" />
+    <Compile Include="Media\PDF\PdfWriter.cs" />
     <Compile Include="Media\PDF\Styling\PdfColor.cs" />
     <Compile Include="Media\PDF\Styling\PdfFont.cs" />
-    <Compile Include="Media\PDF\Processing\TextAdapter.cs" />
+    <Compile Include="Media\PDF\Text\TextAdapter.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
     <Compile Include="Security\PasswordUtils.cs" />

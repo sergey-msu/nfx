@@ -4,8 +4,9 @@ using System.Text;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Elements;
 using NFX.Media.PDF.Styling;
+using NFX.Media.PDF.Text;
 
-namespace NFX.Media.PDF.Processing
+namespace NFX.Media.PDF
 {
   /// <summary>
   /// Class that aggregates PDF format-specific writing logic
@@ -149,13 +150,18 @@ namespace NFX.Media.PDF.Processing
     /// <returns>Written bytes count</returns>
     public long Write(TextElement text)
     {
+			var checkedText = TextAdapter.CheckText(text.Content);
+			var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedText);
+      bytes = TextAdapter.FormatStringLiteral(bytes);
+      var hexUnicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
+
       var hexBuilder = new StringBuilder();
       hexBuilder.AppendFormat("q{0}", Constants.RETURN);
       hexBuilder.AppendFormat("BT{0}", Constants.RETURN);
       hexBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, text.Font.Number, text.FontSize);
       hexBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, text.Color);
       hexBuilder.AppendFormat("{1} {2} Td{0}", Constants.RETURN, text.X, text.Y);
-      hexBuilder.AppendFormat("({1}) Tj{0}", Constants.RETURN, TextAdapter.CheckText(text.Content));
+      hexBuilder.AppendFormat("{1} Tj{0}", Constants.RETURN, hexUnicodeContent);
       hexBuilder.AppendFormat("ET{0}", Constants.RETURN);
       hexBuilder.Append("Q");
 
