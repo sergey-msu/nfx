@@ -83,8 +83,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaveTestSite", "Testing\Man
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFX.MsSQL", "Providers\NFX.MsSQL\NFX.MsSQL.csproj", "{EEE0C836-89F7-468F-99C1-330278618A4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfConsoleTest", "Testing\Manual\PdfConsoleTest\PdfConsoleTest.csproj", "{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,10 +185,6 @@ Global
 		{EEE0C836-89F7-468F-99C1-330278618A4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEE0C836-89F7-468F-99C1-330278618A4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEE0C836-89F7-468F-99C1-330278618A4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -218,7 +212,6 @@ Global
 		{7CD13EB0-1995-4DD4-B473-DF4C7045C4B4} = {798DFAAA-898A-4560-A437-B806DEF82EF6}
 		{032E1188-78DD-48EC-8711-792500D7B9E8} = {1D6946A6-ABC2-42FA-A951-6F79171A6947}
 		{EEE0C836-89F7-468F-99C1-330278618A4F} = {36DFA4B7-6AE7-4AC8-8E71-0AE81ACD8BAF}
-		{2D9015AB-F49A-4CEB-822E-0E8EE17BDA4F} = {1D6946A6-ABC2-42FA-A951-6F79171A6947}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

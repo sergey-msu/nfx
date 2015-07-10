@@ -214,6 +214,7 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\Processing\DocumentObjectIdGenerator.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
     <Compile Include="Media\TagCodes\QR\QRImageRenderer.cs" />
     <Compile Include="Media\TagCodes\QR\QRMatrix.cs" />
@@ -265,23 +266,23 @@
     <Compile Include="OS\NetworkUtils.cs" />
     <Compile Include="Parsing\NaturalTextGenerator.cs" />
     <Compile Include="FID.cs" />
-    <Compile Include="PDF\Constants.cs" />
-    <Compile Include="PDF\DocumentModel\PdfDocument.cs" />
-    <Compile Include="PDF\DocumentModel\PdfDocumentObjectBase.cs" />
-    <Compile Include="PDF\DocumentModel\PdfHeader.cs" />
-    <Compile Include="PDF\DocumentModel\PdfInfo.cs" />
-    <Compile Include="PDF\DocumentModel\PdfOutlines.cs" />
-    <Compile Include="PDF\DocumentModel\PdfPage.cs" />
-    <Compile Include="PDF\DocumentModel\PdfPageTree.cs" />
-    <Compile Include="PDF\DocumentModel\PdfTrailer.cs" />
-    <Compile Include="PDF\Elements\ImageElement.cs" />
-    <Compile Include="PDF\Elements\PdfElementBase.cs" />
-    <Compile Include="PDF\Elements\TextElement.cs" />
-    <Compile Include="PDF\IPdfDocumentObject.cs" />
-    <Compile Include="PDF\PdfWriter.cs" />
-    <Compile Include="PDF\Styling\Color.cs" />
-    <Compile Include="PDF\Styling\Font.cs" />
-    <Compile Include="PDF\TextAdapter.cs" />
+    <Compile Include="Media\PDF\Constants.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfDocument.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfDocumentObjectBase.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfHeader.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfOutlines.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfPage.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfPageTree.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfTrailer.cs" />
+    <Compile Include="Media\PDF\Elements\ImageElement.cs" />
+    <Compile Include="Media\PDF\Elements\PdfElementBase.cs" />
+    <Compile Include="Media\PDF\Elements\TextElement.cs" />
+    <Compile Include="Media\PDF\IPdfDocumentObject.cs" />
+    <Compile Include="Media\PDF\Processing\PdfWriter.cs" />
+    <Compile Include="Media\PDF\Styling\PdfColor.cs" />
+    <Compile Include="Media\PDF\Styling\PdfFont.cs" />
+    <Compile Include="Media\PDF\Processing\TextAdapter.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />
     <Compile Include="Security\PasswordUtils.cs" />
@@ -619,7 +620,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Media\DocModel\" />
-    <Folder Include="Media\PDF\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BUILD_INFO.txt" />

@@ -166,5 +166,11 @@ Performance
              time1 / (double)time2
            ));
     }
-  }
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var window = new PdfTestForm();
+			window.Show();
+		}
+	}
 }
