@@ -7,7 +7,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF Page
   /// </summary>
-  public class PdfPage : PdfDocumentObjectBase
+  public class PdfPage : PdfObjectBase
   {
     internal PdfPage(PdfPageTree pageTree, double height = Constants.DEFAULT_PAGE_HEIGHT, double width = Constants.DEFAULT_PAGE_WIDTH)
     {
@@ -60,7 +60,7 @@ namespace NFX.Media.PDF.DocumentModel
 
     #endregion Properties
 
-    #region Public
+    #region Add text
 
     /// <summary>
     /// Add raw text to the page
@@ -100,6 +100,94 @@ namespace NFX.Media.PDF.DocumentModel
       return element;
     }
 
-    #endregion Public
+    #endregion Add text
+
+    #region Add paragraph
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width)
+    {
+      return AddParagraph(text, width, Constants.DEFAULT_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
+    }
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <param name="lineHeight">Paragraph line height</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width, float lineHeight)
+    {
+      return AddParagraph(text, width, lineHeight, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
+    }
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <param name="lineHeight">Paragraph line height</param>
+    /// <param name="fontSize">Font size</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize)
+    {
+      return AddParagraph(text, width, lineHeight, fontSize, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
+    }
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <param name="lineHeight">Paragraph line height</param>
+    /// <param name="fontSize">Font size</param>
+    /// <param name="font">PDF font</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font)
+    {
+      return AddParagraph(text, width, lineHeight, fontSize, font, PdfColor.Black, PdfHorizontalAlign.Left);
+    }
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <param name="lineHeight">Paragraph line height</param>
+    /// <param name="fontSize">Font size</param>
+    /// <param name="font">PDF font</param>
+    /// <param name="color">Text color</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font, PdfColor color)
+    {
+      return AddParagraph(text, width, lineHeight, fontSize, font, color, PdfHorizontalAlign.Left);
+    }
+
+    /// <summary>
+    /// Add text paragraph to the page
+    /// </summary>
+    /// <param name="text">Text</param>
+    /// <param name="width">Paragraph width</param>
+    /// <param name="lineHeight">Paragraph line height</param>
+    /// <param name="fontSize">Font size</param>
+    /// <param name="font">PDF font</param>
+    /// <param name="foreground">Text color</param>
+    /// <param name="align">Paragrath horizontal alignment</param>
+    /// <returns>Added PDF text paragraph element</returns>
+    public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font, PdfColor foreground, PdfHorizontalAlign align)
+    {
+      var paragraph = new ParagraphElement(text, width, lineHeight, fontSize, font, foreground, align);
+      m_Elements.Add(paragraph);
+
+      return paragraph;
+    }
+
+    #endregion Add paragraph
   }
 }

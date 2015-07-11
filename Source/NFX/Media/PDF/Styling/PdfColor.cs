@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using NFX.Media.PDF.Text;
 
 namespace NFX.Media.PDF.Styling
 {
@@ -199,9 +200,9 @@ namespace NFX.Media.PDF.Styling
 
     public override string ToString()
     {
-      var r = Math.Round((float)R / byte.MaxValue, 2).ToString(CultureInfo.InvariantCulture);
-      var g = Math.Round((float)G / byte.MaxValue, 2).ToString(CultureInfo.InvariantCulture);
-      var b = Math.Round((float)B / byte.MaxValue, 2).ToString(CultureInfo.InvariantCulture);
+      var r = TextAdapter.FormatFloat((float)R / byte.MaxValue);
+      var g = TextAdapter.FormatFloat((float)G / byte.MaxValue);
+      var b = TextAdapter.FormatFloat((float)B / byte.MaxValue);
 
       return TO_STRING_FORMAT.Args(r, g, b);
     }

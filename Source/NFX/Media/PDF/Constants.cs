@@ -5,6 +5,7 @@
     public const char LINE_FEED = '\r';
     public const char CARRIAGE_RETURN = '\n';
     public const string RETURN = "\r\n";
+    public const char SPACE = ' ';
 		public const char HEX_OPEN = '<';
 		public const char HEX_CLOSE = '>';
 		public const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
@@ -12,6 +13,7 @@
     public const double DEFAULT_PAGE_HEIGHT = 792;
     public const double DEFAULT_PAGE_WIDTH = 612;
     public const int DEFAULT_FONT_SIZE = 12;
+    public const int DEFAULT_LINE_HEIGHT = 12;
 
     public const string HELVETICA = "Helvetica";
     public const string HELVETICA_BOLD = "Helvetica-Bold";

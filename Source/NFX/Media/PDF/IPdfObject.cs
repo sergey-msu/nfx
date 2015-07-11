@@ -3,7 +3,7 @@
   /// <summary>
   /// Object that can be placed in PDF document
   /// </summary>
-  internal interface IPdfDocumentObject
+  internal interface IPdfObject
   {
     /// <summary>
     /// Document-wide unique object Id

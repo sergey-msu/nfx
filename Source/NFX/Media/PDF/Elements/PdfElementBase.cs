@@ -3,7 +3,7 @@ namespace NFX.Media.PDF.Elements
   /// <summary>
   /// Base class for all PDF primitives
   /// </summary>
-  public abstract class PdfElementBase : IPdfDocumentObject
+  public abstract class PdfElementBase : IPdfObject
   {
     /// <summary>
     /// Document-wide unique object id

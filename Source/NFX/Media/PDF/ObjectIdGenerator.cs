@@ -4,9 +4,9 @@
   /// Class that generates document-wide unique Id-s
   /// (the class is not thread-safe)
   /// </summary>
-  internal class DocumentObjectIdGenerator
+  internal class ObjectIdGenerator
   {
-    public DocumentObjectIdGenerator()
+    public ObjectIdGenerator()
     {
       m_CurrentId = 0;
     }

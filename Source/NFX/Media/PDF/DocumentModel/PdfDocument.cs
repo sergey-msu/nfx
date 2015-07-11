@@ -19,7 +19,7 @@ namespace NFX.Media.PDF.DocumentModel
       m_Header = new PdfHeader();
       m_PageTree = new PdfPageTree();
       m_Trailer = new PdfTrailer();
-      m_Generator = new DocumentObjectIdGenerator();
+      m_Generator = new ObjectIdGenerator();
     }
 
     #region Fields
@@ -36,7 +36,7 @@ namespace NFX.Media.PDF.DocumentModel
 
     private readonly PdfTrailer m_Trailer;
 
-    private readonly DocumentObjectIdGenerator m_Generator;
+    private readonly ObjectIdGenerator m_Generator;
 
     #endregion Fields
 

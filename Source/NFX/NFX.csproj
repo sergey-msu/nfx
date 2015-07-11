@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -214,7 +214,10 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
-    <Compile Include="Media\PDF\DocumentObjectIdGenerator.cs" />
+    <Compile Include="Media\PDF\Elements\ParagraphElement.cs" />
+    <Compile Include="Media\PDF\Elements\ParagraphLine.cs" />
+    <Compile Include="Media\PDF\ObjectIdGenerator.cs" />
+    <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
     <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
     <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
@@ -270,7 +273,7 @@
     <Compile Include="FID.cs" />
     <Compile Include="Media\PDF\Constants.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfDocument.cs" />
-    <Compile Include="Media\PDF\DocumentModel\PdfDocumentObjectBase.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfObjectBase.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfHeader.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfOutlines.cs" />
@@ -280,7 +283,7 @@
     <Compile Include="Media\PDF\Elements\ImageElement.cs" />
     <Compile Include="Media\PDF\Elements\PdfElementBase.cs" />
     <Compile Include="Media\PDF\Elements\TextElement.cs" />
-    <Compile Include="Media\PDF\IPdfDocumentObject.cs" />
+    <Compile Include="Media\PDF\IPdfObject.cs" />
     <Compile Include="Media\PDF\PdfWriter.cs" />
     <Compile Include="Media\PDF\Styling\PdfColor.cs" />
     <Compile Include="Media\PDF\Styling\PdfFont.cs" />

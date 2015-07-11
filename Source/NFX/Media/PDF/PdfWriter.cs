@@ -144,42 +144,6 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
-    /// Writes PDF text element into file stream
-    /// </summary>
-    /// <param name="text">PDF text element</param>
-    /// <returns>Written bytes count</returns>
-    public long Write(TextElement text)
-    {
-			var checkedText = TextAdapter.CheckText(text.Content);
-			var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedText);
-      bytes = TextAdapter.FormatStringLiteral(bytes);
-      var hexUnicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
-
-      var hexBuilder = new StringBuilder();
-      hexBuilder.AppendFormat("q{0}", Constants.RETURN);
-      hexBuilder.AppendFormat("BT{0}", Constants.RETURN);
-      hexBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, text.Font.Number, text.FontSize);
-      hexBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, text.Color);
-      hexBuilder.AppendFormat("{1} {2} Td{0}", Constants.RETURN, text.X, text.Y);
-      hexBuilder.AppendFormat("{1} Tj{0}", Constants.RETURN, hexUnicodeContent);
-      hexBuilder.AppendFormat("ET{0}", Constants.RETURN);
-      hexBuilder.Append("Q");
-
-      var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, text.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Filter [/ASCIIHexDecode]{0}", Constants.RETURN);
-      builder.AppendFormat("/Length {1}{0}", Constants.RETURN, (hexBuilder.Length * 2) + 1);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("stream{0}", Constants.RETURN);
-      builder.AppendFormat("{1}>{0}", Constants.RETURN, TextAdapter.EncodeHex(hexBuilder.ToString()));
-      builder.AppendFormat("endstream{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
-
-      return WriteRaw(builder.ToString());
-    }
-
-    /// <summary>
     /// Writes PDF document outlines into file stream
     /// </summary>
     /// <param name="outlines">PDF document outlines</param>
@@ -315,15 +279,86 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
+    /// Writes PDF text element into file stream
+    /// </summary>
+    /// <param name="text">PDF text element</param>
+    /// <returns>Written bytes count</returns>
+    public long Write(TextElement text)
+    {
+      var checkedText = TextAdapter.CheckText(text.Content);
+      var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedText);
+      bytes = TextAdapter.FormatHexStringLiteral(bytes);
+      var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
+
+      var pdfStreamBuilder = new StringBuilder();
+      pdfStreamBuilder.AppendFormat("q{0}", Constants.RETURN);
+      pdfStreamBuilder.AppendFormat("BT{0}", Constants.RETURN);
+      pdfStreamBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, text.Font.Number, text.FontSize);
+      pdfStreamBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, text.Color);
+      pdfStreamBuilder.AppendFormat("{1} {2} Td {3} Tj{0}", Constants.RETURN, text.X, text.Y, unicodeContent);
+      pdfStreamBuilder.AppendFormat("ET{0}", Constants.RETURN);
+      pdfStreamBuilder.Append("Q");
+
+      var builder = new StringBuilder();
+      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, text.ObjectId);
+      builder.AppendFormat("<<{0}", Constants.RETURN);
+      builder.AppendFormat("/Length {1}{0}", Constants.RETURN, pdfStreamBuilder.Length);
+      builder.AppendFormat(">>{0}", Constants.RETURN);
+      builder.AppendFormat("stream{0}", Constants.RETURN);
+      builder.AppendFormat("{1}{0}", Constants.RETURN, pdfStreamBuilder);
+      builder.AppendFormat("endstream{0}", Constants.RETURN);
+      builder.AppendFormat("endobj{0}", Constants.RETURN);
+
+      return WriteRaw(builder.ToString());
+    }
+
+    /// <summary>
+    /// Writes PDF paragraph element into file stream
+    /// </summary>
+    /// <param name="paragraph">PDF paragraph element</param>
+    /// <returns>Written bytes count</returns>
+    public long Write(ParagraphElement paragraph)
+    {
+      var pdfStreamBuilder = new StringBuilder();
+      pdfStreamBuilder.AppendFormat("q{0}", Constants.RETURN);
+      pdfStreamBuilder.AppendFormat("BT{0}", Constants.RETURN);
+      pdfStreamBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, paragraph.Font.Number, paragraph.FontSize);
+      pdfStreamBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, paragraph.Color);
+      pdfStreamBuilder.AppendFormat("{1} {2} Td {0}", Constants.RETURN, paragraph.X, paragraph.Y);
+      pdfStreamBuilder.AppendFormat("14 TL{0}", Constants.RETURN);
+      foreach (var line in paragraph.Lines)
+      {
+        var checkedLine = TextAdapter.CheckText(line.Content);
+        var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedLine);
+        bytes = TextAdapter.FormatHexStringLiteral(bytes);
+        var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
+
+        pdfStreamBuilder.AppendFormat("{1} -{2} Td {3} Tj{0}-{1} 0 Td{0}", Constants.RETURN, TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
+      }
+      pdfStreamBuilder.AppendFormat("ET{0}", Constants.RETURN);
+      pdfStreamBuilder.Append("Q");
+
+      var builder = new StringBuilder();
+      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, paragraph.ObjectId);
+      builder.AppendFormat("<<{0}", Constants.RETURN);
+      builder.AppendFormat("/Length {1}{0}", Constants.RETURN, pdfStreamBuilder.Length);
+      builder.AppendFormat(">>{0}", Constants.RETURN);
+      builder.AppendFormat("stream{0}", Constants.RETURN);
+      builder.AppendFormat("{1}{0}", Constants.RETURN, pdfStreamBuilder);
+      builder.AppendFormat("endstream{0}", Constants.RETURN);
+      builder.AppendFormat("endobj{0}", Constants.RETURN);
+
+      return WriteRaw(builder.ToString());
+    }
+
+    /// <summary>
     /// Writes raw string into file stream
     /// </summary>
     /// <param name="text">Raw PDF string</param>
     /// <returns>Written bytes count</returns>
     public long WriteRaw(string text)
     {
-      var encoder = new ASCIIEncoding();
-
-      byte[] bytes = encoder.GetBytes(text);
+      byte[] bytes = TextAdapter.TrivialEncoding.GetBytes(text);
       m_Stream.Write(bytes, 0, bytes.Length);
 
       return bytes.Length;
