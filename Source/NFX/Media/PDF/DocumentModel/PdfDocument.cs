@@ -106,7 +106,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// Adds new page to document
     /// </summary>
     /// <returns>Page</returns>
-    public PdfPage AddPage(double height = Constants.DEFAULT_PAGE_HEIGHT, double width = Constants.DEFAULT_PAGE_WIDTH)
+    public PdfPage AddPage(float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
     {
       return m_PageTree.CreatePage(height, width);
     }

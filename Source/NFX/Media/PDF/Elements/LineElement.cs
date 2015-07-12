@@ -7,28 +7,16 @@ namespace NFX.Media.PDF.Elements
     #region .ctor 
 
     public LineElement(float x1, float y1, float x2, float y2)
-      : this(x1, y1, x2, y2, Constants.DEFAULT_LINE_THICKNESS, PdfColor.Black, PdfLineStyle.Normal)
+      : this(x1, y1, x2, y2, new PdfLineStyle())
     {
     }
 
-    public LineElement(float x1, float y1, float x2, float y2, float thickness)
-      : this(x1, y1, x2, y2, thickness, PdfColor.Black, PdfLineStyle.Normal)
-    {
-    }
-
-    public LineElement(float x1, float y1, float x2, float y2, float thickness, PdfColor color)
-      : this(x1, y1, x2, y2, thickness, color, PdfLineStyle.Normal)
-    {
-    }
-
-    public LineElement(float x1, float y1, float x2, float y2, float thickness, PdfColor color, PdfLineStyle style)
+    public LineElement(float x1, float y1, float x2, float y2, PdfLineStyle style)
     {
       X = x1;
-      Y = y1;  
+      Y = y1;
       X1 = x2;
       Y1 = y2;
-      Thickness = thickness;
-      Color = color;
       Style = style;
     }
 
@@ -37,10 +25,6 @@ namespace NFX.Media.PDF.Elements
     public float X1 { get; set; }
 
     public float Y1 { get; set; }
-
-    public float Thickness { get; set; }
-
-    public PdfColor Color { get; set; }
 
     public PdfLineStyle Style { get; set; }
 

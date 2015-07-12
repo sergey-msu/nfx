@@ -10,12 +10,12 @@ namespace NFX.Media.PDF.Elements
     /// <summary>
     /// X-coordinate
     /// </summary>
-    public double X { get; set; }
+    public float X { get; set; }
 
     /// <summary>
     /// Y-coordinate
     /// </summary>
-    public double Y { get; set; }
+    public float Y { get; set; }
 
     /// <summary>
     /// Writes element into file stream

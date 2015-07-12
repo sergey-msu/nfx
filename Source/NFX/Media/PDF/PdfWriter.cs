@@ -215,6 +215,9 @@ namespace NFX.Media.PDF
         resultString.AppendFormat("/F{0} {1} 0 R ", font.Number, font.ObjectId);
       }
 
+      var w = TextAdapter.FormatFloat(page.Width);
+      var h = TextAdapter.FormatFloat(page.Height);
+
       var pageBuilder = new StringBuilder();
       pageBuilder.AppendFormatLine("{0} 0 obj", page.ObjectId);
       pageBuilder.AppendLine("<<");
@@ -226,8 +229,8 @@ namespace NFX.Media.PDF
         pageBuilder.AppendFormatLine("/XObject <<{0}>>", imageBuilder);
       }
       pageBuilder.AppendLine(">>");
-      pageBuilder.AppendFormatLine("/MediaBox [0 0 {0} {1}]", page.Width, page.Height);
-      pageBuilder.AppendFormatLine("/CropBox [0 0 {0} {1}]", page.Width, page.Height);
+      pageBuilder.AppendFormatLine("/MediaBox [0 0 {0} {1}]", w, h);
+      pageBuilder.AppendFormatLine("/CropBox [0 0 {0} {1}]", w, h);
       pageBuilder.AppendLine("/Rotate 0");
       pageBuilder.AppendLine("/ProcSet [/PDF /Text /ImageC]");
       if (elementBuilder.Length > 0)
@@ -278,28 +281,25 @@ namespace NFX.Media.PDF
       throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Writes PDF line element into file stream
+    /// </summary>
+    /// <param name="line">PDF line element</param>
+    /// <returns>Written bytes count</returns>
     public long Write(LineElement line)
     {
-      var lineStyle = new StringBuilder();
-      lineStyle.AppendFormatLine("{0} w", TextAdapter.FormatFloat(line.Thickness));
-      switch (line.Style)
-      {
-        case PdfLineStyle.OutlinedThin:
-          lineStyle.AppendLine("[2 2] 0 d");
-          break;
-        case PdfLineStyle.Outlined:
-          lineStyle.AppendLine("[4 4] 0 d");
-          break;
-        case PdfLineStyle.OutlinedBold:
-          lineStyle.AppendLine("[6 6] 0 d");
-          break;
-      }
+      var borderStyle = GetLineStylePdf(line.Style);
+
+      var x = TextAdapter.FormatFloat(line.X);
+      var y = TextAdapter.FormatFloat(line.Y);
+      var x1 = TextAdapter.FormatFloat(line.X1);
+      var y1 = TextAdapter.FormatFloat(line.Y1);
 
       var lineContent = new StringBuilder();
-      lineContent.AppendFormatLine("{0} RG", line.Color);
+      lineContent.AppendFormatLine("{0} RG", line.Style.Color);
       lineContent.AppendLine("q");
-      lineContent.AppendLine(lineStyle.ToString());
-      lineContent.AppendFormatLine("{0} {1} m {2} {3} l", line.X, line.Y, line.X1, line.Y1);
+      lineContent.AppendLine(borderStyle);
+      lineContent.AppendFormatLine("{0} {1} m {2} {3} l", x, y, x1, y1);
       lineContent.AppendLine("S");
       lineContent.AppendLine("Q");
 
@@ -316,29 +316,26 @@ namespace NFX.Media.PDF
       return WriteRaw(resultLine.ToString());
     }
 
+    /// <summary>
+    /// Writes PDF rectangle element into file stream
+    /// </summary>
+    /// <param name="rectangle">PDF rectangle element</param>
+    /// <returns>Written bytes count</returns>
     public long Write(RectangleElement rectangle)
     {
-      var borderStyle = new StringBuilder();
-      borderStyle.AppendFormatLine("{0} w", TextAdapter.FormatFloat(rectangle.BorderThickness));
-      switch (rectangle.BorderStyle)
-      {
-        case PdfLineStyle.OutlinedThin:
-          borderStyle.AppendLine("[2 2] 0 d");
-          break;
-        case PdfLineStyle.Outlined:
-          borderStyle.AppendLine("[4 4] 0 d");
-          break;
-        case PdfLineStyle.OutlinedBold:
-          borderStyle.AppendLine("[6 6] 0 d");
-          break;
-      }
+      var borderStyle = GetLineStylePdf(rectangle.BorderStyle);
+
+      var x = TextAdapter.FormatFloat(rectangle.X);
+      var y = TextAdapter.FormatFloat(rectangle.Y);
+      var w = TextAdapter.FormatFloat(rectangle.X1 - rectangle.X);
+      var h = TextAdapter.FormatFloat(rectangle.Y1 - rectangle.Y);
 
       var rectangleContent = new StringBuilder();
       rectangleContent.AppendLine("q");
-      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderColor);
+      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderStyle.Color);
       rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
-      rectangleContent.AppendLine(borderStyle.ToString());
-      rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", rectangle.X, rectangle.Y, rectangle.X1 - rectangle.X, rectangle.Y1 - rectangle.Y);
+      rectangleContent.AppendLine(borderStyle);
+      rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", x, y, w, h);
       rectangleContent.AppendLine("B");
       rectangleContent.AppendLine("Q");
 
@@ -347,12 +344,52 @@ namespace NFX.Media.PDF
       resultRectangle.AppendLine("<<");
       resultRectangle.AppendFormatLine("/Length {0}", rectangleContent.Length);
       resultRectangle.AppendLine(">>");
-      resultRectangle.Append("stream" + Convert.ToChar(13) + Convert.ToChar(10));
+      resultRectangle.AppendLine("stream");
       resultRectangle.AppendLine(rectangleContent.ToString());
       resultRectangle.AppendLine("endstream");
       resultRectangle.AppendLine("endobj");
 
       return WriteRaw(resultRectangle.ToString());
+    }
+
+    /// <summary>
+    /// Writes PDF circle element into file stream
+    /// </summary>
+    /// <param name="circle">PDF circle element</param>
+    /// <returns>Written bytes count</returns>
+    public long Write(CircleElement circle)
+    {
+      var borderStyle = GetLineStylePdf(circle.BorderStyle);
+
+      var xLeft = TextAdapter.FormatFloat(circle.X);
+      var xRight = TextAdapter.FormatFloat(circle.X + 2 * circle.R);
+      var centerY = TextAdapter.FormatFloat(circle.CenterY);
+      var positiveBezier = TextAdapter.FormatFloat(circle.CenterY + circle.R * Constants.SQRT_TWO);
+      var negativeBezier = TextAdapter.FormatFloat(circle.CenterY - circle.R * Constants.SQRT_TWO);
+
+      var circleContent = new StringBuilder();
+      circleContent.AppendLine("q");
+      circleContent.AppendFormatLine("{0} RG", circle.BorderStyle.Color);
+      circleContent.AppendFormatLine("{0} rg", circle.Fill);
+      circleContent.AppendLine(borderStyle);
+      circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
+      circleContent.AppendFormatLine("{0} {1} {2} {1} {2} {3} c", xLeft, positiveBezier, xRight, centerY);
+      circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
+      circleContent.AppendFormatLine("{0} {1} {2} {1} {2} {3} c", xLeft, negativeBezier, xRight, centerY);
+      circleContent.AppendLine("B");
+      circleContent.AppendLine("Q");
+
+      var resultCircle = new StringBuilder();
+      resultCircle.AppendFormatLine("{0} 0 obj", circle.ObjectId);
+      resultCircle.AppendLine("<<");
+      resultCircle.AppendFormatLine("/Length {0}", circleContent.Length);
+      resultCircle.AppendLine(">>");
+      resultCircle.AppendLine("stream");
+      resultCircle.AppendLine(circleContent.ToString());
+      resultCircle.AppendLine("endstream");
+      resultCircle.AppendLine("endobj");
+
+      return WriteRaw(resultCircle.ToString());
     }
 
     /// <summary>
@@ -410,7 +447,8 @@ namespace NFX.Media.PDF
         bytes = TextAdapter.FormatHexStringLiteral(bytes);
         var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
 
-        pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
+        pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin),
+          TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
         pdfStreamBuilder.AppendFormatLine("-{0} 0 Td", TextAdapter.FormatFloat(line.LeftMargin));
       }
       pdfStreamBuilder.AppendLine("ET");
@@ -443,5 +481,25 @@ namespace NFX.Media.PDF
     }
 
     #endregion Public
+
+    private string GetLineStylePdf(PdfLineStyle style)
+    {
+      var styleBuilder = new StringBuilder();
+      styleBuilder.AppendFormatLine("{0} w", TextAdapter.FormatFloat(style.Thickness));
+      switch (style.Type)
+      {
+        case PdfLineType.OutlinedThin:
+          styleBuilder.AppendLine("[2 2] 0 d");
+          break;
+        case PdfLineType.Outlined:
+          styleBuilder.AppendLine("[4 4] 0 d");
+          break;
+        case PdfLineType.OutlinedBold:
+          styleBuilder.AppendLine("[6 6] 0 d");
+          break;
+      }
+
+      return styleBuilder.ToString();
+    }
   }
 }
