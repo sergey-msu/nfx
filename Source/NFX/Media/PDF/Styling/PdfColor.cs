@@ -10,7 +10,8 @@ namespace NFX.Media.PDF.Styling
   public class PdfColor
   {
     private const string TO_STRING_FORMAT = "{0} {1} {2}";
-    public PdfColor(byte r, byte g, byte b)
+
+    private PdfColor(byte r, byte g, byte b)
     {
       m_R = r;
       m_G = g;
@@ -36,6 +37,11 @@ namespace NFX.Media.PDF.Styling
     public byte B
     {
       get { return m_B; }
+    }
+
+    public static PdfColor FromRgb(byte r, byte g, byte b)
+    {
+      return new PdfColor(r, g, b);
     }
 
     #region Predefined

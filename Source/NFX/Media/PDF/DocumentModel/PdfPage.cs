@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using NFX.Media.PDF.Elements;
 using NFX.Media.PDF.Styling;
 
@@ -60,7 +61,7 @@ namespace NFX.Media.PDF.DocumentModel
     }
 
     #endregion Properties
-    
+
     /// <summary>
     /// Adds PDF element to page's elements collection
     /// </summary>
@@ -208,25 +209,14 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Add line primitive paragraph to the page
     /// </summary>
-    /// <param name="x1">Start X coordinate</param>
-    /// <param name="y1">Start Y coordinate</param>
-    /// <param name="x2">End X coordinate</param>
-    /// <param name="y2">End Y coordinate</param>
-    /// <returns></returns>
     public LineElement AddLine(float x1, float y1, float x2, float y2)
     {
       return AddLine(x1, y1, x2, y2, Constants.DEFAULT_LINE_THICKNESS, PdfColor.Black, PdfLineStyle.Normal);
-    } 
+    }
 
     /// <summary>
     /// Add line primitive paragraph to the page
     /// </summary>
-    /// <param name="x1">Start X coordinate</param>
-    /// <param name="y1">Start Y coordinate</param>
-    /// <param name="x2">End X coordinate</param>
-    /// <param name="y2">End Y coordinate</param>
-    /// <param name="thickness">Line thickness</param>
-    /// <returns></returns>
     public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness)
     {
       return AddLine(x1, y1, x2, y2, thickness, PdfColor.Black, PdfLineStyle.Normal);
@@ -235,13 +225,6 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Add line primitive paragraph to the page
     /// </summary>
-    /// <param name="x1">Start X coordinate</param>
-    /// <param name="y1">Start Y coordinate</param>
-    /// <param name="x2">End X coordinate</param>
-    /// <param name="y2">End Y coordinate</param>
-    /// <param name="thickness">Line thickness</param>
-    /// <param name="color">Line color</param>
-    /// <returns></returns>
     public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color)
     {
       return AddLine(x1, y1, x2, y2, thickness, color, PdfLineStyle.Normal);
@@ -250,22 +233,61 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Add line primitive paragraph to the page
     /// </summary>
-    /// <param name="x1">Start X coordinate</param>
-    /// <param name="y1">Start Y coordinate</param>
-    /// <param name="x2">End X coordinate</param>
-    /// <param name="y2">End Y coordinate</param>
-    /// <param name="thickness">Line thickness</param>
-    /// <param name="color">Line color</param>
-    /// <param name="style">Line style</param>
-    /// <returns></returns>
     public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color, PdfLineStyle style)
     {
       var line = new LineElement(x1, y1, x2, y2, thickness, color, style);
-      m_Elements.Add(line);
+      Add(line);
 
       return line;
     }
 
     #endregion Add line
+
+    #region Add rectangle
+
+    /// <summary>
+    /// Add rectangle primitive paragraph to the page
+    /// </summary>
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2)
+    {
+      return AddRectangle(x1, y1, x2, y2, PdfColor.White, Constants.DEFAULT_BORDER_THICKNESS, PdfColor.White, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add rectangle primitive paragraph to the page
+    /// </summary>
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill)
+    {
+      return AddRectangle(x1, y1, x2, y2, fill, Constants.DEFAULT_BORDER_THICKNESS, PdfColor.White, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add rectangle primitive paragraph to the page
+    /// </summary>
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness)
+    {
+      return AddRectangle(x1, y1, x2, y2, fill, borderThickness, PdfColor.White, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add rectangle primitive paragraph to the page
+    /// </summary>
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor)
+    {
+      return AddRectangle(x1, y1, x2, y2, fill, borderThickness, borderColor, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add rectangle primitive paragraph to the page
+    /// </summary>
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor, PdfLineStyle borderStyle)
+    {
+      var rectangle = new RectangleElement(x1, y1, x2, y2, fill, borderThickness, borderColor, borderStyle);
+      Add(rectangle);
+
+      return rectangle;
+    }
+
+    #endregion Add rectangle
   }
 }

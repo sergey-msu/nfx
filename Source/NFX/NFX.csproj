@@ -217,6 +217,7 @@
     <Compile Include="Media\PDF\Elements\LineElement.cs" />
     <Compile Include="Media\PDF\Elements\ParagraphElement.cs" />
     <Compile Include="Media\PDF\Elements\ParagraphLine.cs" />
+    <Compile Include="Media\PDF\Elements\RectangleElement.cs" />
     <Compile Include="Media\PDF\ObjectIdGenerator.cs" />
     <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />

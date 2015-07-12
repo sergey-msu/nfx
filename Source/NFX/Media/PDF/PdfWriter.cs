@@ -316,6 +316,45 @@ namespace NFX.Media.PDF
       return WriteRaw(resultLine.ToString());
     }
 
+    public long Write(RectangleElement rectangle)
+    {
+      var borderStyle = new StringBuilder();
+      borderStyle.AppendFormatLine("{0} w", TextAdapter.FormatFloat(rectangle.BorderThickness));
+      switch (rectangle.BorderStyle)
+      {
+        case PdfLineStyle.OutlinedThin:
+          borderStyle.AppendLine("[2 2] 0 d");
+          break;
+        case PdfLineStyle.Outlined:
+          borderStyle.AppendLine("[4 4] 0 d");
+          break;
+        case PdfLineStyle.OutlinedBold:
+          borderStyle.AppendLine("[6 6] 0 d");
+          break;
+      }
+
+      var rectangleContent = new StringBuilder();
+      rectangleContent.AppendLine("q");
+      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderColor);
+      rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
+      rectangleContent.AppendLine(borderStyle.ToString());
+      rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", rectangle.X, rectangle.Y, rectangle.X1 - rectangle.X, rectangle.Y1 - rectangle.Y);
+      rectangleContent.AppendLine("B");
+      rectangleContent.AppendLine("Q");
+
+      var resultRectangle = new StringBuilder();
+      resultRectangle.AppendFormatLine("{0} 0 obj", rectangle.ObjectId);
+      resultRectangle.AppendLine("<<");
+      resultRectangle.AppendFormatLine("/Length {0}", rectangleContent.Length);
+      resultRectangle.AppendLine(">>");
+      resultRectangle.Append("stream" + Convert.ToChar(13) + Convert.ToChar(10));
+      resultRectangle.AppendLine(rectangleContent.ToString());
+      resultRectangle.AppendLine("endstream");
+      resultRectangle.AppendLine("endobj");
+
+      return WriteRaw(resultRectangle.ToString());
+    }
+
     /// <summary>
     /// Writes PDF text element into file stream
     /// </summary>

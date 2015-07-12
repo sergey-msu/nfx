@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Styling;
@@ -50,6 +43,11 @@ namespace WinFormsTest
       page.AddLine(130, 500, 170, 500, 1.0F, PdfColor.Black, PdfLineStyle.Outlined);
       page.AddLine(180, 500, 240, 500, 1.0F, PdfColor.Black, PdfLineStyle.OutlinedThin);
       page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineStyle.OutlinedBold);
+
+      // rectangles
+      page.AddRectangle(100, 750, 200, 700, PdfColor.Blue);
+      page.AddRectangle(210, 750, 250, 680, PdfColor.Red, 0.1F);
+      page.AddRectangle(260, 750, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
 
       document.Save(@"test.pdf");
 
