@@ -13,7 +13,7 @@ namespace NFX.Media.PDF.Elements
     #region .ctor
 
     public ParagraphElement(string content, float width)
-      : this(content, width, Constants.DEFAULT_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left)
+      : this(content, width, Constants.DEFAULT_PARAGRAPH_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left)
     {
     }
 

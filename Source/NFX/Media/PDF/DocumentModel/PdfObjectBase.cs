@@ -1,3 +1,5 @@
+using System;
+
 namespace NFX.Media.PDF.DocumentModel
 {
   /// <summary>
@@ -5,9 +7,21 @@ namespace NFX.Media.PDF.DocumentModel
   /// </summary>
   public abstract class PdfObjectBase : IPdfObject
   {
+    private int m_ObjectId;
+
     /// <summary>
     /// Document-wide unique object Id
     /// </summary>
-    public int ObjectId { get; set; }
+    public int ObjectId
+    {
+      get { return m_ObjectId;}
+      set
+      {
+        if (m_ObjectId != 0)
+          throw new InvalidOperationException("Element's object Id has already been setted.");
+
+        m_ObjectId = value;
+      }
+    }
   }
 }

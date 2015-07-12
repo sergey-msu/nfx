@@ -31,7 +31,7 @@ namespace NFX.Media.PDF
       long position = 0;
 
       // definition
-      string meta = "%PDF-1.4{0}".Args(Constants.RETURN);
+      string meta = "%PDF-1.4".Args(Constants.RETURN);
       position += WriteRaw(meta);
 
       // header object
@@ -90,15 +90,15 @@ namespace NFX.Media.PDF
     public long Write(PdfFont font)
     {
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, font.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Type /Font{0}", Constants.RETURN);
-      builder.AppendFormat("/Subtype /Type1{0}", Constants.RETURN);
-      builder.AppendFormat("/Name /F{1}{0}", Constants.RETURN, font.Number);
-      builder.AppendFormat("/BaseFont /{1}{0}", Constants.RETURN, font.Name);
-      builder.AppendFormat("/Encoding /WinAnsiEncoding{0}", Constants.RETURN);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", font.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendLine("/Type /Font");
+      builder.AppendLine("/Subtype /Type1");
+      builder.AppendFormatLine("/Name /F{0}", font.Number);
+      builder.AppendFormatLine("/BaseFont /{0}", font.Name);
+      builder.AppendLine("/Encoding /WinAnsiEncoding");
+      builder.AppendLine(">>");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -111,14 +111,14 @@ namespace NFX.Media.PDF
     internal long Write(PdfHeader header)
     {
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, header.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Type /Catalog{0}", Constants.RETURN);
-      builder.AppendFormat("/Version /1.4{0}", Constants.RETURN);
-      builder.AppendFormat("/Pages {1} 0 R{0}", Constants.RETURN, header.PageTreeId);
-      builder.AppendFormat("/Outlines {1} 0 R{0}", Constants.RETURN, header.OutlinesId);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", header.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendLine("/Type /Catalog");
+      builder.AppendLine("/Version /1.4");
+      builder.AppendFormatLine("/Pages {0} 0 R", header.PageTreeId);
+      builder.AppendFormatLine("/Outlines {0} 0 R", header.OutlinesId);
+      builder.AppendLine(">>");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -131,14 +131,14 @@ namespace NFX.Media.PDF
     public long Write(PdfInfo info)
     {
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, info.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Title ({1}){0}", Constants.RETURN, info.Title);
-      builder.AppendFormat("/Author ({1}){0}", Constants.RETURN, info.Author);
-      builder.AppendFormat("/Creator ({1}){0}", Constants.RETURN, info.Creator);
-      builder.AppendFormat("/CreationDate ({1:yyyyMMdd}){0}", Constants.RETURN, DateTime.Now);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", info.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendFormatLine("/Title ({0})", info.Title);
+      builder.AppendFormatLine("/Author ({0})", info.Author);
+      builder.AppendFormatLine("/Creator ({0})", info.Creator);
+      builder.AppendFormatLine("/CreationDate ({0:yyyyMMdd})", DateTime.Now);
+      builder.AppendLine(">>");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -151,12 +151,12 @@ namespace NFX.Media.PDF
     public long Write(PdfOutlines outlines)
     {
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, outlines.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Type /Outlines{0}", Constants.RETURN);
-      builder.AppendFormat("/Count 0{0}", Constants.RETURN);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", outlines.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendLine("/Type /Outlines");
+      builder.AppendLine("/Count 0");
+      builder.AppendLine(">>");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -178,13 +178,13 @@ namespace NFX.Media.PDF
       }
 
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, pageTree.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Type /Pages{0}", Constants.RETURN);
-      builder.AppendFormat("/Count {1}{0}", Constants.RETURN, pageTree.Pages.Count);
-      builder.AppendFormat("/Kids [{1}]{0}", Constants.RETURN, pageListBuilder);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", pageTree.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendLine("/Type /Pages");
+      builder.AppendFormatLine("/Count {0}", pageTree.Pages.Count);
+      builder.AppendFormatLine("/Kids [{0}]", pageListBuilder);
+      builder.AppendLine(">>");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -216,26 +216,26 @@ namespace NFX.Media.PDF
       }
 
       var pageBuilder = new StringBuilder();
-      pageBuilder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, page.ObjectId);
-      pageBuilder.AppendFormat("<<{0}", Constants.RETURN);
-      pageBuilder.AppendFormat("/Type /Page{0}", Constants.RETURN);
-      pageBuilder.AppendFormat("/Parent {1} 0 R{0}", Constants.RETURN, page.PageTree.ObjectId);
-      pageBuilder.AppendFormat("/Resources <</Font <<{1}>>{0}", Constants.RETURN, resultString);
+      pageBuilder.AppendFormatLine("{0} 0 obj", page.ObjectId);
+      pageBuilder.AppendLine("<<");
+      pageBuilder.AppendLine("/Type /Page");
+      pageBuilder.AppendFormatLine("/Parent {0} 0 R", page.PageTree.ObjectId);
+      pageBuilder.AppendFormatLine("/Resources <</Font <<{0}>>", resultString);
       if (imageBuilder.Length > 0)
       {
-        pageBuilder.AppendFormat("/XObject <<{1}>>{0}", Constants.RETURN, imageBuilder);
+        pageBuilder.AppendFormatLine("/XObject <<{0}>>", imageBuilder);
       }
-      pageBuilder.AppendFormat(">>{0}", Constants.RETURN);
-      pageBuilder.AppendFormat("/MediaBox [0 0 {1} {2}]{0}", Constants.RETURN, page.Width, page.Height);
-      pageBuilder.AppendFormat("/CropBox [0 0 {1} {2}]{0}", Constants.RETURN, page.Width, page.Height);
-      pageBuilder.AppendFormat("/Rotate 0{0}", Constants.RETURN);
-      pageBuilder.AppendFormat("/ProcSet [/PDF /Text /ImageC]{0}", Constants.RETURN);
+      pageBuilder.AppendLine(">>");
+      pageBuilder.AppendFormatLine("/MediaBox [0 0 {0} {1}]", page.Width, page.Height);
+      pageBuilder.AppendFormatLine("/CropBox [0 0 {0} {1}]", page.Width, page.Height);
+      pageBuilder.AppendLine("/Rotate 0");
+      pageBuilder.AppendLine("/ProcSet [/PDF /Text /ImageC]");
       if (elementBuilder.Length > 0)
       {
-        pageBuilder.AppendFormat("/Contents [{1}]{0}", Constants.RETURN, elementBuilder);
+        pageBuilder.AppendFormatLine("/Contents [{0}]", elementBuilder);
       }
-      pageBuilder.AppendFormat(">>{0}", Constants.RETURN);
-      pageBuilder.AppendFormat("endobj{0}", Constants.RETURN);
+      pageBuilder.AppendLine(">>");
+      pageBuilder.AppendLine("endobj");
 
       return WriteRaw(pageBuilder.ToString());
     }
@@ -248,21 +248,21 @@ namespace NFX.Media.PDF
     public long Write(PdfTrailer trailer)
     {
       StringBuilder builder = new StringBuilder();
-      builder.AppendFormat("xref{0}", Constants.RETURN);
-      builder.AppendFormat("0 {1}{0}", Constants.RETURN, trailer.LastObjectId + 1);
-      builder.AppendFormat("0000000000 65535 f{0}", Constants.RETURN);
+      builder.AppendLine("xref");
+      builder.AppendFormatLine("0 {0}", trailer.LastObjectId + 1);
+      builder.AppendLine("0000000000 65535 f");
       foreach (var offset in trailer.ObjectOffsets)
       {
-        builder.AppendFormat("{1} 00000 n{0}", Constants.RETURN, offset);
+        builder.AppendFormatLine("{0} 00000 n", offset);
       }
-      builder.AppendFormat("trailer{0}", Constants.RETURN);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Size {1}{0}", Constants.RETURN, trailer.LastObjectId + 1);
-      builder.AppendFormat("/Root 1 0 R{0}", Constants.RETURN);
-      builder.AppendFormat("/Info 2 0 R{0}", Constants.RETURN);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("startxref{0}", Constants.RETURN);
-      builder.AppendFormat("{1}{0}", Constants.RETURN, trailer.XRefOffset);
+      builder.AppendLine("trailer");
+      builder.AppendLine("<<");
+      builder.AppendFormatLine("/Size {0}", trailer.LastObjectId + 1);
+      builder.AppendLine("/Root 1 0 R");
+      builder.AppendLine("/Info 2 0 R");
+      builder.AppendLine(">>");
+      builder.AppendLine("startxref");
+      builder.AppendFormatLine("{0}", trailer.XRefOffset);
       builder.Append("%%EOF");
 
       return WriteRaw(builder.ToString());
@@ -278,6 +278,44 @@ namespace NFX.Media.PDF
       throw new NotImplementedException();
     }
 
+    public long Write(LineElement line)
+    {
+      var lineStyle = new StringBuilder();
+      lineStyle.AppendFormatLine("{0} w", TextAdapter.FormatFloat(line.Thickness));
+      switch (line.Style)
+      {
+        case PdfLineStyle.OutlinedThin:
+          lineStyle.AppendLine("[2 2] 0 d");
+          break;
+        case PdfLineStyle.Outlined:
+          lineStyle.AppendLine("[4 4] 0 d");
+          break;
+        case PdfLineStyle.OutlinedBold:
+          lineStyle.AppendLine("[6 6] 0 d");
+          break;
+      }
+
+      var lineContent = new StringBuilder();
+      lineContent.AppendFormatLine("{0} RG", line.Color);
+      lineContent.AppendLine("q");
+      lineContent.AppendLine(lineStyle.ToString());
+      lineContent.AppendFormatLine("{0} {1} m {2} {3} l", line.X, line.Y, line.X1, line.Y1);
+      lineContent.AppendLine("S");
+      lineContent.AppendLine("Q");
+
+      var resultLine = new StringBuilder();
+      resultLine.AppendFormatLine("{0} 0 obj", line.ObjectId);
+      resultLine.AppendLine("<<");
+      resultLine.AppendFormatLine("/Length {0}", lineContent.Length);
+      resultLine.AppendLine(">>");
+      resultLine.AppendLine("stream");
+      resultLine.AppendLine(lineContent.ToString());
+      resultLine.AppendLine("endstream");
+      resultLine.AppendLine("endobj");
+
+      return WriteRaw(resultLine.ToString());
+    }
+
     /// <summary>
     /// Writes PDF text element into file stream
     /// </summary>
@@ -291,23 +329,23 @@ namespace NFX.Media.PDF
       var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
 
       var pdfStreamBuilder = new StringBuilder();
-      pdfStreamBuilder.AppendFormat("q{0}", Constants.RETURN);
-      pdfStreamBuilder.AppendFormat("BT{0}", Constants.RETURN);
-      pdfStreamBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, text.Font.Number, text.FontSize);
-      pdfStreamBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, text.Color);
-      pdfStreamBuilder.AppendFormat("{1} {2} Td {3} Tj{0}", Constants.RETURN, text.X, text.Y, unicodeContent);
-      pdfStreamBuilder.AppendFormat("ET{0}", Constants.RETURN);
-      pdfStreamBuilder.Append("Q");
+      pdfStreamBuilder.AppendLine("q");
+      pdfStreamBuilder.AppendLine("BT");
+      pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, text.FontSize);
+      pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
+      pdfStreamBuilder.AppendFormatLine("{0} {1} Td {2} Tj", text.X, text.Y, unicodeContent);
+      pdfStreamBuilder.AppendLine("ET");
+      pdfStreamBuilder.AppendLine("Q");
 
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, text.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Length {1}{0}", Constants.RETURN, pdfStreamBuilder.Length);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("stream{0}", Constants.RETURN);
-      builder.AppendFormat("{1}{0}", Constants.RETURN, pdfStreamBuilder);
-      builder.AppendFormat("endstream{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", text.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendFormatLine("/Length {0}", pdfStreamBuilder.Length);
+      builder.AppendLine(">>");
+      builder.AppendLine("stream");
+      builder.AppendFormatLine("{0}", pdfStreamBuilder);
+      builder.AppendLine("endstream");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }
@@ -320,12 +358,12 @@ namespace NFX.Media.PDF
     public long Write(ParagraphElement paragraph)
     {
       var pdfStreamBuilder = new StringBuilder();
-      pdfStreamBuilder.AppendFormat("q{0}", Constants.RETURN);
-      pdfStreamBuilder.AppendFormat("BT{0}", Constants.RETURN);
-      pdfStreamBuilder.AppendFormat("/F{1} {2} Tf{0}", Constants.RETURN, paragraph.Font.Number, paragraph.FontSize);
-      pdfStreamBuilder.AppendFormat("{1} rg{0}", Constants.RETURN, paragraph.Color);
-      pdfStreamBuilder.AppendFormat("{1} {2} Td {0}", Constants.RETURN, paragraph.X, paragraph.Y);
-      pdfStreamBuilder.AppendFormat("14 TL{0}", Constants.RETURN);
+      pdfStreamBuilder.AppendLine("q");
+      pdfStreamBuilder.AppendLine("BT");
+      pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", paragraph.Font.Number, paragraph.FontSize);
+      pdfStreamBuilder.AppendFormatLine("{0} rg", paragraph.Color);
+      pdfStreamBuilder.AppendFormatLine("{0} {1} Td ", paragraph.X, paragraph.Y);
+      pdfStreamBuilder.AppendLine("14 TL");
       foreach (var line in paragraph.Lines)
       {
         var checkedLine = TextAdapter.CheckText(line.Content);
@@ -333,20 +371,21 @@ namespace NFX.Media.PDF
         bytes = TextAdapter.FormatHexStringLiteral(bytes);
         var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
 
-        pdfStreamBuilder.AppendFormat("{1} -{2} Td {3} Tj{0}-{1} 0 Td{0}", Constants.RETURN, TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
+        pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
+        pdfStreamBuilder.AppendFormatLine("-{0} 0 Td", TextAdapter.FormatFloat(line.LeftMargin));
       }
-      pdfStreamBuilder.AppendFormat("ET{0}", Constants.RETURN);
-      pdfStreamBuilder.Append("Q");
+      pdfStreamBuilder.AppendLine("ET");
+      pdfStreamBuilder.AppendLine("Q");
 
       var builder = new StringBuilder();
-      builder.AppendFormat("{1} 0 obj{0}", Constants.RETURN, paragraph.ObjectId);
-      builder.AppendFormat("<<{0}", Constants.RETURN);
-      builder.AppendFormat("/Length {1}{0}", Constants.RETURN, pdfStreamBuilder.Length);
-      builder.AppendFormat(">>{0}", Constants.RETURN);
-      builder.AppendFormat("stream{0}", Constants.RETURN);
-      builder.AppendFormat("{1}{0}", Constants.RETURN, pdfStreamBuilder);
-      builder.AppendFormat("endstream{0}", Constants.RETURN);
-      builder.AppendFormat("endobj{0}", Constants.RETURN);
+      builder.AppendFormatLine("{0} 0 obj", paragraph.ObjectId);
+      builder.AppendLine("<<");
+      builder.AppendFormatLine("/Length {0}", pdfStreamBuilder.Length);
+      builder.AppendLine(">>");
+      builder.AppendLine("stream");
+      builder.AppendFormatLine("{0}", pdfStreamBuilder);
+      builder.AppendLine("endstream");
+      builder.AppendLine("endobj");
 
       return WriteRaw(builder.ToString());
     }

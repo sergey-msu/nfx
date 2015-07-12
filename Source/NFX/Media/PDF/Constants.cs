@@ -13,7 +13,8 @@
     public const double DEFAULT_PAGE_HEIGHT = 792;
     public const double DEFAULT_PAGE_WIDTH = 612;
     public const int DEFAULT_FONT_SIZE = 12;
-    public const int DEFAULT_LINE_HEIGHT = 12;
+    public const int DEFAULT_PARAGRAPH_LINE_HEIGHT = 12;
+    public const float DEFAULT_LINE_THICKNESS = 1.0F;
 
     public const string HELVETICA = "Helvetica";
     public const string HELVETICA_BOLD = "Helvetica-Bold";

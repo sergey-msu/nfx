@@ -1,15 +1,12 @@
+using NFX.Media.PDF.DocumentModel;
+
 namespace NFX.Media.PDF.Elements
 {
   /// <summary>
   /// Base class for all PDF primitives
   /// </summary>
-  public abstract class PdfElementBase : IPdfObject
+  public abstract class PdfElementBase : PdfObjectBase
   {
-    /// <summary>
-    /// Document-wide unique object id
-    /// </summary>
-    public int ObjectId { get; set; }
-
     /// <summary>
     /// X-coordinate
     /// </summary>

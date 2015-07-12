@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NFX.Media.PDF.Elements;
 using NFX.Media.PDF.Styling;
 
@@ -59,6 +60,18 @@ namespace NFX.Media.PDF.DocumentModel
     }
 
     #endregion Properties
+    
+    /// <summary>
+    /// Adds PDF element to page's elements collection
+    /// </summary>
+    /// <param name="element">PDF element to add</param>
+    public void Add(PdfElementBase element)
+    {
+      if (m_Elements.Contains(element))
+        throw new InvalidOperationException("The element has already been added");
+
+      m_Elements.Add(element);
+    }
 
     #region Add text
 
@@ -95,7 +108,7 @@ namespace NFX.Media.PDF.DocumentModel
     public TextElement AddText(string text, int fontSize, PdfFont font, PdfColor foreground)
     {
       var element = new TextElement(text, fontSize, font, foreground);
-      m_Elements.Add(element);
+      Add(element);
 
       return element;
     }
@@ -112,7 +125,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// <returns>Added PDF text paragraph element</returns>
     public ParagraphElement AddParagraph(string text, float width)
     {
-      return AddParagraph(text, width, Constants.DEFAULT_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
+      return AddParagraph(text, width, Constants.DEFAULT_PARAGRAPH_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
     }
 
     /// <summary>
@@ -183,11 +196,76 @@ namespace NFX.Media.PDF.DocumentModel
     public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font, PdfColor foreground, PdfHorizontalAlign align)
     {
       var paragraph = new ParagraphElement(text, width, lineHeight, fontSize, font, foreground, align);
-      m_Elements.Add(paragraph);
+      Add(paragraph);
 
       return paragraph;
     }
 
     #endregion Add paragraph
+
+    #region Add line
+
+    /// <summary>
+    /// Add line primitive paragraph to the page
+    /// </summary>
+    /// <param name="x1">Start X coordinate</param>
+    /// <param name="y1">Start Y coordinate</param>
+    /// <param name="x2">End X coordinate</param>
+    /// <param name="y2">End Y coordinate</param>
+    /// <returns></returns>
+    public LineElement AddLine(float x1, float y1, float x2, float y2)
+    {
+      return AddLine(x1, y1, x2, y2, Constants.DEFAULT_LINE_THICKNESS, PdfColor.Black, PdfLineStyle.Normal);
+    } 
+
+    /// <summary>
+    /// Add line primitive paragraph to the page
+    /// </summary>
+    /// <param name="x1">Start X coordinate</param>
+    /// <param name="y1">Start Y coordinate</param>
+    /// <param name="x2">End X coordinate</param>
+    /// <param name="y2">End Y coordinate</param>
+    /// <param name="thickness">Line thickness</param>
+    /// <returns></returns>
+    public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness)
+    {
+      return AddLine(x1, y1, x2, y2, thickness, PdfColor.Black, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add line primitive paragraph to the page
+    /// </summary>
+    /// <param name="x1">Start X coordinate</param>
+    /// <param name="y1">Start Y coordinate</param>
+    /// <param name="x2">End X coordinate</param>
+    /// <param name="y2">End Y coordinate</param>
+    /// <param name="thickness">Line thickness</param>
+    /// <param name="color">Line color</param>
+    /// <returns></returns>
+    public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color)
+    {
+      return AddLine(x1, y1, x2, y2, thickness, color, PdfLineStyle.Normal);
+    }
+
+    /// <summary>
+    /// Add line primitive paragraph to the page
+    /// </summary>
+    /// <param name="x1">Start X coordinate</param>
+    /// <param name="y1">Start Y coordinate</param>
+    /// <param name="x2">End X coordinate</param>
+    /// <param name="y2">End Y coordinate</param>
+    /// <param name="thickness">Line thickness</param>
+    /// <param name="color">Line color</param>
+    /// <param name="style">Line style</param>
+    /// <returns></returns>
+    public LineElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color, PdfLineStyle style)
+    {
+      var line = new LineElement(x1, y1, x2, y2, thickness, color, style);
+      m_Elements.Add(line);
+
+      return line;
+    }
+
+    #endregion Add line
   }
 }

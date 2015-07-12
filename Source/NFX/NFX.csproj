@@ -214,10 +214,12 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\Elements\LineElement.cs" />
     <Compile Include="Media\PDF\Elements\ParagraphElement.cs" />
     <Compile Include="Media\PDF\Elements\ParagraphLine.cs" />
     <Compile Include="Media\PDF\ObjectIdGenerator.cs" />
     <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
+    <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />
     <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
     <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />

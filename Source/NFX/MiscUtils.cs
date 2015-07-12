@@ -722,6 +722,45 @@ namespace NFX
       return pad + expr.ToString();
     }
 
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0)
+    {
+      builder.AppendFormat(str, arg0);
+      return builder.AppendLine();
+    }
+     
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1)
+    {
+      builder.AppendFormat(str, arg0, arg1);
+      return builder.AppendLine();
+    }
+    
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, object arg0, object arg1, object arg2)
+    {
+      builder.AppendFormat(str, arg0, arg1, arg2);
+      return builder.AppendLine();
+    }
+     
+    /// <summary>
+    /// Appends the string foloowed by new line and returned by processing a composite format string, which contains zero or more format items, to this instance. 
+    /// Each format item is replaced by the string representation of a single argument.
+    /// </summary>
+    public static StringBuilder AppendFormatLine(this StringBuilder builder, string str, params object[] args)
+    {
+      builder.AppendFormat(str, args);
+      return builder.AppendLine();
+    }
   }
 
 }
