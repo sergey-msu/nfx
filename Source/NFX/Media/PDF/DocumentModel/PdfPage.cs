@@ -298,6 +298,32 @@ namespace NFX.Media.PDF.DocumentModel
       return circle;
     }
 
-    #endregion Add circle
-  }
+		#endregion Add circle
+
+		#region Add image
+		 
+		/// <summary>
+		/// Add image to the page
+		/// </summary>
+	  public ImageElement AddImage(string filePath)
+	  {
+			var image = new ImageElement(filePath);
+			Add(image);
+
+			return image;
+	  }
+
+		/// <summary>
+		/// Add image to the page
+		/// </summary>
+	  public ImageElement AddImage(string filePath, float width, float height)
+	  {
+			var image = new ImageElement(filePath, width, height);
+			Add(image);
+
+			return image;
+	  }
+
+	  #endregion Add image
+	}
 }

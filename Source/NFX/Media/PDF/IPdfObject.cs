@@ -8,6 +8,6 @@
     /// <summary>
     /// Document-wide unique object Id
     /// </summary>
-    int ObjectId { get; set; }
+    int ObjectId { get; }
   }
 }

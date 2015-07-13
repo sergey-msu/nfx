@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Styling;
@@ -58,5 +59,33 @@ namespace WinFormsTest
 
       Process.Start(@"test.pdf");
     }
-  }
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			var fileName = textBox1.Text;
+			if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
+				return;
+
+			var document = new PdfDocument("my title..", "me..");
+
+			var page = document.AddPage();
+			var image = page.AddImage(fileName, 100, 20);
+			image.X = 50;
+			image.Y = 700;
+
+			document.Save(@"test.pdf");
+
+      Process.Start(@"test.pdf");
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			var dialog = new OpenFileDialog();
+			var result = dialog.ShowDialog();
+			if (result == DialogResult.Yes || result == DialogResult.OK)
+			{
+				textBox1.Text = dialog.FileName;
+			}
+		}
+	}
 }

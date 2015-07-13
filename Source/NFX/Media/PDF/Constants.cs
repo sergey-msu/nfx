@@ -12,6 +12,7 @@
 		public const char HEX_CLOSE = '>';
 		public const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
 
+    public const string DEFAULT_DOCUMENT_VERSION = "1.4";
     public const float DEFAULT_PAGE_HEIGHT = 792;
     public const float DEFAULT_PAGE_WIDTH = 612;
     public const int DEFAULT_FONT_SIZE = 12;

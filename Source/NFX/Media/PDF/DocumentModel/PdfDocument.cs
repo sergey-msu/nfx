@@ -1,174 +1,179 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using NFX.Media.PDF.Elements;
 using NFX.Media.PDF.Styling;
 
 namespace NFX.Media.PDF.DocumentModel
 {
-  /// <summary>
-  /// Model for PDF document
-  /// </summary>
-  public class PdfDocument
-  {
-    public PdfDocument(string title, string author)
-    {
-      m_Fonts = new List<PdfFont>();
-      m_Info = new PdfInfo(title, author);
-      m_OutLines = new PdfOutlines();
-      m_Header = new PdfHeader();
-      m_PageTree = new PdfPageTree();
-      m_Trailer = new PdfTrailer();
-      m_Generator = new ObjectIdGenerator();
-    }
+	/// <summary>
+	/// Model for PDF document
+	/// </summary>
+	public class PdfDocument
+	{
+		public PdfDocument(string title, string author)
+		{
+			m_Fonts = new List<PdfFont>();
+			m_Meta = new PdfMeta();
+			m_Info = new PdfInfo(title, author);
+			m_OutLines = new PdfOutlines();
+			m_Header = new PdfHeader();
+			m_PageTree = new PdfPageTree();
+			m_Trailer = new PdfTrailer();
+			m_Generator = new ObjectIdGenerator();
+		}
 
-    #region Fields
+		#region Fields
 
-    private readonly List<PdfFont> m_Fonts;
+		private readonly List<PdfFont> m_Fonts;
 
-    private readonly PdfHeader m_Header;
+		private readonly PdfMeta m_Meta;
 
-    private readonly PdfInfo m_Info;
+		private readonly PdfHeader m_Header;
 
-    private readonly PdfOutlines m_OutLines;
+		private readonly PdfInfo m_Info;
 
-    private readonly PdfPageTree m_PageTree;
+		private readonly PdfOutlines m_OutLines;
 
-    private readonly PdfTrailer m_Trailer;
+		private readonly PdfPageTree m_PageTree;
 
-    private readonly ObjectIdGenerator m_Generator;
+		private readonly PdfTrailer m_Trailer;
 
-    #endregion Fields
+		private readonly ObjectIdGenerator m_Generator;
 
-    #region Properties
+		#endregion Fields
 
-    /// <summary>
-    /// Used fonts
-    /// </summary>
-    public List<PdfFont> Fonts
-    {
-      get { return m_Fonts; }
-    }
+		#region Properties
 
-    /// <summary>
-    /// Document info
-    /// </summary>
-    public PdfInfo Info
-    {
-      get { return m_Info; }
-    }
+		/// <summary>
+		/// Used fonts
+		/// </summary>
+		public List<PdfFont> Fonts
+		{
+			get { return m_Fonts; }
+		}
 
-    /// <summary>
-    /// Document outlines
-    /// </summary>
-    public PdfOutlines Outlines
-    {
-      get { return m_OutLines; }
-    }
+		/// <summary>
+		/// PDF document meta
+		/// </summary>
+		public PdfMeta Meta
+		{
+			get { return m_Meta; }
+		}
 
-    /// <summary>
-    /// Document header
-    /// </summary>
-    internal PdfHeader Header
-    {
-      get { return m_Header; }
-    }
+		/// <summary>
+		/// Document info
+		/// </summary>
+		public PdfInfo Info
+		{
+			get { return m_Info; }
+		}
 
-    /// <summary>
-    /// Document pages
-    /// </summary>
-    public List<PdfPage> Pages
-    {
-      get { return m_PageTree.Pages; }
-    }
+		/// <summary>
+		/// Document outlines
+		/// </summary>
+		public PdfOutlines Outlines
+		{
+			get { return m_OutLines; }
+		}
 
-    /// <summary>
-    /// Document trailer
-    /// </summary>
-    public PdfTrailer Trailer
-    {
-      get { return m_Trailer; }
-    }
+		/// <summary>
+		/// Document header
+		/// </summary>
+		internal PdfHeader Header
+		{
+			get { return m_Header; }
+		}
 
-    /// <summary>
-    /// Document page tree
-    /// </summary>
-    internal PdfPageTree PageTree
-    {
-      get { return m_PageTree; }
-    }
+		/// <summary>
+		/// Document pages
+		/// </summary>
+		public List<PdfPage> Pages
+		{
+			get { return m_PageTree.Pages; }
+		}
 
-    #endregion Properties
+		/// <summary>
+		/// Document trailer
+		/// </summary>
+		public PdfTrailer Trailer
+		{
+			get { return m_Trailer; }
+		}
 
-    #region Public
+		/// <summary>
+		/// Document page tree
+		/// </summary>
+		internal PdfPageTree PageTree
+		{
+			get { return m_PageTree; }
+		}
 
-    /// <summary>
-    /// Adds new page to document
-    /// </summary>
-    /// <returns>Page</returns>
-    public PdfPage AddPage(float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
-    {
-      return m_PageTree.CreatePage(height, width);
-    }
+		#endregion Properties
 
-    /// <summary>
-    /// Save document to file
-    /// </summary>
-    /// <param name="filePath">File path</param>
-    public void Save(string filePath)
-    {
-      using (var file = new FileStream(filePath, FileMode.Create))
-      {
-        prepare();
+		#region Public
 
-        var writer = new PdfWriter(file);
-        writer.Write(this);
-      }
-    }
+		/// <summary>
+		/// Adds new page to document
+		/// </summary>
+		/// <returns>Page</returns>
+		public PdfPage AddPage(float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
+		{
+			return m_PageTree.CreatePage(height, width);
+		}
 
-    #endregion Public
+		/// <summary>
+		/// Save document to file
+		/// </summary>
+		/// <param name="filePath">File path</param>
+		public void Save(string filePath)
+		{
+			using (var file = new FileStream(filePath, FileMode.Create))
+			{
+				prepare();
 
-    #region .pvt
+				var writer = new PdfWriter(file);
+				writer.Write(this);
+			}
+		}
 
-    /// <summary>
-    /// Supplies document objects with unique sequential Ids
-    /// </summary>
-    private void prepare()
-    {
-      m_Header.ObjectId = m_Generator.GenerateId();
+		#endregion Public
 
-      m_Info.ObjectId = m_Generator.GenerateId();
-      m_Header.InfoId = m_Info.ObjectId;
+		#region .pvt
 
-      m_OutLines.ObjectId = m_Generator.GenerateId();
-      m_Header.OutlinesId = m_OutLines.ObjectId;
+		/// <summary>
+		/// Supplies document objects with unique sequential Ids
+		/// </summary>
+		private void prepare()
+		{
+			m_Header.SetId(m_Generator);
 
-      foreach (var font in Fonts)
-      {
-        font.ObjectId = m_Generator.GenerateId();
-      }  
-                                               
-      m_PageTree.ObjectId = m_Generator.GenerateId();
-      m_Header.PageTreeId = m_PageTree.ObjectId;
+			m_Info.SetId(m_Generator);
+			m_Header.InfoId = m_Info.ObjectId;
 
-      foreach (var page in Pages)
-      {
-        page.ObjectId = m_Generator.GenerateId();
-        page.Fonts.AddRange(Fonts);
+			m_OutLines.SetId(m_Generator);
+			m_Header.OutlinesId = m_OutLines.ObjectId;
 
-        foreach (var element in page.Elements)
-        {
-          element.ObjectId = m_Generator.GenerateId();
-          if (element is ImageElement)
-          {
-            throw new NotImplementedException();
-          }
-        }
-      }
+			foreach (var font in Fonts)
+			{
+				font.ObjectId = m_Generator.GenerateId();
+			}
 
-      m_Trailer.LastObjectId = m_Generator.CurrentId;
-    }
+			m_PageTree.SetId(m_Generator);
+			m_Header.PageTreeId = m_PageTree.ObjectId;
 
-    #endregion .pvt
-  }
+			foreach (var page in Pages)
+			{
+				page.SetId(m_Generator);
+				page.Fonts.AddRange(Fonts);
+
+				foreach (var element in page.Elements)
+				{
+					element.SetId(m_Generator);
+				}
+			}
+
+			m_Trailer.LastObjectId = m_Generator.CurrentId;
+		}
+
+		#endregion .pvt
+	}
 }
