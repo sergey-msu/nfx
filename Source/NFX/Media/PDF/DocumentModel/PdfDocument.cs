@@ -144,31 +144,26 @@ namespace NFX.Media.PDF.DocumentModel
 		/// </summary>
 		private void prepare()
 		{
-			m_Header.SetId(m_Generator);
+			m_Header.Prepare(m_Generator);
 
-			m_Info.SetId(m_Generator);
+			m_Info.Prepare(m_Generator);
 			m_Header.InfoId = m_Info.ObjectId;
 
-			m_OutLines.SetId(m_Generator);
+			m_OutLines.Prepare(m_Generator);
 			m_Header.OutlinesId = m_OutLines.ObjectId;
 
 			foreach (var font in Fonts)
 			{
-				font.ObjectId = m_Generator.GenerateId();
+				font.Prepare(m_Generator);
 			}
 
-			m_PageTree.SetId(m_Generator);
+			m_PageTree.Prepare(m_Generator);
 			m_Header.PageTreeId = m_PageTree.ObjectId;
 
 			foreach (var page in Pages)
 			{
-				page.SetId(m_Generator);
+				page.Prepare(m_Generator);
 				page.Fonts.AddRange(Fonts);
-
-				foreach (var element in page.Elements)
-				{
-					element.SetId(m_Generator);
-				}
 			}
 
 			m_Trailer.LastObjectId = m_Generator.CurrentId;

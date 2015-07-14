@@ -1,9 +1,11 @@
+using NFX.Media.PDF.DocumentModel;
+
 namespace NFX.Media.PDF.Styling
 {
   /// <summary>
   /// PDF Font
   /// </summary>
-  public class PdfFont : IPdfObject
+  public class PdfFont : PdfObject
   {
     private PdfFont(string name, int number, int[] charWeights)
     {
@@ -17,11 +19,6 @@ namespace NFX.Media.PDF.Styling
     private readonly int m_Number;
 
     private readonly int[] m_CharWeights;
-
-    /// <summary>
-    /// Document-wide unique object id
-    /// </summary>
-    public int ObjectId { get; set; }
 
     /// <summary>
     /// Font name

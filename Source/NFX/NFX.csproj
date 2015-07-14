@@ -279,7 +279,7 @@
     <Compile Include="FID.cs" />
     <Compile Include="Media\PDF\Constants.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfDocument.cs" />
-    <Compile Include="Media\PDF\DocumentModel\PdfObjectBase.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfObject.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfHeader.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfOutlines.cs" />
@@ -287,7 +287,7 @@
     <Compile Include="Media\PDF\DocumentModel\PdfPageTree.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfTrailer.cs" />
     <Compile Include="Media\PDF\Elements\ImageElement.cs" />
-    <Compile Include="Media\PDF\Elements\PdfElementBase.cs" />
+    <Compile Include="Media\PDF\Elements\PdfElement.cs" />
     <Compile Include="Media\PDF\Elements\TextElement.cs" />
     <Compile Include="Media\PDF\IPdfObject.cs" />
     <Compile Include="Media\PDF\PdfWriter.cs" />

@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF Trailer document object
   /// </summary>
-  public class PdfTrailer : PdfObjectBase
+  public class PdfTrailer : PdfObject
   {
     public PdfTrailer()
     {

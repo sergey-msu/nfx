@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.Elements
   /// <summary>
   /// PDF text element
   /// </summary>
-  public class TextElement : PdfElementBase
+  public class TextElement : PdfElement
   {
     #region .ctor
 

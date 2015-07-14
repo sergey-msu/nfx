@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF Page Tree document object
   /// </summary>
-  internal class PdfPageTree : PdfObjectBase
+  internal class PdfPageTree : PdfObject
   {
     public PdfPageTree()
     {

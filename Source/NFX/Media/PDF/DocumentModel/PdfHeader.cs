@@ -3,7 +3,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF document header
   /// </summary>
-  internal class PdfHeader : PdfObjectBase
+  internal class PdfHeader : PdfObject
   {
     /// <summary>
     /// Document outlines' object Id

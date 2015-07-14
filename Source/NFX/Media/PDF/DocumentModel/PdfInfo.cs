@@ -3,7 +3,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF document info
   /// </summary>
-  public class PdfInfo : PdfObjectBase
+  public class PdfInfo : PdfObject
   {
     public PdfInfo(string title, string author, string creator = null)
     {

@@ -2,7 +2,7 @@
 
 namespace NFX.Media.PDF.Elements
 {
-  public class RectangleElement : PdfElementBase
+  public class RectangleElement : PdfElement
   {
     #region .ctor 
 

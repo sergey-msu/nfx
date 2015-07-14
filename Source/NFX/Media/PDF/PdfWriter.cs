@@ -470,7 +470,7 @@ namespace NFX.Media.PDF
 			pdfStreamBuilder.AppendLine("BT");
 			pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, text.FontSize);
 			pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
-			pdfStreamBuilder.AppendFormatLine("{0} {1} Td {2} Tj", text.X, text.Y, unicodeContent);
+			pdfStreamBuilder.AppendFormatLine("{0} {1} Td {2} Tj", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y), unicodeContent);
 			pdfStreamBuilder.AppendLine("ET");
 			pdfStreamBuilder.AppendLine("Q");
 
@@ -508,8 +508,7 @@ namespace NFX.Media.PDF
 				bytes = TextAdapter.FormatHexStringLiteral(bytes);
 				var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
 
-				pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin),
-					TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
+				pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
 				pdfStreamBuilder.AppendFormatLine("-{0} 0 Td", TextAdapter.FormatFloat(line.LeftMargin));
 			}
 			pdfStreamBuilder.AppendLine("ET");

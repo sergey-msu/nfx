@@ -8,7 +8,7 @@ namespace NFX.Media.PDF.Elements
 	/// <summary>
 	/// PDF image element
 	/// </summary>
-	public class ImageElement : PdfElementBase
+	public class ImageElement : PdfElement
 	{
 		public ImageElement(string filePath)
 		{
@@ -68,9 +68,9 @@ namespace NFX.Media.PDF.Elements
 			return writer.Write(this);
 		}
 
-		internal override void SetId(ObjectIdGenerator generator)
+		internal override void Prepare(ObjectIdGenerator generator)
 		{
-			base.SetId(generator);
+			base.Prepare(generator);
 
 			if (m_XObjectId != 0)
 				throw new InvalidOperationException("Image's x-object Id has already been setted.");

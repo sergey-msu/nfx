@@ -2,7 +2,7 @@
 
 namespace NFX.Media.PDF.Elements
 {
-  public class LineElement : PdfElementBase
+  public class LineElement : PdfElement
   {
     #region .ctor 
 

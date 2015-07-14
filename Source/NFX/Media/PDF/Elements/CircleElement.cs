@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.Elements
   /// <summary>
   /// PDF circle element
   /// </summary>
-  public class CircleElement : PdfElementBase
+  public class CircleElement : PdfElement
   {
     #region .ctor 
 

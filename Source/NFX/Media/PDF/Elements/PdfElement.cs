@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.Elements
   /// <summary>
   /// Base class for all PDF primitives
   /// </summary>
-  public abstract class PdfElementBase : PdfObjectBase
+  public abstract class PdfElement : PdfObject
   {
     /// <summary>
     /// X-coordinate
