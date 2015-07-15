@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NFX.Media.PDF.Styling;
 
 namespace NFX.Media.PDF.DocumentModel
 {
@@ -23,9 +24,9 @@ namespace NFX.Media.PDF.DocumentModel
     /// Creates new page and adds it to the page tree
     /// </summary>
     /// <returns></returns>
-    public PdfPage CreatePage(float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
+    public PdfPage CreatePage(PdfPageSize size)
     {
-      var page = new PdfPage(this, height, width);
+      var page = new PdfPage(this, size);
       m_Pages.Add(page);
 
       return page;

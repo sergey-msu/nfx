@@ -10,10 +10,10 @@ namespace NFX.Media.PDF.DocumentModel
 	/// </summary>
 	public class PdfPage : PdfObject
 	{
-		internal PdfPage(PdfPageTree pageTree, float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
-		{
-			Height = height;
-			Width = width;
+		internal PdfPage(PdfPageTree pageTree, PdfPageSize size)
+		{							 
+			Width = size.Width;
+			Height = size.Height;
 
 			m_PageTree = pageTree;
 			m_Fonts = new List<PdfFont>();

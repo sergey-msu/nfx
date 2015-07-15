@@ -19,6 +19,8 @@ namespace NFX.Media.PDF.DocumentModel
 			m_PageTree = new PdfPageTree();
 			m_Trailer = new PdfTrailer();
 			m_Generator = new ObjectIdGenerator();
+
+			PageSize = PdfPageSize.Letter;
 		}
 
 		#region Fields
@@ -107,6 +109,11 @@ namespace NFX.Media.PDF.DocumentModel
 			get { return m_PageTree; }
 		}
 
+		/// <summary>
+		/// Sets default page size for all pages created after
+		/// </summary>
+		public PdfPageSize PageSize { get; set; }
+
 		#endregion Properties
 
 		#region Public
@@ -115,9 +122,18 @@ namespace NFX.Media.PDF.DocumentModel
 		/// Adds new page to document
 		/// </summary>
 		/// <returns>Page</returns>
-		public PdfPage AddPage(float height = Constants.DEFAULT_PAGE_HEIGHT, float width = Constants.DEFAULT_PAGE_WIDTH)
+		public PdfPage AddPage()
 		{
-			return m_PageTree.CreatePage(height, width);
+			return AddPage(PageSize);
+		}
+
+		/// <summary>
+		/// Adds new page to document
+		/// </summary>
+		/// <returns>Page</returns>
+		public PdfPage AddPage(PdfPageSize size)
+		{
+			return m_PageTree.CreatePage(size);
 		}
 
 		/// <summary>
