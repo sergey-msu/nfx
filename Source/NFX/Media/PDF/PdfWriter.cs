@@ -232,6 +232,7 @@ namespace NFX.Media.PDF
 			pageBuilder.AppendFormatLine("{0} 0 obj", page.ObjectId);
 			pageBuilder.AppendLine("<<");
 			pageBuilder.AppendLine("/Type /Page");
+			pageBuilder.AppendFormatLine("/UserUnit {0}", TextAdapter.FormatFloat(page.UserUnits));
 			pageBuilder.AppendFormatLine("/Parent {0} 0 R", page.PageTree.ObjectId);
 			pageBuilder.AppendFormatLine("/Resources <</Font <<{0}>>", fontsBuilder);
 			if (imageBuilder.Length > 0)
@@ -420,8 +421,7 @@ namespace NFX.Media.PDF
 		/// <returns>Written bytes count</returns>
 		public long Write(TextElement text)
 		{
-			var checkedText = TextAdapter.CheckText(text.Content);
-			var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedText);
+			var bytes = TextAdapter.UnicodeEncoding.GetBytes(text.Content);
 			bytes = TextAdapter.FormatHexStringLiteral(bytes);
 			var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
 

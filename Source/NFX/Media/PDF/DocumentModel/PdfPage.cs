@@ -10,10 +10,11 @@ namespace NFX.Media.PDF.DocumentModel
 	/// </summary>
 	public class PdfPage : PdfObject
 	{
-		internal PdfPage(PdfPageTree pageTree, PdfPageSize size)
+		internal PdfPage(PdfPageTree pageTree, PdfPageSize size, PdfUnit unit)
 		{							 
 			Width = size.Width;
 			Height = size.Height;
+			UserUnits = unit.Points;
 
 			m_PageTree = pageTree;
 			m_Fonts = new List<PdfFont>();
@@ -47,6 +48,12 @@ namespace NFX.Media.PDF.DocumentModel
 		}
 
 		/// <summary>
+		/// User space units
+		/// (the default user space unit is 1/72 inch)
+		/// </summary>
+		public float UserUnits { get; set; }
+
+		/// <summary>
 		/// Page tree
 		/// </summary>
 		internal PdfPageTree PageTree
@@ -54,6 +61,9 @@ namespace NFX.Media.PDF.DocumentModel
 			get { return m_PageTree; }
 		}
 
+		/// <summary>
+		/// Fonts used on the page
+		/// </summary>
 		internal List<PdfFont> Fonts
 		{
 			get { return m_Fonts; }

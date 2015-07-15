@@ -40,7 +40,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\..\Output\Debug\</OutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -224,6 +224,7 @@
     <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineType.cs" />
     <Compile Include="Media\PDF\Styling\PdfPageSize.cs" />
+    <Compile Include="Media\PDF\Styling\PdfUnit.cs" />
     <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
     <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />
     <Compile Include="Media\TagCodes\QR\QRDataNCorrection.cs" />
@@ -289,7 +290,7 @@
     <Compile Include="Media\PDF\Elements\ImageElement.cs" />
     <Compile Include="Media\PDF\Elements\PdfElement.cs" />
     <Compile Include="Media\PDF\Elements\TextElement.cs" />
-    <Compile Include="Media\PDF\IPdfObject.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfObject.cs" />
     <Compile Include="Media\PDF\PdfWriter.cs" />
     <Compile Include="Media\PDF\Styling\PdfColor.cs" />
     <Compile Include="Media\PDF\Styling\PdfFont.cs" />

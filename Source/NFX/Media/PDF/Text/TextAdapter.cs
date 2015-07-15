@@ -37,19 +37,6 @@ namespace NFX.Media.PDF.Text
     }
 
     /// <summary>
-    /// Fixes escape symbols if needed
-    /// </summary>
-    /// <param name="text">Input text</param>
-    /// <returns>Result text</returns>
-    public static string CheckText(string text)
-    {
-      text = text.Replace("(", @"\(");
-      text = text.Replace(")", @"\)");
-
-      return text;
-    }
-
-    /// <summary>
     /// Converts the specified byte array into a byte array representing a unicode hex string literal.
     /// </summary>
     /// <param name="bytes">The bytes of the string.</param>

@@ -29,5 +29,10 @@
     public const string TIMES_BOLD = "Times-Bold";
     public const string TIMES_ITALIC = "Times-Italic";
     public const string TIMES_BOLDITALIC = "Times-BoldItalic";
+
+		public const float INCHES_IN_POINT = 72;
+    public const float MILLIMETER_IN_POINT =  72 / 25.4F;
+    public const float CENTIMETER_IN_POINT = 72 / 2.54F;
+    public const float PRESENTATION_IN_POINT = 72 / 96.0F;
   }
 }

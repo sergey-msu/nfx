@@ -21,6 +21,7 @@ namespace NFX.Media.PDF.DocumentModel
 			m_Generator = new ObjectIdGenerator();
 
 			PageSize = PdfPageSize.Letter;
+			UserUnit = PdfUnit.Point;
 		}
 
 		#region Fields
@@ -110,9 +111,15 @@ namespace NFX.Media.PDF.DocumentModel
 		}
 
 		/// <summary>
-		/// Sets default page size for all pages created after
+		/// Page size for all pages created after	it's setting
 		/// </summary>
 		public PdfPageSize PageSize { get; set; }
+
+		/// <summary>
+		/// User units for all pages created after 'it's setting
+		/// (the default user space unit is 1/72 inch)
+		/// </summary>
+		public PdfUnit UserUnit { get; set; }
 
 		#endregion Properties
 
@@ -124,7 +131,7 @@ namespace NFX.Media.PDF.DocumentModel
 		/// <returns>Page</returns>
 		public PdfPage AddPage()
 		{
-			return AddPage(PageSize);
+			return AddPage(PageSize, UserUnit);
 		}
 
 		/// <summary>
@@ -133,7 +140,16 @@ namespace NFX.Media.PDF.DocumentModel
 		/// <returns>Page</returns>
 		public PdfPage AddPage(PdfPageSize size)
 		{
-			return m_PageTree.CreatePage(size);
+			return AddPage(size, UserUnit);
+		}
+
+		/// <summary>
+		/// Adds new page to document
+		/// </summary>
+		/// <returns>Page</returns>
+		public PdfPage AddPage(PdfPageSize size, PdfUnit unit)
+		{
+			return m_PageTree.CreatePage(size, unit);
 		}
 
 		/// <summary>

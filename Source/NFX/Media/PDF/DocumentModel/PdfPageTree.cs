@@ -24,9 +24,9 @@ namespace NFX.Media.PDF.DocumentModel
     /// Creates new page and adds it to the page tree
     /// </summary>
     /// <returns></returns>
-    public PdfPage CreatePage(PdfPageSize size)
+    public PdfPage CreatePage(PdfPageSize size, PdfUnit unit)
     {
-      var page = new PdfPage(this, size);
+      var page = new PdfPage(this, size, unit);
       m_Pages.Add(page);
 
       return page;

@@ -115,5 +115,34 @@ namespace WinFormsTest
 
 			Process.Start(@"test.pdf");
 		}
+
+		private void button5_Click(object sender, EventArgs e)
+		{
+			var document = new PdfDocument("my title..", "me..");
+			document.Fonts.Add(PdfFont.Courier);
+
+			var units = new[]
+			{
+				Tuple.Create("Point: 1 pt", PdfUnit.Point),
+				Tuple.Create("Millimeter 2.83 pt", PdfUnit.Millimeter),
+				Tuple.Create("Centimeter 28.3 pt", PdfUnit.Centimeter),
+				Tuple.Create("10 of Presentation 7.5 pt", new PdfUnit(10 * PdfUnit.Presentation.Points)),
+				Tuple.Create("Inch: 72 pt", PdfUnit.Inch),
+				Tuple.Create("Custom: 100 pt", new PdfUnit(100))
+			};
+
+			foreach (var unit in units)
+			{
+				var page = document.AddPage(new PdfPageSize(200, 300), unit.Item2); // create 200x300 units page
+				page.AddRectangle(0, 280, 10, 290, PdfColor.Blue, 0.0F, PdfColor.White);
+				var text = page.AddText(unit.Item1 + "(upper rectangle's size is 10x10 units)", 5, PdfFont.Courier);
+				text.X = 0;
+				text.Y = 270;
+			}
+
+			document.Save(@"test.pdf");
+
+			Process.Start(@"test.pdf");
+		}
 	}
 }

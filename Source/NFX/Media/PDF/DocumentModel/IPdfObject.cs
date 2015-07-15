@@ -1,4 +1,4 @@
-﻿namespace NFX.Media.PDF
+﻿namespace NFX.Media.PDF.DocumentModel
 {
   /// <summary>
   /// Object that can be placed in PDF document
