@@ -103,62 +103,6 @@ namespace NFX.Media.PDF.DocumentModel
 
 		#endregion Add text
 
-		#region Add paragraph
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		public ParagraphElement AddParagraph(string text, float width)
-		{
-			return AddParagraph(text, width, Constants.DEFAULT_PARAGRAPH_LINE_HEIGHT, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
-		}
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		public ParagraphElement AddParagraph(string text, float width, float lineHeight)
-		{
-			return AddParagraph(text, width, lineHeight, Constants.DEFAULT_FONT_SIZE, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
-		}
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		/// <param name="text">Text</param>
-		public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize)
-		{
-			return AddParagraph(text, width, lineHeight, fontSize, PdfFont.Courier, PdfColor.Black, PdfHorizontalAlign.Left);
-		}
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font)
-		{
-			return AddParagraph(text, width, lineHeight, fontSize, font, PdfColor.Black, PdfHorizontalAlign.Left);
-		}
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font, PdfColor color)
-		{
-			return AddParagraph(text, width, lineHeight, fontSize, font, color, PdfHorizontalAlign.Left);
-		}
-
-		/// <summary>
-		/// Add text paragraph to the page
-		/// </summary>
-		public ParagraphElement AddParagraph(string text, float width, float lineHeight, int fontSize, PdfFont font, PdfColor foreground, PdfHorizontalAlign align)
-		{
-			var paragraph = new ParagraphElement(text, width, lineHeight, fontSize, font, foreground, align);
-			Add(paragraph);
-
-			return paragraph;
-		}
-
-		#endregion Add paragraph
-
 		#region Add line
 
 		/// <summary>

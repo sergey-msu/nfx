@@ -294,17 +294,7 @@ namespace NFX.Media.PDF
 			imageContent.AppendFormatLine("/I{0} Do", image.XObjectId);
 			imageContent.AppendLine("Q");
 
-			var resultImage = new StringBuilder();
-			resultImage.AppendFormatLine("{0} 0 obj", image.ObjectId);
-			resultImage.AppendLine("<<");
-			resultImage.AppendFormatLine("/Length {0}", imageContent.Length);
-			resultImage.AppendLine(">>");
-			resultImage.AppendLine("stream");
-			resultImage.Append(imageContent);
-			resultImage.AppendLine("endstream");
-			resultImage.AppendLine("endobj");
-
-			return WriteRaw(resultImage.ToString());
+			return writePdfObject(image.ObjectId, imageContent.ToString());
 		}
 
 		public long WriteX(ImageElement image)
@@ -349,7 +339,7 @@ namespace NFX.Media.PDF
 		/// <returns>Written bytes count</returns>
 		public long Write(LineElement line)
 		{
-			var borderStyle = GetLineStylePdf(line.Style);
+			var borderStyle = getLineStylePdf(line.Style);
 
 			var x = TextAdapter.FormatFloat(line.X);
 			var y = TextAdapter.FormatFloat(line.Y);
@@ -364,17 +354,7 @@ namespace NFX.Media.PDF
 			lineContent.AppendLine("S");
 			lineContent.AppendLine("Q");
 
-			var resultLine = new StringBuilder();
-			resultLine.AppendFormatLine("{0} 0 obj", line.ObjectId);
-			resultLine.AppendLine("<<");
-			resultLine.AppendFormatLine("/Length {0}", lineContent.Length);
-			resultLine.AppendLine(">>");
-			resultLine.AppendLine("stream");
-			resultLine.AppendLine(lineContent.ToString());
-			resultLine.AppendLine("endstream");
-			resultLine.AppendLine("endobj");
-
-			return WriteRaw(resultLine.ToString());
+			return writePdfObject(line.ObjectId, lineContent.ToString());
 		}
 
 		/// <summary>
@@ -384,7 +364,7 @@ namespace NFX.Media.PDF
 		/// <returns>Written bytes count</returns>
 		public long Write(RectangleElement rectangle)
 		{
-			var borderStyle = GetLineStylePdf(rectangle.BorderStyle);
+			var borderStyle = getLineStylePdf(rectangle.BorderStyle);
 
 			var x = TextAdapter.FormatFloat(rectangle.X);
 			var y = TextAdapter.FormatFloat(rectangle.Y);
@@ -400,17 +380,7 @@ namespace NFX.Media.PDF
 			rectangleContent.AppendLine("B");
 			rectangleContent.AppendLine("Q");
 
-			var resultRectangle = new StringBuilder();
-			resultRectangle.AppendFormatLine("{0} 0 obj", rectangle.ObjectId);
-			resultRectangle.AppendLine("<<");
-			resultRectangle.AppendFormatLine("/Length {0}", rectangleContent.Length);
-			resultRectangle.AppendLine(">>");
-			resultRectangle.AppendLine("stream");
-			resultRectangle.AppendLine(rectangleContent.ToString());
-			resultRectangle.AppendLine("endstream");
-			resultRectangle.AppendLine("endobj");
-
-			return WriteRaw(resultRectangle.ToString());
+			return writePdfObject(rectangle.ObjectId, rectangleContent.ToString());
 		}
 
 		/// <summary>
@@ -420,7 +390,7 @@ namespace NFX.Media.PDF
 		/// <returns>Written bytes count</returns>
 		public long Write(CircleElement circle)
 		{
-			var borderStyle = GetLineStylePdf(circle.BorderStyle);
+			var borderStyle = getLineStylePdf(circle.BorderStyle);
 
 			var xLeft = TextAdapter.FormatFloat(circle.X);
 			var xRight = TextAdapter.FormatFloat(circle.X + 2 * circle.R);
@@ -440,17 +410,7 @@ namespace NFX.Media.PDF
 			circleContent.AppendLine("B");
 			circleContent.AppendLine("Q");
 
-			var resultCircle = new StringBuilder();
-			resultCircle.AppendFormatLine("{0} 0 obj", circle.ObjectId);
-			resultCircle.AppendLine("<<");
-			resultCircle.AppendFormatLine("/Length {0}", circleContent.Length);
-			resultCircle.AppendLine(">>");
-			resultCircle.AppendLine("stream");
-			resultCircle.AppendLine(circleContent.ToString());
-			resultCircle.AppendLine("endstream");
-			resultCircle.AppendLine("endobj");
-
-			return WriteRaw(resultCircle.ToString());
+			return writePdfObject(circle.ObjectId, circleContent.ToString());
 		}
 
 		/// <summary>
@@ -470,69 +430,24 @@ namespace NFX.Media.PDF
 			pdfStreamBuilder.AppendLine("BT");
 			pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, text.FontSize);
 			pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
-			pdfStreamBuilder.AppendFormatLine("{0} {1} Td {2} Tj", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y), unicodeContent);
+			pdfStreamBuilder.AppendFormatLine("{0} {1} Td", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y));
+			pdfStreamBuilder.AppendFormatLine("{0} Tj", unicodeContent);
 			pdfStreamBuilder.AppendLine("ET");
 			pdfStreamBuilder.AppendLine("Q");
 
-			var builder = new StringBuilder();
-			builder.AppendFormatLine("{0} 0 obj", text.ObjectId);
-			builder.AppendLine("<<");
-			builder.AppendFormatLine("/Length {0}", pdfStreamBuilder.Length);
-			builder.AppendLine(">>");
-			builder.AppendLine("stream");
-			builder.AppendFormatLine("{0}", pdfStreamBuilder);
-			builder.AppendLine("endstream");
-			builder.AppendLine("endobj");
-
-			return WriteRaw(builder.ToString());
+			return writePdfObject(text.ObjectId, pdfStreamBuilder.ToString());
 		}
 
-		/// <summary>
-		/// Writes PDF paragraph element into file stream
-		/// </summary>
-		/// <param name="paragraph">PDF paragraph element</param>
-		/// <returns>Written bytes count</returns>
-		public long Write(ParagraphElement paragraph)
-		{
-			var pdfStreamBuilder = new StringBuilder();
-			pdfStreamBuilder.AppendLine("q");
-			pdfStreamBuilder.AppendLine("BT");
-			pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", paragraph.Font.Number, paragraph.FontSize);
-			pdfStreamBuilder.AppendFormatLine("{0} rg", paragraph.Color);
-			pdfStreamBuilder.AppendFormatLine("{0} {1} Td ", paragraph.X, paragraph.Y);
-			pdfStreamBuilder.AppendLine("14 TL");
-			foreach (var line in paragraph.Lines)
-			{
-				var checkedLine = TextAdapter.CheckText(line.Content);
-				var bytes = TextAdapter.UnicodeEncoding.GetBytes(checkedLine);
-				bytes = TextAdapter.FormatHexStringLiteral(bytes);
-				var unicodeContent = TextAdapter.TrivialEncoding.GetString(bytes, 0, bytes.Length);
+		#endregion Public
 
-				pdfStreamBuilder.AppendFormatLine("{0} -{1} Td {2} Tj", TextAdapter.FormatFloat(line.LeftMargin), TextAdapter.FormatFloat(line.TopMargin), unicodeContent);
-				pdfStreamBuilder.AppendFormatLine("-{0} 0 Td", TextAdapter.FormatFloat(line.LeftMargin));
-			}
-			pdfStreamBuilder.AppendLine("ET");
-			pdfStreamBuilder.AppendLine("Q");
-
-			var builder = new StringBuilder();
-			builder.AppendFormatLine("{0} 0 obj", paragraph.ObjectId);
-			builder.AppendLine("<<");
-			builder.AppendFormatLine("/Length {0}", pdfStreamBuilder.Length);
-			builder.AppendLine(">>");
-			builder.AppendLine("stream");
-			builder.AppendFormatLine("{0}", pdfStreamBuilder);
-			builder.AppendLine("endstream");
-			builder.AppendLine("endobj");
-
-			return WriteRaw(builder.ToString());
-		}
+		#region .pvt        
 
 		/// <summary>
 		/// Writes raw string into file stream
 		/// </summary>
 		/// <param name="text">Raw PDF string</param>
 		/// <returns>Written bytes count</returns>
-		internal long WriteRaw(string text)
+		private long WriteRaw(string text)
 		{
 			byte[] bytes = TextAdapter.TrivialEncoding.GetBytes(text);
 			m_Stream.Write(bytes, 0, bytes.Length);
@@ -545,16 +460,14 @@ namespace NFX.Media.PDF
 		/// </summary>
 		/// <param name="bytes">Raw data bytes</param>
 		/// <returns>Written bytes count</returns>
-		internal long WriteRaw(byte[] bytes)
+		private long WriteRaw(byte[] bytes)
 		{
 			m_Stream.Write(bytes, 0, bytes.Length);
 
 			return bytes.Length;
 		}
 
-		#endregion Public
-
-		private string GetLineStylePdf(PdfLineStyle style)
+		private string getLineStylePdf(PdfLineStyle style)
 		{
 			var styleBuilder = new StringBuilder();
 			styleBuilder.AppendFormatLine("{0} w", TextAdapter.FormatFloat(style.Thickness));
@@ -573,5 +486,20 @@ namespace NFX.Media.PDF
 
 			return styleBuilder.ToString();
 		}
+
+		private long writePdfObject(int objectId, string content)
+		{
+			var resultLine = new StringBuilder();
+			resultLine.AppendFormatLine("{0} 0 obj", objectId);
+			resultLine.AppendFormatLine("<< /Length {0} >>", content.Length);
+			resultLine.AppendLine("stream");
+			resultLine.AppendLine(content);
+			resultLine.AppendLine("endstream");
+			resultLine.AppendLine("endobj");
+
+			return WriteRaw(resultLine.ToString());
+		}
+
+		#endregion .pvt
 	}
 }

@@ -29,11 +29,6 @@ namespace WinFormsTest
       text.X = 10;
       text.Y = 730;
 
-      // paragraph
-      var paragraph = page.AddParagraph("asdsa sd asd asd sadas d asd asddddddddddddas sda   dasd asd as d sadsa asdsad sad as", 100, 12, 12, PdfFont.Times, PdfColor.DarkPurple, PdfHorizontalAlign.Left);
-      paragraph.X = 10;
-      paragraph.Y = 680;
-
       // lines
       page.AddLine(20, 620, 50, 620);
       page.AddLine(50, 620, 70, 600, 2.5F);
