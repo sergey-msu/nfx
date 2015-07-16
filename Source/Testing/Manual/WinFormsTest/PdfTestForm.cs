@@ -189,22 +189,22 @@ namespace WinFormsTest
       text.Y = 780;
 
       page.AddLine(10, 760, 510, 760, thickness, PdfColor.Blue);
-      text = page.AddText("This is a line of 1/150 inch = 0.163 mm thickness", 10, PdfFont.Courier);
+      text = page.AddText("This is a line of 1/150 inch = 0.169 mm thickness", 10, PdfFont.Courier);
       text.X = 10;
       text.Y = 750;
 
       page.AddLine(10, 730, 510, 730, 5 * thickness, PdfColor.Blue);
-      text = page.AddText("This is a line of 5/150 inch = 0.816 thickness", 10, PdfFont.Courier);
+      text = page.AddText("This is a line of 5/150 inch = 0.846 thickness", 10, PdfFont.Courier);
       text.X = 10;
       text.Y = 720;
 
       page.AddLine(10, 700, 510, 700, 10 * thickness, PdfColor.Blue);
-      text = page.AddText("This is a line of 10/150 inch = 1.63 mm thickness", 10, PdfFont.Courier);
+      text = page.AddText("This is a line of 10/150 inch = 1.693 mm thickness", 10, PdfFont.Courier);
       text.X = 10;
       text.Y = 690;
 
       page.AddLine(10, 670, 510, 670, 30 * thickness, PdfColor.Blue);
-      text = page.AddText("This is a line of 30/150 inch = 4.9 mm thickness", 10, PdfFont.Courier);
+      text = page.AddText("This is a line of 30/150 inch = 5.08 mm thickness", 10, PdfFont.Courier);
       text.X = 10;
       text.Y = 655;
 
