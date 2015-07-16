@@ -8,9 +8,9 @@
     public const char CARRIAGE_RETURN = '\n';
     public const string RETURN = "\r\n";
     public const char SPACE = ' ';
-		public const char HEX_OPEN = '<';
-		public const char HEX_CLOSE = '>';
-		public const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
+    public const char HEX_OPEN = '<';
+    public const char HEX_CLOSE = '>';
+    public const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
 
     public const string DEFAULT_DOCUMENT_VERSION = "1.6";
     public const int DEFAULT_FONT_SIZE = 12;
@@ -30,8 +30,8 @@
     public const string TIMES_ITALIC = "Times-Italic";
     public const string TIMES_BOLDITALIC = "Times-BoldItalic";
 
-		public const float INCHES_IN_POINT = 72;
-    public const float MILLIMETER_IN_POINT =  72 / 25.4F;
+    public const float INCHES_IN_POINT = 72;
+    public const float MILLIMETER_IN_POINT = 72 / 25.4F;
     public const float CENTIMETER_IN_POINT = 72 / 2.54F;
     public const float PRESENTATION_IN_POINT = 72 / 96.0F;
   }

@@ -9,7 +9,7 @@
       : this(Constants.DEFAULT_LINE_THICKNESS, PdfColor.Black, PdfLineType.Normal)
     {
     }
-       
+
     public PdfLineStyle(float thickness)
       : this(thickness, PdfColor.Black, PdfLineType.Normal)
     {

@@ -32,7 +32,7 @@ namespace NFX.Media.PDF.Elements
     {
       get { return X + R; }
     }
-    
+
     /// <summary>
     /// Circle center's Y-coordinate
     /// </summary>

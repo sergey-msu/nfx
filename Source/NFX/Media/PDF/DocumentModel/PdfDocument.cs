@@ -4,203 +4,203 @@ using NFX.Media.PDF.Styling;
 
 namespace NFX.Media.PDF.DocumentModel
 {
-	/// <summary>
-	/// Model for PDF document
-	/// </summary>
-	public class PdfDocument
-	{
-		public PdfDocument(string title, string author)
-		{
-			m_Fonts = new List<PdfFont>();
-			m_Meta = new PdfMeta();
-			m_Info = new PdfInfo(title, author);
-			m_OutLines = new PdfOutlines();
-			m_Header = new PdfHeader();
-			m_PageTree = new PdfPageTree();
-			m_Trailer = new PdfTrailer();
-			m_Generator = new ObjectIdGenerator();
+  /// <summary>
+  /// Model for PDF document
+  /// </summary>
+  public class PdfDocument
+  {
+    public PdfDocument(string title, string author)
+    {
+      m_Fonts = new List<PdfFont>();
+      m_Meta = new PdfMeta();
+      m_Info = new PdfInfo(title, author);
+      m_OutLines = new PdfOutlines();
+      m_Header = new PdfHeader();
+      m_PageTree = new PdfPageTree();
+      m_Trailer = new PdfTrailer();
+      m_Generator = new ObjectIdGenerator();
 
-			PageSize = PdfPageSize.Letter;
-			UserUnit = PdfUnit.Point;
-		}
+      PageSize = PdfPageSize.Letter;
+      UserUnit = PdfUnit.Point;
+    }
 
-		#region Fields
+    #region Fields
 
-		private readonly List<PdfFont> m_Fonts;
+    private readonly List<PdfFont> m_Fonts;
 
-		private readonly PdfMeta m_Meta;
+    private readonly PdfMeta m_Meta;
 
-		private readonly PdfHeader m_Header;
+    private readonly PdfHeader m_Header;
 
-		private readonly PdfInfo m_Info;
+    private readonly PdfInfo m_Info;
 
-		private readonly PdfOutlines m_OutLines;
+    private readonly PdfOutlines m_OutLines;
 
-		private readonly PdfPageTree m_PageTree;
+    private readonly PdfPageTree m_PageTree;
 
-		private readonly PdfTrailer m_Trailer;
+    private readonly PdfTrailer m_Trailer;
 
-		private readonly ObjectIdGenerator m_Generator;
+    private readonly ObjectIdGenerator m_Generator;
 
-		#endregion Fields
+    #endregion Fields
 
-		#region Properties
+    #region Properties
 
-		/// <summary>
-		/// Used fonts
-		/// </summary>
-		public List<PdfFont> Fonts
-		{
-			get { return m_Fonts; }
-		}
+    /// <summary>
+    /// Used fonts
+    /// </summary>
+    public List<PdfFont> Fonts
+    {
+      get { return m_Fonts; }
+    }
 
-		/// <summary>
-		/// PDF document meta
-		/// </summary>
-		public PdfMeta Meta
-		{
-			get { return m_Meta; }
-		}
+    /// <summary>
+    /// PDF document meta
+    /// </summary>
+    public PdfMeta Meta
+    {
+      get { return m_Meta; }
+    }
 
-		/// <summary>
-		/// Document info
-		/// </summary>
-		public PdfInfo Info
-		{
-			get { return m_Info; }
-		}
+    /// <summary>
+    /// Document info
+    /// </summary>
+    public PdfInfo Info
+    {
+      get { return m_Info; }
+    }
 
-		/// <summary>
-		/// Document outlines
-		/// </summary>
-		public PdfOutlines Outlines
-		{
-			get { return m_OutLines; }
-		}
+    /// <summary>
+    /// Document outlines
+    /// </summary>
+    public PdfOutlines Outlines
+    {
+      get { return m_OutLines; }
+    }
 
-		/// <summary>
-		/// Document header
-		/// </summary>
-		internal PdfHeader Header
-		{
-			get { return m_Header; }
-		}
+    /// <summary>
+    /// Document header
+    /// </summary>
+    internal PdfHeader Header
+    {
+      get { return m_Header; }
+    }
 
-		/// <summary>
-		/// Document pages
-		/// </summary>
-		public List<PdfPage> Pages
-		{
-			get { return m_PageTree.Pages; }
-		}
+    /// <summary>
+    /// Document pages
+    /// </summary>
+    public List<PdfPage> Pages
+    {
+      get { return m_PageTree.Pages; }
+    }
 
-		/// <summary>
-		/// Document trailer
-		/// </summary>
-		public PdfTrailer Trailer
-		{
-			get { return m_Trailer; }
-		}
+    /// <summary>
+    /// Document trailer
+    /// </summary>
+    public PdfTrailer Trailer
+    {
+      get { return m_Trailer; }
+    }
 
-		/// <summary>
-		/// Document page tree
-		/// </summary>
-		internal PdfPageTree PageTree
-		{
-			get { return m_PageTree; }
-		}
+    /// <summary>
+    /// Document page tree
+    /// </summary>
+    internal PdfPageTree PageTree
+    {
+      get { return m_PageTree; }
+    }
 
-		/// <summary>
-		/// Page size for all pages created after	it's setting
-		/// </summary>
-		public PdfPageSize PageSize { get; set; }
+    /// <summary>
+    /// Page size for all pages created after	it's setting
+    /// </summary>
+    public PdfPageSize PageSize { get; set; }
 
-		/// <summary>
-		/// User units for all pages created after 'it's setting
-		/// (the default user space unit is 1/72 inch)
-		/// </summary>
-		public PdfUnit UserUnit { get; set; }
+    /// <summary>
+    /// User units for all pages created after 'it's setting
+    /// (the default user space unit is 1/72 inch)
+    /// </summary>
+    public PdfUnit UserUnit { get; set; }
 
-		#endregion Properties
+    #endregion Properties
 
-		#region Public
+    #region Public
 
-		/// <summary>
-		/// Adds new page to document
-		/// </summary>
-		/// <returns>Page</returns>
-		public PdfPage AddPage()
-		{
-			return AddPage(PageSize, UserUnit);
-		}
+    /// <summary>
+    /// Adds new page to document
+    /// </summary>
+    /// <returns>Page</returns>
+    public PdfPage AddPage()
+    {
+      return AddPage(PageSize, UserUnit);
+    }
 
-		/// <summary>
-		/// Adds new page to document
-		/// </summary>
-		/// <returns>Page</returns>
-		public PdfPage AddPage(PdfPageSize size)
-		{
-			return AddPage(size, UserUnit);
-		}
+    /// <summary>
+    /// Adds new page to document
+    /// </summary>
+    /// <returns>Page</returns>
+    public PdfPage AddPage(PdfPageSize size)
+    {
+      return AddPage(size, UserUnit);
+    }
 
-		/// <summary>
-		/// Adds new page to document
-		/// </summary>
-		/// <returns>Page</returns>
-		public PdfPage AddPage(PdfPageSize size, PdfUnit unit)
-		{
-			return m_PageTree.CreatePage(size, unit);
-		}
+    /// <summary>
+    /// Adds new page to document
+    /// </summary>
+    /// <returns>Page</returns>
+    public PdfPage AddPage(PdfPageSize size, PdfUnit unit)
+    {
+      return m_PageTree.CreatePage(size, unit);
+    }
 
-		/// <summary>
-		/// Save document to file
-		/// </summary>
-		/// <param name="filePath">File path</param>
-		public void Save(string filePath)
-		{
-			using (var file = new FileStream(filePath, FileMode.Create))
-			{
-				prepare();
+    /// <summary>
+    /// Save document to file
+    /// </summary>
+    /// <param name="filePath">File path</param>
+    public void Save(string filePath)
+    {
+      using (var file = new FileStream(filePath, FileMode.Create))
+      {
+        prepare();
 
-				var writer = new PdfWriter(file);
-				writer.Write(this);
-			}
-		}
+        var writer = new PdfWriter(file);
+        writer.Write(this);
+      }
+    }
 
-		#endregion Public
+    #endregion Public
 
-		#region .pvt
+    #region .pvt
 
-		/// <summary>
-		/// Supplies document objects with unique sequential Ids
-		/// </summary>
-		private void prepare()
-		{
-			m_Header.Prepare(m_Generator);
+    /// <summary>
+    /// Supplies document objects with unique sequential Ids
+    /// </summary>
+    private void prepare()
+    {
+      m_Header.Prepare(m_Generator);
 
-			m_Info.Prepare(m_Generator);
-			m_Header.InfoId = m_Info.ObjectId;
+      m_Info.Prepare(m_Generator);
+      m_Header.InfoId = m_Info.ObjectId;
 
-			m_OutLines.Prepare(m_Generator);
-			m_Header.OutlinesId = m_OutLines.ObjectId;
+      m_OutLines.Prepare(m_Generator);
+      m_Header.OutlinesId = m_OutLines.ObjectId;
 
-			foreach (var font in Fonts)
-			{
-				font.Prepare(m_Generator);
-			}
+      foreach (var font in Fonts)
+      {
+        font.Prepare(m_Generator);
+      }
 
-			m_PageTree.Prepare(m_Generator);
-			m_Header.PageTreeId = m_PageTree.ObjectId;
+      m_PageTree.Prepare(m_Generator);
+      m_Header.PageTreeId = m_PageTree.ObjectId;
 
-			foreach (var page in Pages)
-			{
-				page.Prepare(m_Generator);
-				page.Fonts.AddRange(Fonts);
-			}
+      foreach (var page in Pages)
+      {
+        page.Prepare(m_Generator);
+        page.Fonts.AddRange(Fonts);
+      }
 
-			m_Trailer.LastObjectId = m_Generator.CurrentId;
-		}
+      m_Trailer.LastObjectId = m_Generator.CurrentId;
+    }
 
-		#endregion .pvt
-	}
+    #endregion .pvt
+  }
 }
