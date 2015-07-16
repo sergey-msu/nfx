@@ -19,9 +19,7 @@ namespace NFX.Media.PDF.DocumentModel
       m_PageTree = new PdfPageTree();
       m_Trailer = new PdfTrailer();
       m_Generator = new ObjectIdGenerator();
-
-      PageSize = PdfPageSize.Letter;
-      UserUnit = PdfUnit.Point;
+      m_PageSize = PdfPageSize.Default();
     }
 
     #region Fields
@@ -41,6 +39,8 @@ namespace NFX.Media.PDF.DocumentModel
     private readonly PdfTrailer m_Trailer;
 
     private readonly ObjectIdGenerator m_Generator;
+
+    private PdfSize m_PageSize;
 
     #endregion Fields
 
@@ -113,13 +113,16 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Page size for all pages created after	it's setting
     /// </summary>
-    public PdfPageSize PageSize { get; set; }
+    public PdfSize PageSize { get; set; }
 
     /// <summary>
     /// User units for all pages created after 'it's setting
     /// (the default user space unit is 1/72 inch)
     /// </summary>
-    public PdfUnit UserUnit { get; set; }
+    public PdfUnit Unit
+    {
+      get { return m_PageSize == null ? null : m_PageSize.Unit; }
+    }
 
     #endregion Properties
 
@@ -129,27 +132,21 @@ namespace NFX.Media.PDF.DocumentModel
     /// Adds new page to document
     /// </summary>
     /// <returns>Page</returns>
-    public PdfPage AddPage()
+    public PdfPage AddPage(PdfUnit unit)
     {
-      return AddPage(PageSize, UserUnit);
+      unit = unit ?? Unit ?? PdfUnit.Default;
+      var size = PageSize != null ? PageSize.ChangeUnits(unit) : PdfPageSize.Default(unit);
+      return AddPage(size);
     }
 
     /// <summary>
     /// Adds new page to document
     /// </summary>
     /// <returns>Page</returns>
-    public PdfPage AddPage(PdfPageSize size)
+    public PdfPage AddPage(PdfSize size = null)
     {
-      return AddPage(size, UserUnit);
-    }
-
-    /// <summary>
-    /// Adds new page to document
-    /// </summary>
-    /// <returns>Page</returns>
-    public PdfPage AddPage(PdfPageSize size, PdfUnit unit)
-    {
-      return m_PageTree.CreatePage(size, unit);
+      size = size ?? PageSize ?? PdfPageSize.Default();
+      return m_PageTree.CreatePage(size);
     }
 
     /// <summary>

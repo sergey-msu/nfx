@@ -2,6 +2,14 @@
 {
   public class PdfUnit
   {
+    #region CONSTS
+
+    private const float POINTS_IN_INCH = 72;
+    private const float POINTS_IN_MILLIMETER = 72 / 25.4F;
+    private const float POINTS_IN_CENTIMETER = 72 / 2.54F;
+
+    #endregion CONSTS
+
     public PdfUnit(float points)
     {
       m_Points = points;
@@ -20,34 +28,33 @@
 
     #region Predefined
 
+    public static PdfUnit Default
+    {
+      get { return Point; }
+    }
+
     private static readonly PdfUnit s_Point = new PdfUnit(1);
     public static PdfUnit Point
     {
       get { return s_Point; }
     }
 
-    private static readonly PdfUnit s_Inch = new PdfUnit(Constants.INCHES_IN_POINT);
+    private static readonly PdfUnit s_Inch = new PdfUnit(POINTS_IN_INCH);
     public static PdfUnit Inch
     {
       get { return s_Inch; }
     }
 
-    private static readonly PdfUnit s_Millimeter = new PdfUnit(Constants.MILLIMETER_IN_POINT);
+    private static readonly PdfUnit s_Millimeter = new PdfUnit(POINTS_IN_MILLIMETER);
     public static PdfUnit Millimeter
     {
       get { return s_Millimeter; }
     }
 
-    private static readonly PdfUnit s_Centimeter = new PdfUnit(Constants.CENTIMETER_IN_POINT);
+    private static readonly PdfUnit s_Centimeter = new PdfUnit(POINTS_IN_CENTIMETER);
     public static PdfUnit Centimeter
     {
       get { return s_Centimeter; }
-    }
-
-    private static readonly PdfUnit s_Presentation = new PdfUnit(Constants.PRESENTATION_IN_POINT);
-    public static PdfUnit Presentation
-    {
-      get { return s_Presentation; }
     }
 
     #endregion Predefined

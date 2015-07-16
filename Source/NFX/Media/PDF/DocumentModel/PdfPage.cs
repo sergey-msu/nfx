@@ -10,20 +10,22 @@ namespace NFX.Media.PDF.DocumentModel
   /// </summary>
   public class PdfPage : PdfObject
   {
-    internal PdfPage(PdfPageTree pageTree, PdfPageSize size, PdfUnit unit)
+    internal PdfPage(PdfPageTree parent, PdfSize size)
     {
-      Width = size.Width;
-      Height = size.Height;
-      UserUnits = unit.Points;
-
-      m_PageTree = pageTree;
+      m_Size = size;
+      m_Unit = m_Size.Unit;
+      m_Parent = parent;
       m_Fonts = new List<PdfFont>();
       m_Elements = new List<PdfElement>();
     }
 
+    private readonly PdfSize m_Size;
+
+    private readonly PdfUnit m_Unit;
+
     private readonly List<PdfElement> m_Elements;
 
-    private readonly PdfPageTree m_PageTree;
+    private readonly PdfPageTree m_Parent;
 
     private readonly List<PdfFont> m_Fonts;
 
@@ -32,12 +34,18 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Page's height
     /// </summary>
-    public float Height { get; set; }
+    public float Height
+    {
+      get { return m_Size.Height; }
+    }
 
     /// <summary>
     /// Page's width
     /// </summary>
-    public float Width { get; set; }
+    public float Width
+    {
+      get { return m_Size.Width; }
+    }
 
     /// <summary>
     /// Page elements
@@ -51,14 +59,17 @@ namespace NFX.Media.PDF.DocumentModel
     /// User space units
     /// (the default user space unit is 1/72 inch)
     /// </summary>
-    public float UserUnits { get; set; }
+    public float UserUnit
+    {
+      get { return m_Unit.Points; }
+    }
 
     /// <summary>
     /// Page tree
     /// </summary>
-    internal PdfPageTree PageTree
+    internal PdfPageTree Parent
     {
-      get { return m_PageTree; }
+      get { return m_Parent; }
     }
 
     /// <summary>
@@ -95,7 +106,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Add raw text to the page
     /// </summary>
-    public TextElement AddText(string text, int fontSize, PdfFont font)
+    public TextElement AddText(string text, float fontSize, PdfFont font)
     {
       return this.AddText(text, fontSize, font, PdfColor.Black);
     }
@@ -103,7 +114,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Add raw text to the page
     /// </summary>
-    public TextElement AddText(string text, int fontSize, PdfFont font, PdfColor foreground)
+    public TextElement AddText(string text, float fontSize, PdfFont font, PdfColor foreground)
     {
       var element = new TextElement(text, fontSize, font, foreground);
       Add(element);

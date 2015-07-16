@@ -14,12 +14,12 @@ namespace NFX.Media.PDF.Elements
     {
     }
 
-    public TextElement(string content, int fontSize, PdfFont font)
+    public TextElement(string content, float fontSize, PdfFont font)
       : this(content, fontSize, font, PdfColor.Black)
     {
     }
 
-    public TextElement(string content, int fontSize, PdfFont font, PdfColor color)
+    public TextElement(string content, float fontSize, PdfFont font, PdfColor color)
     {
       Content = content;
       FontSize = fontSize;
@@ -37,7 +37,7 @@ namespace NFX.Media.PDF.Elements
     /// <summary>
     /// Font size
     /// </summary>
-    public int FontSize { get; set; }
+    public float FontSize { get; set; }
 
     /// <summary>
     /// PDF Font

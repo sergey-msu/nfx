@@ -224,6 +224,7 @@
     <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineType.cs" />
     <Compile Include="Media\PDF\Styling\PdfPageSize.cs" />
+    <Compile Include="Media\PDF\Styling\PdfSize.cs" />
     <Compile Include="Media\PDF\Styling\PdfUnit.cs" />
     <Compile Include="Media\PDF\Text\PdfTrivialEncoding.cs" />
     <Compile Include="Media\PDF\Text\PdfUnicodeEncoding.cs" />

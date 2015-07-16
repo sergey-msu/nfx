@@ -10,6 +10,14 @@ namespace NFX.Media.PDF.Text
   /// </summary>
   public static class TextAdapter
   {
+    #region CONSTS
+
+    private const char HEX_OPEN = '<';
+    private const char HEX_CLOSE = '>';
+    private const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
+
+    #endregion CONSTS
+
     private static Encoding s_UnicodeEncoding;
 
     private static Encoding s_TrivialEncoding;
@@ -44,14 +52,14 @@ namespace NFX.Media.PDF.Text
     public static byte[] FormatHexStringLiteral(byte[] bytes)
     {
       var builder = new StringBuilder();
-      builder.Append(Constants.HEX_OPEN);
+      builder.Append(HEX_OPEN);
       for (int i = 0; i < bytes.Length; i += 2)
       {
-        builder.AppendFormat(Constants.HEX_STRING_PAIR, bytes[i], bytes[i + 1]);
+        builder.AppendFormat(HEX_STRING_PAIR, bytes[i], bytes[i + 1]);
         if (i != 0 && (i % 48) == 0)
           builder.Append(Constants.CARRIAGE_RETURN);
       }
-      builder.Append(Constants.HEX_CLOSE);
+      builder.Append(HEX_CLOSE);
       var content = builder.ToString();
 
       // todo: remove when unicode support will be added
@@ -67,7 +75,7 @@ namespace NFX.Media.PDF.Text
     /// <returns></returns>
     public static string FormatFloat(double number)
     {
-      return string.Format(CultureInfo.InvariantCulture, "{0:0.####}", number);
+      return String.Format(CultureInfo.InvariantCulture, "{0:0.####}", number);
     }
 
     /// <summary>

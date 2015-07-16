@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Styling;
@@ -90,16 +91,16 @@ namespace WinFormsTest
 
       var sizes = new[]
       {
-        Tuple.Create("Letter", PdfPageSize.Letter),
-        Tuple.Create("A0", PdfPageSize.A0),
-        Tuple.Create("A1", PdfPageSize.A1),
-        Tuple.Create("A2", PdfPageSize.A2),
-        Tuple.Create("A3", PdfPageSize.A3),
-        Tuple.Create("A4", PdfPageSize.A4),
-        Tuple.Create("A5", PdfPageSize.A5),
-        Tuple.Create("B4", PdfPageSize.B4),
-        Tuple.Create("B5", PdfPageSize.B5),
-        Tuple.Create("Custom", new PdfPageSize(100, 50))
+        Tuple.Create("Letter", PdfPageSize.Letter()),
+        Tuple.Create("A0", PdfPageSize.A0()),
+        Tuple.Create("A1", PdfPageSize.A1()),
+        Tuple.Create("A2", PdfPageSize.A2()),
+        Tuple.Create("A3", PdfPageSize.A3()),
+        Tuple.Create("A4", PdfPageSize.A4()),
+        Tuple.Create("A5", PdfPageSize.A5()),
+        Tuple.Create("B4", PdfPageSize.B4()),
+        Tuple.Create("B5", PdfPageSize.B5()),
+        Tuple.Create("Custom", new PdfSize(PdfUnit.Default, 100, 50))
       };
 
       foreach (var size in sizes)
@@ -126,19 +127,90 @@ namespace WinFormsTest
         Tuple.Create("Point: 1 pt", PdfUnit.Point),
         Tuple.Create("Millimeter 2.83 pt", PdfUnit.Millimeter),
         Tuple.Create("Centimeter 28.3 pt", PdfUnit.Centimeter),
-        Tuple.Create("10 of Presentation 7.5 pt", new PdfUnit(10 * PdfUnit.Presentation.Points)),
         Tuple.Create("Inch: 72 pt", PdfUnit.Inch),
         Tuple.Create("Custom: 100 pt", new PdfUnit(100))
       };
 
       foreach (var unit in units)
       {
-        var page = document.AddPage(new PdfPageSize(200, 300), unit.Item2); // create 200x300 units page
+        var page = document.AddPage(new PdfSize(unit.Item2, 200, 300)); // create 200x300 units page
         page.AddRectangle(0, 280, 10, 290, PdfColor.Blue, 0.0F, PdfColor.White);
         var text = page.AddText(unit.Item1 + "(upper rectangle's size is 10x10 units)", 5, PdfFont.Courier);
         text.X = 0;
-        text.Y = 270;
+        text.Y = 270;                                             
       }
+
+      document.Save(@"test.pdf");
+
+      Process.Start(@"test.pdf");
+    }
+
+    private void button6_Click(object sender, EventArgs e)
+    {
+      var document = new PdfDocument("my title..", "me..");
+      document.Fonts.Add(PdfFont.Courier);
+
+      // page 1 - milimeters
+
+      var page = document.AddPage(PdfPageSize.A4(PdfUnit.Millimeter));
+
+      var text = page.AddText("User units of this page are millimeters", 5, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 280;
+
+      page.AddRectangle(10, 265, 22, 275, PdfColor.Blue, 0.0F, PdfColor.White);
+
+      text = page.AddText("This is 10x12 mm rectangle. This message font is of 5 pt", 5, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 260;
+
+      // page 2 - centimeters
+
+      page = document.AddPage(PdfPageSize.A4(PdfUnit.Centimeter));
+
+      text = page.AddText("User units of this page are centimeters", 0.5F, PdfFont.Courier);
+      text.X = 1;
+      text.Y = 28;
+
+      page.AddRectangle(1, 26.5F, 2.2F, 27.5F, PdfColor.Blue, 0.0F, PdfColor.White);
+
+      text = page.AddText("This is 1x1.2 cm rectangle. This message font is of 0.5 pt", 0.5F, PdfFont.Courier);
+      text.X = 1;
+      text.Y = 26;
+
+      // page 3 - line with 1/150 inch thickness (print with >= 150 dpi)
+
+      var thickness = 72.0F / 150.0F;
+
+      page = document.AddPage(PdfPageSize.A4());
+
+      text = page.AddText("User units of this page are 1 pt = 1/72 inch", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 780;
+
+      page.AddLine(10, 760, 510, 760, thickness, PdfColor.Blue);
+      text = page.AddText("This is a line of 1/150 inch = 0.163 mm thickness", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 750;
+
+      page.AddLine(10, 730, 510, 730, 5 * thickness, PdfColor.Blue);
+      text = page.AddText("This is a line of 5/150 inch = 0.816 thickness", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 720;
+
+      page.AddLine(10, 700, 510, 700, 10 * thickness, PdfColor.Blue);
+      text = page.AddText("This is a line of 10/150 inch = 1.63 mm thickness", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 690;
+
+      page.AddLine(10, 670, 510, 670, 30 * thickness, PdfColor.Blue);
+      text = page.AddText("This is a line of 30/150 inch = 4.9 mm thickness", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 655;
+
+      text = page.AddText("Lenght of all lines is 500 unit =176.4 mm", 10, PdfFont.Courier);
+      text.X = 10;
+      text.Y = 630;
 
       document.Save(@"test.pdf");
 

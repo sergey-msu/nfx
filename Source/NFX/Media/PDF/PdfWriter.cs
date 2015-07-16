@@ -232,8 +232,8 @@ namespace NFX.Media.PDF
       pageBuilder.AppendFormatLine("{0} 0 obj", page.ObjectId);
       pageBuilder.AppendLine("<<");
       pageBuilder.AppendLine("/Type /Page");
-      pageBuilder.AppendFormatLine("/UserUnit {0}", TextAdapter.FormatFloat(page.UserUnits));
-      pageBuilder.AppendFormatLine("/Parent {0} 0 R", page.PageTree.ObjectId);
+      pageBuilder.AppendFormatLine("/UserUnit {0}", TextAdapter.FormatFloat(page.UserUnit));
+      pageBuilder.AppendFormatLine("/Parent {0} 0 R", page.Parent.ObjectId);
       pageBuilder.AppendFormatLine("/Resources <</Font <<{0}>>", fontsBuilder);
       if (imageBuilder.Length > 0)
       {
@@ -428,7 +428,7 @@ namespace NFX.Media.PDF
       var pdfStreamBuilder = new StringBuilder();
       pdfStreamBuilder.AppendLine("q");
       pdfStreamBuilder.AppendLine("BT");
-      pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, text.FontSize);
+      pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, TextAdapter.FormatFloat(text.FontSize));
       pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
       pdfStreamBuilder.AppendFormatLine("{0} {1} Td", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y));
       pdfStreamBuilder.AppendFormatLine("{0} Tj", unicodeContent);
