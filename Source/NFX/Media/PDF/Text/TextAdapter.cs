@@ -79,13 +79,13 @@ namespace NFX.Media.PDF.Text
     }
 
     /// <summary>
-		/// Returns the lenght of a word
-		/// </summary>
-		/// <param name="word">Input word</param>
-		/// <param name="fontSize">Font's size</param>
-		/// <param name="font">PDF font</param>
-		/// <returns>Size of the word</returns>
-		public static float GetWordWidth(string word, int fontSize, PdfFont font)
+    /// Returns the lenght of a word
+    /// </summary>
+    /// <param name="word">Input word</param>
+    /// <param name="fontSize">Font's size</param>
+    /// <param name="font">PDF font</param>
+    /// <returns>Size of the word</returns>
+    public static float GetWordWidth(string word, int fontSize, PdfFont font)
     {
       float weight = 0;
       foreach (var letter in word)
