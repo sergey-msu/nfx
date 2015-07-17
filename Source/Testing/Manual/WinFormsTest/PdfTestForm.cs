@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Styling;
@@ -26,7 +25,7 @@ namespace WinFormsTest
       var page = document.AddPage();
 
       // simple text
-      var text = page.AddText("abc", 20, PdfFont.CourierBold, PdfColor.DarkGreen);
+      var text = page.AddText("AWE Tools Yeti AVATAR", 30, PdfFont.Times, PdfColor.Black);
       text.X = 10;
       text.Y = 730;
 
@@ -42,9 +41,9 @@ namespace WinFormsTest
       page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedBold);
 
       // rectangles
-      page.AddRectangle(100, 750, 200, 700, PdfColor.Blue);
-      page.AddRectangle(210, 750, 250, 680, PdfColor.Red, 0.1F);
-      page.AddRectangle(260, 750, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
+      page.AddRectangle(100, 600, 200, 700, PdfColor.Blue);
+      page.AddRectangle(210, 600, 250, 680, PdfColor.Red, 0.1F);
+      page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
 
       // circles
       page.AddCircle(-100, 100, 100, PdfColor.Blue);
@@ -137,7 +136,7 @@ namespace WinFormsTest
         page.AddRectangle(0, 280, 10, 290, PdfColor.Blue, 0.0F, PdfColor.White);
         var text = page.AddText(unit.Item1 + "(upper rectangle's size is 10x10 units)", 5, PdfFont.Courier);
         text.X = 0;
-        text.Y = 270;                                             
+        text.Y = 270;
       }
 
       document.Save(@"test.pdf");

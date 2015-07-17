@@ -350,7 +350,7 @@ namespace NFX.Media.PDF
       var lineContent = new StringBuilder();
       lineContent.AppendFormatLine("{0} RG", line.Style.Color);
       lineContent.AppendLine("q");
-      lineContent.AppendLine(borderStyle);
+      lineContent.Append(borderStyle);
       lineContent.AppendFormatLine("{0} {1} m {2} {3} l", x, y, x1, y1);
       lineContent.AppendLine("S");
       lineContent.AppendLine("Q");
@@ -493,7 +493,7 @@ namespace NFX.Media.PDF
       resultLine.AppendFormatLine("{0} 0 obj", objectId);
       resultLine.AppendFormatLine("<< /Length {0} >>", content.Length);
       resultLine.AppendLine("stream");
-      resultLine.AppendLine(content);
+      resultLine.Append(content);
       resultLine.AppendLine("endstream");
       resultLine.AppendLine("endobj");
 
