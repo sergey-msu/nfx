@@ -59,13 +59,18 @@ namespace NFX.Media.PDF.Elements
     public float OwnHeight { get; private set; }
 
     /// <summary>
+    /// Returns image's bits per pixel
+    /// </summary>
+    public int BitsPerPixel { get; private set; }
+
+    /// <summary>
     /// Writes element into file stream
     /// </summary>
     /// <param name="writer">PDF writer</param>
     /// <returns>Written bytes count</returns>
-    public override long Write(PdfWriter writer)
+    public override void Write(PdfWriter writer)
     {
-      return writer.Write(this);
+      writer.Write(this);
     }
 
     internal override void Prepare(ObjectIdGenerator generator)
@@ -89,6 +94,7 @@ namespace NFX.Media.PDF.Elements
         OwnWidth = image.Width;
         Height = image.Height;
         OwnHeight = image.Height;
+        BitsPerPixel = Image.GetPixelFormatSize(image.PixelFormat);
       }
     }
   }

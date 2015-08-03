@@ -1,5 +1,3 @@
-using System;
-using System.Globalization;
 using NFX.Media.PDF.Text;
 
 namespace NFX.Media.PDF.Styling

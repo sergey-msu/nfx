@@ -9,5 +9,10 @@
     /// Document-wide unique object Id
     /// </summary>
     int ObjectId { get; }
+
+    /// <summary>
+    /// Returns PDF object indirect reference
+    /// </summary>
+    string GetReference();
   }
 }

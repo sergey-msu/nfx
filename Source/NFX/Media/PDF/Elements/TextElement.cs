@@ -54,9 +54,9 @@ namespace NFX.Media.PDF.Elements
     /// </summary>
     /// <param name="writer">PDF writer</param>
     /// <returns>Written bytes count</returns>
-    public override long Write(PdfWriter writer)
+    public override void Write(PdfWriter writer)
     {
-      return writer.Write(this);
+      writer.Write(this);
     }
   }
 }

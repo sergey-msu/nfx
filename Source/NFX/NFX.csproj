@@ -214,10 +214,11 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfMeta.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfRoot.cs" />
     <Compile Include="Media\PDF\Elements\CircleElement.cs" />
     <Compile Include="Media\PDF\Elements\LineElement.cs" />
-    <Compile Include="Media\PDF\Elements\ParagraphLine.cs" />
     <Compile Include="Media\PDF\Elements\RectangleElement.cs" />
     <Compile Include="Media\PDF\ObjectIdGenerator.cs" />
     <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
@@ -283,7 +284,6 @@
     <Compile Include="Media\PDF\DocumentModel\PdfDocument.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfObject.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfHeader.cs" />
-    <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfOutlines.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfPage.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfPageTree.cs" />

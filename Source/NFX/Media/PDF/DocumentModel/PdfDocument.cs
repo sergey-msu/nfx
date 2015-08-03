@@ -9,17 +9,19 @@ namespace NFX.Media.PDF.DocumentModel
   /// </summary>
   public class PdfDocument
   {
-    public PdfDocument(string title, string author)
+    public PdfDocument()
     {
       m_Fonts = new List<PdfFont>();
       m_Meta = new PdfMeta();
-      m_Info = new PdfInfo(title, author);
+      m_Info = new PdfInfo();
       m_OutLines = new PdfOutlines();
-      m_Header = new PdfHeader();
+      m_Header = new PdfRoot();
       m_PageTree = new PdfPageTree();
       m_Trailer = new PdfTrailer();
       m_Generator = new ObjectIdGenerator();
       m_PageSize = PdfPageSize.Default();
+
+      //FlateDecode = true;
     }
 
     #region Fields
@@ -28,7 +30,7 @@ namespace NFX.Media.PDF.DocumentModel
 
     private readonly PdfMeta m_Meta;
 
-    private readonly PdfHeader m_Header;
+    private readonly PdfRoot m_Header;
 
     private readonly PdfInfo m_Info;
 
@@ -45,6 +47,11 @@ namespace NFX.Media.PDF.DocumentModel
     #endregion Fields
 
     #region Properties
+
+    /// <summary>
+    /// Use flate decode filter for text
+    /// </summary>
+    //public bool FlateDecode { get; set; }
 
     /// <summary>
     /// Used fonts
@@ -81,7 +88,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Document header
     /// </summary>
-    internal PdfHeader Header
+    internal PdfRoot Header
     {
       get { return m_Header; }
     }
@@ -156,10 +163,11 @@ namespace NFX.Media.PDF.DocumentModel
     public void Save(string filePath)
     {
       using (var file = new FileStream(filePath, FileMode.Create))
+      using (var writer = new PdfWriter(file))
       {
         prepare();
 
-        var writer = new PdfWriter(file);
+        //writer.FlateDecode = FlateDecode;
         writer.Write(this);
       }
     }

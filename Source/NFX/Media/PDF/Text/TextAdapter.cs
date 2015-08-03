@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Text;
-using NFX.Media.PDF.Styling;
 
 namespace NFX.Media.PDF.Text
 {
@@ -9,7 +8,7 @@ namespace NFX.Media.PDF.Text
   /// Utility class for operations with text 
   /// </summary>
   public static class TextAdapter
-  {
+  { 
     #region CONSTS
 
     private const char HEX_OPEN = '<';
@@ -44,6 +43,15 @@ namespace NFX.Media.PDF.Text
       }
     }
 
+    public static string FixEscapes(string text)
+    {
+      text = text.Replace(@"\", @"\\");
+      text = text.Replace("(", @"\(");
+      text = text.Replace(")", @"\)");
+
+      return text;
+    }
+
     /// <summary>
     /// Converts the specified byte array into a byte array representing a unicode hex string literal.
     /// </summary>
@@ -76,24 +84,6 @@ namespace NFX.Media.PDF.Text
     public static string FormatFloat(double number)
     {
       return String.Format(CultureInfo.InvariantCulture, "{0:0.####}", number);
-    }
-
-    /// <summary>
-    /// Returns the lenght of a word
-    /// </summary>
-    /// <param name="word">Input word</param>
-    /// <param name="fontSize">Font's size</param>
-    /// <param name="font">PDF font</param>
-    /// <returns>Size of the word</returns>
-    public static float GetWordWidth(string word, int fontSize, PdfFont font)
-    {
-      float weight = 0;
-      foreach (var letter in word)
-      {
-        weight += font.CharWeights[letter];
-      }
-
-      return weight * fontSize / 1000;
     }
   }
 }

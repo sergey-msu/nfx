@@ -16,39 +16,41 @@ namespace WinFormsTest
 
     private void button1_Click(object sender, EventArgs e)
     {
-      var document = new PdfDocument("my title..", "me..");
-      document.Fonts.Add(PdfFont.Courier);
+      var document = new PdfDocument();
+      //document.Fonts.Add(PdfFont.Courier);
       document.Fonts.Add(PdfFont.CourierBold);
-      document.Fonts.Add(PdfFont.Times);
-      document.Fonts.Add(PdfFont.TimesBoldItalic);
+      //document.Fonts.Add(PdfFont.Times);
+      //document.Fonts.Add(PdfFont.TimesBoldItalic);
+
+      //document.FlateDecode = checkBox1.Checked;
 
       var page = document.AddPage();
 
-      // simple text
-      var text = page.AddText("AWE Tools Yeti AVATAR", 30, PdfFont.Times, PdfColor.Black);
+      // simple text: english français español übersetzen 日本人 Ελλάδα русский 中国  
+      var text = page.AddText(@"ç", 20, PdfFont.Times, PdfColor.Black);
       text.X = 10;
       text.Y = 730;
 
       // lines
-      page.AddLine(20, 620, 50, 620);
-      page.AddLine(50, 620, 70, 600, 2.5F);
-      page.AddLine(70, 600, 80, 550, 0.5F, PdfColor.Red);
-      page.AddLine(80, 550, 80, 530, 1.0F, PdfColor.Green, PdfLineType.Outlined);
-      page.AddLine(80, 530, 80, 500, 3.2F, PdfColor.DarkBlue, PdfLineType.OutlinedBold);
-      page.AddLine(80, 500, 120, 500, 1.0F, PdfColor.Black, PdfLineType.Normal);
-      page.AddLine(130, 500, 170, 500, 1.0F, PdfColor.Black, PdfLineType.Outlined);
-      page.AddLine(180, 500, 240, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedThin);
-      page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedBold);
+      //page.AddLine(20, 620, 50, 620);
+      //page.AddLine(50, 620, 70, 600, 2.5F);
+      //page.AddLine(70, 600, 80, 550, 0.5F, PdfColor.Red);
+      //page.AddLine(80, 550, 80, 530, 1.0F, PdfColor.Green, PdfLineType.Outlined);
+      //page.AddLine(80, 530, 80, 500, 3.2F, PdfColor.DarkBlue, PdfLineType.OutlinedBold);
+      //page.AddLine(80, 500, 120, 500, 1.0F, PdfColor.Black, PdfLineType.Normal);
+      //page.AddLine(130, 500, 170, 500, 1.0F, PdfColor.Black, PdfLineType.Outlined);
+      //page.AddLine(180, 500, 240, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedThin);
+      //page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedBold);
 
-      // rectangles
-      page.AddRectangle(100, 600, 200, 700, PdfColor.Blue);
-      page.AddRectangle(210, 600, 250, 680, PdfColor.Red, 0.1F);
-      page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
+      //// rectangles
+      //page.AddRectangle(100, 600, 200, 700, PdfColor.Blue);
+      //page.AddRectangle(210, 600, 250, 680, PdfColor.Red, 0.1F);
+      //page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
 
-      // circles
-      page.AddCircle(-100, 100, 100, PdfColor.Blue);
-      page.AddCircle(-50, 100, 50, PdfColor.Red, 0.0F);
-      page.AddCircle(300, 700, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
+      //// circles
+      //page.AddCircle(-100, 100, 100, PdfColor.Blue);
+      //page.AddCircle(-50, 100, 50, PdfColor.Red, 0.0F);
+      //page.AddCircle(300, 700, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
 
       document.Save(@"test.pdf");
 
@@ -61,7 +63,7 @@ namespace WinFormsTest
       if (string.IsNullOrEmpty(fileName) || !File.Exists(fileName))
         return;
 
-      var document = new PdfDocument("my title..", "me..");
+      var document = new PdfDocument();
 
       var page = document.AddPage();
       var image = page.AddImage(fileName, 100, 20);
@@ -85,7 +87,7 @@ namespace WinFormsTest
 
     private void button4_Click(object sender, EventArgs e)
     {
-      var document = new PdfDocument("my title..", "me..");
+      var document = new PdfDocument();
       document.Fonts.Add(PdfFont.Courier);
 
       var sizes = new[]
@@ -118,7 +120,7 @@ namespace WinFormsTest
 
     private void button5_Click(object sender, EventArgs e)
     {
-      var document = new PdfDocument("my title..", "me..");
+      var document = new PdfDocument();
       document.Fonts.Add(PdfFont.Courier);
 
       var units = new[]
@@ -146,7 +148,7 @@ namespace WinFormsTest
 
     private void button6_Click(object sender, EventArgs e)
     {
-      var document = new PdfDocument("my title..", "me..");
+      var document = new PdfDocument();
       document.Fonts.Add(PdfFont.Courier);
 
       // page 1 - milimeters

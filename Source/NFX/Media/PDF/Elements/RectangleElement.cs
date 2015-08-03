@@ -31,9 +31,9 @@ namespace NFX.Media.PDF.Elements
 
     public PdfLineStyle BorderStyle { get; set; }
 
-    public override long Write(PdfWriter writer)
+    public override void Write(PdfWriter writer)
     {
-      return writer.Write(this);
+      writer.Write(this);
     }
   }
 }

@@ -21,5 +21,13 @@ namespace NFX.Media.PDF.DocumentModel
     {
       m_ObjectId = generator.GenerateId();
     }
+
+    /// <summary>
+    /// Returns PDF object indirect reference
+    /// </summary>
+    public string GetReference()
+    {
+      return string.Format("{0} 0 R", ObjectId);
+    }
   }
 }

@@ -21,7 +21,6 @@ namespace NFX.Media.PDF.Elements
     /// Writes element into file stream
     /// </summary>
     /// <param name="writer">PDF writer</param>
-    /// <returns>Written bytes count</returns>
-    public abstract long Write(PdfWriter writer);
+    public abstract void Write(PdfWriter writer);
   }
 }
