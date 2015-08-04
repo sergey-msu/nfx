@@ -109,7 +109,7 @@ namespace NFX.Media.PDF
       writeBeginObject(font.ObjectId);
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Font");
-      writeDictionaryEntry("/Subtype", "/Type1");
+      writeDictionaryEntry("/Subtype", "/TrueType");
       writeDictionaryEntry("/Name", font.GetResourceReference());
       writeDictionaryEntry("/BaseFont", string.Format("/{0}", font.Name));
       writeDictionaryEntry("/Encoding", "/WinAnsiEncoding");

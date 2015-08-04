@@ -237,6 +237,7 @@ namespace WinFormsTest
       var tahoma = new PdfFont("Tahoma");
       var stencil = new PdfFont("Stencil");
       var castellar = new PdfFont("Castellar");
+      var monaco = new PdfFont("Monaco");
       document.Fonts.Add(arial);
       document.Fonts.Add(verdana);
       document.Fonts.Add(calibri);
@@ -244,6 +245,7 @@ namespace WinFormsTest
       document.Fonts.Add(tahoma);
       document.Fonts.Add(stencil);
       document.Fonts.Add(castellar);
+      document.Fonts.Add(monaco);
 
       var page = document.AddPage();
 
@@ -271,10 +273,11 @@ namespace WinFormsTest
         { "SegoeUI",   segoeUI },
         { "Tahoma",    tahoma },
         { "Stencil",   stencil },
-        { "Castellar",  castellar }
+        { "Castellar", castellar },
+        { "Monaco",  monaco }
       };
 
-      var text = page.AddText(@"Predefined Fonts:", 20, PdfFont.Times);
+      var text = page.AddText(@"Predefined Fonts (Courier is monospaced):", 20, PdfFont.Times);
       text.X = 30;
       text.Y = 730;
 
@@ -294,7 +297,7 @@ namespace WinFormsTest
 
       top -= 40;
 
-      text = page.AddText(@"Some other Fonts:", 20, PdfFont.Times);
+      text = page.AddText(@"Some other Fonts (Monaco is monospaced):", 20, PdfFont.Times);
       text.X = 50;
       text.Y = top;
 
