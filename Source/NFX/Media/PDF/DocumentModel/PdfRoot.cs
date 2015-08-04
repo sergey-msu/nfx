@@ -8,16 +8,16 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Document outlines' object Id
     /// </summary>
-    public int OutlinesId { get; set; }
+    public PdfOutlines Outlines { get; set; }
 
     /// <summary>
     /// Document info's object Id
     /// </summary>
-    public int InfoId { get; set; }
+    public PdfInfo Info { get; set; }
 
     /// <summary>
     /// Document page tree's object Id
     /// </summary>
-    public int PageTreeId { get; set; }
+    public PdfPageTree PageTree { get; set; }
   }
 }

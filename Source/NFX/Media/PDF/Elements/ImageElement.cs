@@ -1,14 +1,14 @@
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using NFX.Media.PDF.DocumentModel;
 
 namespace NFX.Media.PDF.Elements
 {
   /// <summary>
   /// PDF image element
   /// </summary>
-  public class ImageElement : PdfElement
+  public class ImageElement : PdfElement, IPdfXObject
   {
     public ImageElement(string filePath)
     {
@@ -23,15 +23,10 @@ namespace NFX.Media.PDF.Elements
       Height = height;
     }
 
-    private int m_XObjectId;
-
     /// <summary>
     /// Image unique object Id
     /// </summary>
-    public int XObjectId
-    {
-      get { return m_XObjectId; }
-    }
+    public int XObjectId { get; set; }
 
     /// <summary>
     /// PDF displayed image width
@@ -64,6 +59,19 @@ namespace NFX.Media.PDF.Elements
     public int BitsPerPixel { get; private set; }
 
     /// <summary>
+    /// Returns PDF x-object indirect reference
+    /// </summary>
+    public string GetXReference()
+    {
+      return string.Format("/I{0}", XObjectId);
+    }
+
+    public string GetCoupledReference()
+    {
+      return string.Format("/I{0} {0} 0 R", XObjectId);
+    }
+
+    /// <summary>
     /// Writes element into file stream
     /// </summary>
     /// <param name="writer">PDF writer</param>
@@ -71,16 +79,6 @@ namespace NFX.Media.PDF.Elements
     public override void Write(PdfWriter writer)
     {
       writer.Write(this);
-    }
-
-    internal override void Prepare(ObjectIdGenerator generator)
-    {
-      base.Prepare(generator);
-
-      if (m_XObjectId != 0)
-        throw new InvalidOperationException("Image's x-object Id has already been setted.");
-
-      m_XObjectId = generator.GenerateId();
     }
 
     private void loadImage(string filePath)

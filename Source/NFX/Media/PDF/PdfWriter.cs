@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Elements;
-using NFX.Media.PDF.Styling;
 using NFX.Media.PDF.Text;
 
 namespace NFX.Media.PDF
@@ -29,11 +28,6 @@ namespace NFX.Media.PDF
     private readonly BinaryWriter m_Writer;
 
     /// <summary>
-    /// Use flate decode filter for text
-    /// </summary>
-    //public bool FlateDecode { get; set; }
-
-    /// <summary>
     /// Insert nonnecessary tabs and returns for a pretty output look file
     /// </summary>
     public bool PrettyFormatting { get; set; }
@@ -51,7 +45,7 @@ namespace NFX.Media.PDF
 
       // header object
       document.Trailer.AddObjectOffset(m_Stream.Position);
-      Write(document.Header);
+      Write(document.Root);
 
       // info object
       document.Trailer.AddObjectOffset(m_Stream.Position);
@@ -100,7 +94,7 @@ namespace NFX.Media.PDF
       Write(document.Trailer);
     }
 
-    public void Write(PdfMeta meta)
+    internal void Write(PdfMeta meta)
     {
       writeLineRaw("%PDF-{0}", meta.Version);
       writeLineRaw("%\u00b5\u00b5\u00b5\u00b5");
@@ -110,13 +104,13 @@ namespace NFX.Media.PDF
     /// Writes PDF font into file stream 
     /// </summary>
     /// <param name="font">PDF font</param>
-    public void Write(PdfFont font)
+    internal void Write(PdfFont font)
     {
       writeBeginObject(font.ObjectId);
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Font");
       writeDictionaryEntry("/Subtype", "/Type1");
-      writeDictionaryEntry("/Name", string.Format("/F{0}", font.Number));
+      writeDictionaryEntry("/Name", font.GetResourceReference());
       writeDictionaryEntry("/BaseFont", string.Format("/{0}", font.Name));
       writeDictionaryEntry("/Encoding", "/WinAnsiEncoding");
       writeEndDictionary();
@@ -132,8 +126,8 @@ namespace NFX.Media.PDF
       writeBeginObject(root.ObjectId);
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Catalog");
-      writeDictionaryEntry("/Pages", string.Format("{0} 0 R", root.PageTreeId));
-      writeDictionaryEntry("/Outlines", string.Format("{0} 0 R", root.OutlinesId));
+      writeDictionaryEntry("/Pages", root.PageTree.GetReference());
+      writeDictionaryEntry("/Outlines", root.Outlines.GetReference());
       writeEndDictionary();
       writeEndObject();
     }
@@ -142,7 +136,7 @@ namespace NFX.Media.PDF
     /// Writes PDF info into file stream
     /// </summary>
     /// <param name="info">PDF document info</param>
-    public void Write(PdfInfo info)
+    internal void Write(PdfInfo info)
     {
       writeBeginObject(info.ObjectId);
       writeBeginDictionary();
@@ -168,7 +162,7 @@ namespace NFX.Media.PDF
     /// Writes PDF document outlines into file stream
     /// </summary>
     /// <param name="outlines">PDF document outlines</param>
-    public void Write(PdfOutlines outlines)
+    internal void Write(PdfOutlines outlines)
     {
       writeBeginObject(outlines.ObjectId);
       writeBeginDictionary();
@@ -202,12 +196,12 @@ namespace NFX.Media.PDF
     /// Writes PDF page into file stream
     /// </summary>
     /// <param name="page">PDF page</param>
-    public void Write(PdfPage page)
+    internal void Write(PdfPage page)
     {
       var resourcesBuilder = new StringBuilder();
       var elements = string.Join(Constants.SPACE.ToString(), page.Elements.Select(p => p.GetReference()));
-      var images = string.Join(Constants.SPACE.ToString(), page.Elements.OfType<ImageElement>().Select(p => string.Format("/I{0} {0} 0 R", p.XObjectId)));
-      var fonts = string.Join(Constants.SPACE.ToString(), page.Fonts.Select(p => string.Format("/F{0} {1} 0 R", p.Number, p.ObjectId)));
+      var images = string.Join(Constants.SPACE.ToString(), page.Elements.OfType<ImageElement>().Select(p => p.GetCoupledReference()));
+      var fonts = string.Join(Constants.SPACE.ToString(), page.Fonts.Select(p => string.Format("{0} {1}", p.GetResourceReference(), p.GetReference())));
 
       if (fonts.Length > 0)
         resourcesBuilder.AppendFormat(" /Font <<{0}>> ", fonts);
@@ -221,12 +215,12 @@ namespace NFX.Media.PDF
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Page");
       writeDictionaryEntry("/UserUnit", string.Format("{0}", TextAdapter.FormatFloat(page.UserUnit)));
-      writeDictionaryEntry("/Parent", string.Format("{0} 0 R", page.Parent.ObjectId));
+      writeDictionaryEntry("/Parent", page.Parent.GetReference());
       writeDictionaryEntry("/Resources", string.Format("<<{0}>>", resourcesBuilder));
       writeDictionaryEntry("/MediaBox", string.Format("[0 0 {0} {1}]", w, h));
       writeDictionaryEntry("/CropBox", string.Format("[0 0 {0} {1}]", w, h));
       writeDictionaryEntry("/Rotate", string.Format("0"));
-      writeDictionaryEntry("/ProcSet", string.Format("[ /PDF /Text /ImageC ]"));
+      writeDictionaryEntry("/ProcSet", string.Format("[/PDF /Text /ImageC]"));
       if (elements.Length > 0)
       {
         writeDictionaryEntry("/Contents", string.Format("[{0}]", elements));
@@ -239,7 +233,7 @@ namespace NFX.Media.PDF
     /// Writes PDF document trailer into file stream
     /// </summary>
     /// <param name="trailer">PDF document trailer</param>
-    public void Write(PdfTrailer trailer)
+    internal void Write(PdfTrailer trailer)
     {
       writeLineRaw("xref");
       writeLineRaw("0 {0}", trailer.LastObjectId + 1);
@@ -251,8 +245,8 @@ namespace NFX.Media.PDF
       writeLineRaw("trailer");
       writeBeginDictionary();
       writeDictionaryEntry("/Size", trailer.LastObjectId + 1);
-      writeDictionaryEntry("/Root", "1 0 R");
-      writeDictionaryEntry("/Info", "2 0 R");
+      writeDictionaryEntry("/Root", trailer.Root.GetReference());
+      writeDictionaryEntry("/Info", trailer.Root.Info.GetReference());
       writeEndDictionary();
       writeLineRaw("startxref");
       writeLineRaw("{0}", trailer.XRefOffset);
@@ -263,12 +257,12 @@ namespace NFX.Media.PDF
     /// Writes PDF image element into file stream
     /// </summary>
     /// <param name="image">PDF image element</param>
-    public void Write(ImageElement image)
+    internal void Write(ImageElement image)
     {
       var imageContent = new StringBuilder();
       imageContent.AppendLine("q");
       imageContent.AppendFormatLine("{0} 0 0 {1} {2} {3} cm", image.Width, image.Height, image.X, image.Y);
-      imageContent.AppendFormatLine("/I{0} Do", image.XObjectId);
+      imageContent.AppendFormatLine("{0} Do", image.GetXReference());
       imageContent.Append("Q");
 
       writeStreamedObject(image.ObjectId, imageContent.ToString());
@@ -278,14 +272,14 @@ namespace NFX.Media.PDF
     /// Writes PDF image xObject element into file stream
     /// </summary>
     /// <param name="image">PDF image xObject element</param>
-    public void WriteXObject(ImageElement image)
+    internal void WriteXObject(ImageElement image)
     {
       writeBeginObject(image.XObjectId);
-      
+
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/XObject");
       writeDictionaryEntry("/Subtype", "/Image");
-      writeDictionaryEntry("/Name", string.Format("/I{0}", image.XObjectId));
+      writeDictionaryEntry("/Name", image.GetXReference());
       writeDictionaryEntry("/Filter", "/DCTDecode");
       writeDictionaryEntry("/Width", image.OwnWidth);
       writeDictionaryEntry("/Height", image.OwnHeight);
@@ -305,10 +299,8 @@ namespace NFX.Media.PDF
     /// Writes PDF line element into file stream
     /// </summary>
     /// <param name="line">PDF line element</param>
-    public void Write(LineElement line)
+    internal void Write(LineElement line)
     {
-      var borderStyle = getLineStylePdf(line.Style);
-
       var x = TextAdapter.FormatFloat(line.X);
       var y = TextAdapter.FormatFloat(line.Y);
       var x1 = TextAdapter.FormatFloat(line.X1);
@@ -317,7 +309,7 @@ namespace NFX.Media.PDF
       var lineContent = new StringBuilder();
       lineContent.AppendFormatLine("{0} RG", line.Style.Color);
       lineContent.AppendLine("q");
-      lineContent.Append(borderStyle);
+      lineContent.Append(line.Style);
       lineContent.AppendFormatLine("{0} {1} m {2} {3} l", x, y, x1, y1);
       lineContent.AppendLine("S");
       lineContent.Append("Q");
@@ -329,10 +321,8 @@ namespace NFX.Media.PDF
     /// Writes PDF rectangle element into file stream
     /// </summary>
     /// <param name="rectangle">PDF rectangle element</param>
-    public void Write(RectangleElement rectangle)
+    internal void Write(RectangleElement rectangle)
     {
-      var borderStyle = getLineStylePdf(rectangle.BorderStyle);
-
       var x = TextAdapter.FormatFloat(rectangle.X);
       var y = TextAdapter.FormatFloat(rectangle.Y);
       var w = TextAdapter.FormatFloat(rectangle.X1 - rectangle.X);
@@ -342,7 +332,7 @@ namespace NFX.Media.PDF
       rectangleContent.AppendLine("q");
       rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderStyle.Color);
       rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
-      rectangleContent.Append(borderStyle);
+      rectangleContent.Append(rectangle.BorderStyle);
       rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", x, y, w, h);
       rectangleContent.AppendLine("B");
       rectangleContent.Append("Q");
@@ -354,21 +344,19 @@ namespace NFX.Media.PDF
     /// Writes PDF circle element into file stream
     /// </summary>
     /// <param name="circle">PDF circle element</param>
-    public void Write(CircleElement circle)
+    internal void Write(CircleElement circle)
     {
-      var borderStyle = getLineStylePdf(circle.BorderStyle);
-
       var xLeft = TextAdapter.FormatFloat(circle.X);
-      var xRight = TextAdapter.FormatFloat(circle.X + 2*circle.R);
+      var xRight = TextAdapter.FormatFloat(circle.X + 2 * circle.R);
       var centerY = TextAdapter.FormatFloat(circle.CenterY);
-      var positiveBezier = TextAdapter.FormatFloat(circle.CenterY + circle.R*Constants.SQRT_TWO);
-      var negativeBezier = TextAdapter.FormatFloat(circle.CenterY - circle.R*Constants.SQRT_TWO);
+      var positiveBezier = TextAdapter.FormatFloat(circle.CenterY + circle.R * Constants.SQRT_TWO);
+      var negativeBezier = TextAdapter.FormatFloat(circle.CenterY - circle.R * Constants.SQRT_TWO);
 
       var circleContent = new StringBuilder();
       circleContent.AppendLine("q");
       circleContent.AppendFormatLine("{0} RG", circle.BorderStyle.Color);
       circleContent.AppendFormatLine("{0} rg", circle.Fill);
-      circleContent.Append(borderStyle);
+      circleContent.Append(circle.BorderStyle);
       circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
       circleContent.AppendFormatLine("{0} {1} {2} {1} {2} {3} c", xLeft, positiveBezier, xRight, centerY);
       circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
@@ -383,14 +371,14 @@ namespace NFX.Media.PDF
     /// Writes PDF text element into file stream
     /// </summary>
     /// <param name="text">PDF text element</param>
-    public void Write(TextElement text)
+    internal void Write(TextElement text)
     {
       var escapedText = TextAdapter.FixEscapes(text.Content);
 
       var pdfStreamBuilder = new StringBuilder();
       pdfStreamBuilder.AppendLine("q");
       pdfStreamBuilder.AppendLine("BT");
-      pdfStreamBuilder.AppendFormatLine("/F{0} {1} Tf", text.Font.Number, TextAdapter.FormatFloat(text.FontSize));
+      pdfStreamBuilder.AppendFormatLine("{0} {1} Tf", text.Font.GetResourceReference(), TextAdapter.FormatFloat(text.FontSize));
       pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
       pdfStreamBuilder.AppendFormatLine("{0} {1} Td", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y));
       pdfStreamBuilder.AppendFormatLine("({0}) Tj", escapedText);
@@ -404,34 +392,12 @@ namespace NFX.Media.PDF
 
     #region .pvt
 
-    private string getLineStylePdf(PdfLineStyle style)
-    {
-      var styleBuilder = new StringBuilder();
-      styleBuilder.AppendFormatLine("{0} w", TextAdapter.FormatFloat(style.Thickness));
-      switch (style.Type)
-      {
-        case PdfLineType.OutlinedThin:
-          styleBuilder.AppendLine("[2 2] 0 d");
-          break;
-        case PdfLineType.Outlined:
-          styleBuilder.AppendLine("[4 4] 0 d");
-          break;
-        case PdfLineType.OutlinedBold:
-          styleBuilder.AppendLine("[6 6] 0 d");
-          break;
-      }
-
-      return styleBuilder.ToString();
-    }
-
     private void writeStreamedObject(int objectId, string stream)
     {
       writeBeginObject(objectId);
-      
+
       writeBeginDictionary();
       writeDictionaryEntry("/Length", stream.Length);
-      //if (FlateDecode)
-      //  writeDictionaryEntry("/Filter", "/FlateDecode");
       writeEndDictionary();
 
       writeBeginStream();

@@ -15,13 +15,18 @@ namespace NFX.Media.PDF.DocumentModel
       m_Meta = new PdfMeta();
       m_Info = new PdfInfo();
       m_OutLines = new PdfOutlines();
-      m_Header = new PdfRoot();
+      m_Root = new PdfRoot();
       m_PageTree = new PdfPageTree();
       m_Trailer = new PdfTrailer();
-      m_Generator = new ObjectIdGenerator();
-      m_PageSize = PdfPageSize.Default();
+      m_ObjectRepository = new ObjectRepository();
+      m_ResourceRepository = new ResourceRepository();
 
-      //FlateDecode = true;
+      m_Root.Info = m_Info;
+      m_Root.Outlines = m_OutLines;
+      m_Root.PageTree = m_PageTree;
+      m_Trailer.Root = m_Root;
+
+      m_PageSize = PdfPageSize.Default();
     }
 
     #region Fields
@@ -30,7 +35,7 @@ namespace NFX.Media.PDF.DocumentModel
 
     private readonly PdfMeta m_Meta;
 
-    private readonly PdfRoot m_Header;
+    private readonly PdfRoot m_Root;
 
     private readonly PdfInfo m_Info;
 
@@ -40,18 +45,15 @@ namespace NFX.Media.PDF.DocumentModel
 
     private readonly PdfTrailer m_Trailer;
 
-    private readonly ObjectIdGenerator m_Generator;
+    private readonly ObjectRepository m_ObjectRepository;
 
-    private PdfSize m_PageSize;
+    private readonly ResourceRepository m_ResourceRepository;
+
+    private readonly PdfSize m_PageSize;
 
     #endregion Fields
 
     #region Properties
-
-    /// <summary>
-    /// Use flate decode filter for text
-    /// </summary>
-    //public bool FlateDecode { get; set; }
 
     /// <summary>
     /// Used fonts
@@ -88,9 +90,9 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Document header
     /// </summary>
-    internal PdfRoot Header
+    internal PdfRoot Root
     {
-      get { return m_Header; }
+      get { return m_Root; }
     }
 
     /// <summary>
@@ -104,7 +106,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// <summary>
     /// Document trailer
     /// </summary>
-    public PdfTrailer Trailer
+    internal PdfTrailer Trailer
     {
       get { return m_Trailer; }
     }
@@ -118,12 +120,12 @@ namespace NFX.Media.PDF.DocumentModel
     }
 
     /// <summary>
-    /// Page size for all pages created after	it's setting
+    /// Size for all pages created after it's setting
     /// </summary>
     public PdfSize PageSize { get; set; }
 
     /// <summary>
-    /// User units for all pages created after 'it's setting
+    /// User units for all pages created after it's setting
     /// (the default user space unit is 1/72 inch)
     /// </summary>
     public PdfUnit Unit
@@ -167,7 +169,6 @@ namespace NFX.Media.PDF.DocumentModel
       {
         prepare();
 
-        //writer.FlateDecode = FlateDecode;
         writer.Write(this);
       }
     }
@@ -181,29 +182,30 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     private void prepare()
     {
-      m_Header.Prepare(m_Generator);
-
-      m_Info.Prepare(m_Generator);
-      m_Header.InfoId = m_Info.ObjectId;
-
-      m_OutLines.Prepare(m_Generator);
-      m_Header.OutlinesId = m_OutLines.ObjectId;
+      m_ObjectRepository.Register(m_Root);
+      m_ObjectRepository.Register(m_Info);
+      m_ObjectRepository.Register(m_OutLines);
 
       foreach (var font in Fonts)
       {
-        font.Prepare(m_Generator);
+        m_ObjectRepository.Register(font);
+        m_ResourceRepository.Register(font);
       }
 
-      m_PageTree.Prepare(m_Generator);
-      m_Header.PageTreeId = m_PageTree.ObjectId;
+      m_ObjectRepository.Register(m_PageTree);
 
       foreach (var page in Pages)
       {
-        page.Prepare(m_Generator);
+        m_ObjectRepository.Register(page);
         page.Fonts.AddRange(Fonts);
+
+        foreach (var element in page.Elements)
+        {
+          m_ObjectRepository.Register(element);
+        }
       }
 
-      m_Trailer.LastObjectId = m_Generator.CurrentId;
+      m_Trailer.LastObjectId = m_ObjectRepository.CurrentId;
     }
 
     #endregion .pvt

@@ -290,15 +290,5 @@ namespace NFX.Media.PDF.DocumentModel
     }
 
     #endregion Add image
-
-    internal override void Prepare(ObjectIdGenerator generator)
-    {
-      base.Prepare(generator);
-
-      foreach (var element in Elements)
-      {
-        element.Prepare(generator);
-      }
-    }
   }
 }

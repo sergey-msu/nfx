@@ -8,7 +8,7 @@ namespace NFX.Media.PDF.Text
   /// Utility class for operations with text 
   /// </summary>
   public static class TextAdapter
-  { 
+  {
     #region CONSTS
 
     private const char HEX_OPEN = '<';

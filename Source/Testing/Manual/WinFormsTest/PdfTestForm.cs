@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -17,40 +18,35 @@ namespace WinFormsTest
     private void button1_Click(object sender, EventArgs e)
     {
       var document = new PdfDocument();
-      //document.Fonts.Add(PdfFont.Courier);
-      document.Fonts.Add(PdfFont.CourierBold);
-      //document.Fonts.Add(PdfFont.Times);
-      //document.Fonts.Add(PdfFont.TimesBoldItalic);
-
-      //document.FlateDecode = checkBox1.Checked;
+      document.Fonts.Add(PdfFont.Times);
 
       var page = document.AddPage();
 
       // simple text: english français español übersetzen 日本人 Ελλάδα русский 中国  
-      var text = page.AddText(@"ç", 20, PdfFont.Times, PdfColor.Black);
+      var text = page.AddText(@"Hello world", 20, PdfFont.Times, PdfColor.Blue);
       text.X = 10;
       text.Y = 730;
 
       // lines
-      //page.AddLine(20, 620, 50, 620);
-      //page.AddLine(50, 620, 70, 600, 2.5F);
-      //page.AddLine(70, 600, 80, 550, 0.5F, PdfColor.Red);
-      //page.AddLine(80, 550, 80, 530, 1.0F, PdfColor.Green, PdfLineType.Outlined);
-      //page.AddLine(80, 530, 80, 500, 3.2F, PdfColor.DarkBlue, PdfLineType.OutlinedBold);
-      //page.AddLine(80, 500, 120, 500, 1.0F, PdfColor.Black, PdfLineType.Normal);
-      //page.AddLine(130, 500, 170, 500, 1.0F, PdfColor.Black, PdfLineType.Outlined);
-      //page.AddLine(180, 500, 240, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedThin);
-      //page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedBold);
+      page.AddLine(20, 620, 50, 620);
+      page.AddLine(50, 620, 70, 600, 2.5F);
+      page.AddLine(70, 600, 80, 550, 0.5F, PdfColor.Red);
+      page.AddLine(80, 550, 80, 530, 1.0F, PdfColor.Green, PdfLineType.Outlined);
+      page.AddLine(80, 530, 80, 500, 3.2F, PdfColor.DarkBlue, PdfLineType.OutlinedBold);
+      page.AddLine(80, 500, 120, 500, 1.0F, PdfColor.Black, PdfLineType.Normal);
+      page.AddLine(130, 500, 170, 500, 1.0F, PdfColor.Black, PdfLineType.Outlined);
+      page.AddLine(180, 500, 240, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedThin);
+      page.AddLine(250, 500, 290, 500, 1.0F, PdfColor.Black, PdfLineType.OutlinedBold);
 
-      //// rectangles
-      //page.AddRectangle(100, 600, 200, 700, PdfColor.Blue);
-      //page.AddRectangle(210, 600, 250, 680, PdfColor.Red, 0.1F);
-      //page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
+      // rectangles
+      page.AddRectangle(100, 600, 200, 700, PdfColor.Blue);
+      page.AddRectangle(210, 600, 250, 680, PdfColor.Red, 0.1F);
+      page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
 
-      //// circles
-      //page.AddCircle(-100, 100, 100, PdfColor.Blue);
-      //page.AddCircle(-50, 100, 50, PdfColor.Red, 0.0F);
-      //page.AddCircle(300, 700, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
+      // circles
+      page.AddCircle(-100, 100, 100, PdfColor.Blue);
+      page.AddCircle(-50, 100, 50, PdfColor.Red, 0.0F);
+      page.AddCircle(300, 700, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
 
       document.Save(@"test.pdf");
 
@@ -212,6 +208,109 @@ namespace WinFormsTest
       text = page.AddText("Lenght of all lines is 500 unit =176.4 mm", 10, PdfFont.Courier);
       text.X = 10;
       text.Y = 630;
+
+      document.Save(@"test.pdf");
+
+      Process.Start(@"test.pdf");
+    }
+
+    private void button7_Click(object sender, EventArgs e)
+    {
+      var document = new PdfDocument();
+      document.Fonts.Add(PdfFont.Helvetica);
+      document.Fonts.Add(PdfFont.HelveticaBold);
+      document.Fonts.Add(PdfFont.HelveticaOblique);
+      document.Fonts.Add(PdfFont.HelveticaBoldOblique);
+      document.Fonts.Add(PdfFont.Courier);
+      document.Fonts.Add(PdfFont.CourierBold);
+      document.Fonts.Add(PdfFont.CourierOblique);
+      document.Fonts.Add(PdfFont.CourierBoldOblique);
+      document.Fonts.Add(PdfFont.Times);
+      document.Fonts.Add(PdfFont.TimesBold);
+      document.Fonts.Add(PdfFont.TimesItalic);
+      document.Fonts.Add(PdfFont.TimesBoldItalic);
+
+      var arial = new PdfFont("Arial");
+      var verdana = new PdfFont("Verdana");
+      var calibri = new PdfFont("Calibri");
+      var segoeUI = new PdfFont("SegoeUI");
+      var tahoma = new PdfFont("Tahoma");
+      var stencil = new PdfFont("Stencil");
+      var castellar = new PdfFont("Castellar");
+      document.Fonts.Add(arial);
+      document.Fonts.Add(verdana);
+      document.Fonts.Add(calibri);
+      document.Fonts.Add(segoeUI);
+      document.Fonts.Add(tahoma);
+      document.Fonts.Add(stencil);
+      document.Fonts.Add(castellar);
+
+      var page = document.AddPage();
+
+      var predefinedFonts = new Dictionary<string, PdfFont>
+      {
+         { "Helvetica",             PdfFont.Helvetica },
+         { "Helvetica-Bold",        PdfFont.HelveticaBold },
+         { "Helvetica-Oblique",     PdfFont.HelveticaOblique },
+         { "Helvetica-BoldOblique", PdfFont.HelveticaBoldOblique },
+         { "Courier",               PdfFont.Courier },
+         { "Courier-Bold",          PdfFont.CourierBold },
+         { "Courier-Oblique",       PdfFont.CourierOblique },
+         { "Courier-BoldOblique",   PdfFont.CourierBoldOblique },
+         { "Times-Roman",           PdfFont.Times },
+         { "Times-Bold",            PdfFont.TimesBold },
+         { "Times-Italic",          PdfFont.TimesItalic },
+         { "Times-BoldItalic",      PdfFont.TimesBoldItalic }
+      };
+
+      var otherFonts = new Dictionary<string, PdfFont>
+      {
+        { "Arial",     arial },
+        { "Verdana",   verdana },
+        { "Calibri",   calibri },
+        { "SegoeUI",   segoeUI },
+        { "Tahoma",    tahoma },
+        { "Stencil",   stencil },
+        { "Castellar",  castellar }
+      };
+
+      var text = page.AddText(@"Predefined Fonts:", 20, PdfFont.Times);
+      text.X = 30;
+      text.Y = 730;
+
+      var top = text.Y - 10;
+      foreach (var font in predefinedFonts)
+      {
+        top -= 12;
+
+        text = page.AddText(font.Key + ": ", 10, PdfFont.Times);
+        text.X = 30;
+        text.Y = top;
+
+        text = page.AddText("Lenin is alive", 10, font.Value);
+        text.X = 140;
+        text.Y = top;
+      }
+
+      top -= 40;
+
+      text = page.AddText(@"Some other Fonts:", 20, PdfFont.Times);
+      text.X = 50;
+      text.Y = top;
+
+      top -= 10;
+      foreach (var font in otherFonts)
+      {
+        top -= 12;
+
+        text = page.AddText(font.Key + ": ", 10, PdfFont.Times);
+        text.X = 30;
+        text.Y = top;
+
+        text = page.AddText("Lenin is alive", 10, font.Value);
+        text.X = 140;
+        text.Y = top;
+      }
 
       document.Save(@"test.pdf");
 

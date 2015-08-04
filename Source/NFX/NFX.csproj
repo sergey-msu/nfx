@@ -214,13 +214,16 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfXObject.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfResource.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfMeta.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfRoot.cs" />
     <Compile Include="Media\PDF\Elements\CircleElement.cs" />
     <Compile Include="Media\PDF\Elements\LineElement.cs" />
     <Compile Include="Media\PDF\Elements\RectangleElement.cs" />
-    <Compile Include="Media\PDF\ObjectIdGenerator.cs" />
+    <Compile Include="Media\PDF\ResourceRepository.cs" />
+    <Compile Include="Media\PDF\ObjectRepository.cs" />
     <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineType.cs" />
@@ -294,7 +297,7 @@
     <Compile Include="Media\PDF\DocumentModel\IPdfObject.cs" />
     <Compile Include="Media\PDF\PdfWriter.cs" />
     <Compile Include="Media\PDF\Styling\PdfColor.cs" />
-    <Compile Include="Media\PDF\Styling\PdfFont.cs" />
+    <Compile Include="Media\PDF\DocumentModel\PdfFont.cs" />
     <Compile Include="Media\PDF\Text\TextAdapter.cs" />
     <Compile Include="Security\CAPTCHA\PuzzleKeypad.cs" />
     <Compile Include="Security\GDIDCredentials.cs" />

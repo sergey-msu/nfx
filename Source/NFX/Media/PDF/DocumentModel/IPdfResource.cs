@@ -1,18 +1,18 @@
 ﻿namespace NFX.Media.PDF.DocumentModel
 {
   /// <summary>
-  /// Object that can be placed in PDF document
+  /// Object that can be placed in PDF document as a resource
   /// </summary>
-  internal interface IPdfObject
+  internal interface IPdfResource
   {
     /// <summary>
-    /// Document-wide unique object Id
+    /// Document-wide unique resource Id
     /// </summary>
-    int ObjectId { get; set; }
+    int ResourceId { get; set; }
 
     /// <summary>
     /// Returns PDF object indirect reference
     /// </summary>
-    string GetReference();
+    string GetResourceReference();
   }
 }

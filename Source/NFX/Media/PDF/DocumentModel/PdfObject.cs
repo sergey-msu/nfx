@@ -1,5 +1,3 @@
-using System;
-
 namespace NFX.Media.PDF.DocumentModel
 {
   /// <summary>
@@ -7,20 +5,10 @@ namespace NFX.Media.PDF.DocumentModel
   /// </summary>
   public abstract class PdfObject : IPdfObject
   {
-    private int m_ObjectId;
-
     /// <summary>
     /// Document-wide unique object Id
     /// </summary>
-    public int ObjectId
-    {
-      get { return m_ObjectId; }
-    }
-
-    internal virtual void Prepare(ObjectIdGenerator generator)
-    {
-      m_ObjectId = generator.GenerateId();
-    }
+    public int ObjectId { get; set; }
 
     /// <summary>
     /// Returns PDF object indirect reference

@@ -48,7 +48,7 @@ namespace NFX.Media.PDF.Styling
       var ratio = Unit.Points / unit.Points;
       var result = new PdfSize(unit, Height * ratio, Width * ratio);
 
-      return result; 
+      return result;
     }
   }
 }

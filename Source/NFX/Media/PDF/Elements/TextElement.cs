@@ -1,3 +1,4 @@
+using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Styling;
 
 namespace NFX.Media.PDF.Elements

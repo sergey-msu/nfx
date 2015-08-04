@@ -5,7 +5,7 @@ namespace NFX.Media.PDF.DocumentModel
   /// <summary>
   /// PDF Trailer document object
   /// </summary>
-  public class PdfTrailer : PdfObject
+  internal class PdfTrailer : PdfObject
   {
     public PdfTrailer()
     {
@@ -18,6 +18,11 @@ namespace NFX.Media.PDF.DocumentModel
     /// Id of the last inserted document object
     /// </summary>
     public int LastObjectId { get; set; }
+
+    /// <summary>
+    /// PDF document's root
+    /// </summary>
+    public PdfRoot Root { get; set; }
 
     /// <summary>
     /// Inserted objects offest in PDF format
