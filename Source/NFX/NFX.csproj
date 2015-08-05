@@ -214,6 +214,7 @@
     <Compile Include="IO\NonClosingStreamWrap.cs" />
     <Compile Include="Log\Instrumentation\Gauges.cs" />
     <Compile Include="Media\Graphics\DrawingOutput.cs" />
+    <Compile Include="Media\PDF\DocumentModel\IPdfWritable.cs" />
     <Compile Include="Media\PDF\DocumentModel\IPdfXObject.cs" />
     <Compile Include="Media\PDF\DocumentModel\IPdfResource.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
@@ -227,7 +228,7 @@
     <Compile Include="Media\PDF\ResourceRepository.cs" />
     <Compile Include="Media\PDF\ObjectRepository.cs" />
     <Compile Include="Media\PDF\Styling\PdfHorizontalAlign.cs" />
-    <Compile Include="Media\PDF\Styling\PdfLineStyle.cs" />
+    <Compile Include="Media\PDF\Styling\PdfDrawStyle.cs" />
     <Compile Include="Media\PDF\Styling\PdfLineType.cs" />
     <Compile Include="Media\PDF\Styling\PdfPageSize.cs" />
     <Compile Include="Media\PDF\Styling\PdfSize.cs" />

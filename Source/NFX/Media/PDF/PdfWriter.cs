@@ -308,12 +308,13 @@ namespace NFX.Media.PDF
       var pathCoordinates = new List<string> { string.Format("{0} {1} m", x, y) };
       pathCoordinates.AddRange(path.Primitives.Select(p => p.ToPdfString()));
 
+      var closeTag = path.IsClosed ? "B" : "S";
+
       var pathContent = new StringBuilder();
       pathContent.AppendLine("q");
-      pathContent.AppendFormatLine("{0} RG", path.Style.Color);
-      pathContent.Append(path.Style);
+      pathContent.Append(path.Style.ToPdfString());
       pathContent.AppendFormatLine(string.Join(Constants.SPACE, pathCoordinates));
-      pathContent.AppendLine("S");
+      pathContent.AppendLine(closeTag);
       pathContent.Append("Q");
 
       writeStreamedObject(path.ObjectId, pathContent.ToString());
@@ -332,9 +333,7 @@ namespace NFX.Media.PDF
 
       var rectangleContent = new StringBuilder();
       rectangleContent.AppendLine("q");
-      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderStyle.Color);
-      rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
-      rectangleContent.Append(rectangle.BorderStyle);
+      rectangleContent.Append(rectangle.Style.ToPdfString());
       rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", x, y, w, h);
       rectangleContent.AppendLine("B");
       rectangleContent.Append("Q");
@@ -354,7 +353,7 @@ namespace NFX.Media.PDF
       pdfStreamBuilder.AppendLine("q");
       pdfStreamBuilder.AppendLine("BT");
       pdfStreamBuilder.AppendFormatLine("{0} {1} Tf", text.Font.GetResourceReference(), TextAdapter.FormatFloat(text.FontSize));
-      pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color);
+      pdfStreamBuilder.AppendFormatLine("{0} rg", text.Color.ToPdfString());
       pdfStreamBuilder.AppendFormatLine("{0} {1} Td", TextAdapter.FormatFloat(text.X), TextAdapter.FormatFloat(text.Y));
       pdfStreamBuilder.AppendFormatLine("({0}) Tj", escapedText);
       pdfStreamBuilder.AppendLine("ET");

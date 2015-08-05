@@ -131,7 +131,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddPath(float x, float y)
     {
-      return AddPath(x, y, new PdfLineStyle());
+      return AddPath(x, y, new PdfDrawStyle());
     }
 
     /// <summary>
@@ -139,7 +139,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddPath(float x, float y, float thickness)
     {
-      return AddPath(x, y, new PdfLineStyle(thickness));
+      return AddPath(x, y, new PdfDrawStyle(thickness));
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddPath(float x, float y, float thickness, PdfColor color)
     {
-      return AddPath(x, y, new PdfLineStyle(thickness, color));
+      return AddPath(x, y, new PdfDrawStyle(thickness, color));
     }
 
     /// <summary>
@@ -155,13 +155,13 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddPath(float x, float y, float thickness, PdfColor color, PdfLineType type)
     {
-      return AddPath(x, y, new PdfLineStyle(thickness, color, type));
+      return AddPath(x, y, new PdfDrawStyle(thickness, color, type));
     }
 
     /// <summary>
     /// Add path to the page
     /// </summary>
-    public PathElement AddPath(float x, float y, PdfLineStyle style)
+    public PathElement AddPath(float x, float y, PdfDrawStyle style)
     {
       var path = new PathElement(x, y, style);
       Add(path);
@@ -178,7 +178,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddLine(float x1, float y1, float x2, float y2)
     {
-      return AddLine(x1, y1, x2, y2, new PdfLineStyle());
+      return AddLine(x1, y1, x2, y2, new PdfDrawStyle());
     }
 
     /// <summary>
@@ -186,7 +186,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness)
     {
-      return AddLine(x1, y1, x2, y2, new PdfLineStyle(thickness));
+      return AddLine(x1, y1, x2, y2, new PdfDrawStyle(thickness));
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color)
     {
-      return AddLine(x1, y1, x2, y2, new PdfLineStyle(thickness, color));
+      return AddLine(x1, y1, x2, y2, new PdfDrawStyle(thickness, color));
     }
 
     /// <summary>
@@ -202,13 +202,13 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddLine(float x1, float y1, float x2, float y2, float thickness, PdfColor color, PdfLineType type)
     {
-      return AddLine(x1, y1, x2, y2, new PdfLineStyle(thickness, color, type));
+      return AddLine(x1, y1, x2, y2, new PdfDrawStyle(thickness, color, type));
     }
 
     /// <summary>
     /// Add line primitive to the page
     /// </summary>
-    public PathElement AddLine(float x1, float y1, float x2, float y2, PdfLineStyle style)
+    public PathElement AddLine(float x1, float y1, float x2, float y2, PdfDrawStyle style)
     {
       var path = new PathElement(x1, y1, style);
       path.AddLine(x2, y2);
@@ -226,7 +226,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill)
     {
-      return AddCircle(centerX, centerY, r, fill, new PdfLineStyle());
+      return AddCircle(centerX, centerY, r, new PdfDrawStyle(fill));
     }
 
     /// <summary>
@@ -234,7 +234,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness)
     {
-      return AddCircle(centerX, centerY, r, fill, new PdfLineStyle(borderThickness));
+      return AddCircle(centerX, centerY, r, new PdfDrawStyle(borderThickness) { FillColor = fill });
     }
 
     /// <summary>
@@ -242,7 +242,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness, PdfColor borderColor)
     {
-      return AddCircle(centerX, centerY, r, fill, new PdfLineStyle(borderThickness, borderColor));
+      return AddCircle(centerX, centerY, r, new PdfDrawStyle(borderThickness, borderColor) { FillColor = fill });
     }
 
     /// <summary>
@@ -250,17 +250,18 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, float borderThickness, PdfColor borderColor, PdfLineType borderType)
     {
-      return AddCircle(centerX, centerY, r, fill, new PdfLineStyle(borderThickness, borderColor, borderType));
+      return AddCircle(centerX, centerY, r, new PdfDrawStyle(borderThickness, borderColor, borderType) { FillColor = fill });
     }
 
     /// <summary>
     /// Add circle primitive to the page
     /// </summary>
-    public PathElement AddCircle(float centerX, float centerY, float r, PdfColor fill, PdfLineStyle borderStyle)
+    public PathElement AddCircle(float centerX, float centerY, float r, PdfDrawStyle borderStyle)
     {
       var path = new PathElement(centerX - r, centerY, borderStyle);
-      path.AddBezier(centerX - r, centerY + Constants.SQRT_TWO * r,  centerX + r, centerY + Constants.SQRT_TWO * r, centerX + r, centerY);
-      path.AddBezier(centerX + r, centerY - Constants.SQRT_TWO * r,  centerX - r, centerY - Constants.SQRT_TWO * r, centerX - r, centerY);
+      path.IsClosed = true;
+      path.AddBezier(centerX - r, centerY + Constants.SQRT_TWO * r, centerX + r, centerY + Constants.SQRT_TWO * r, centerX + r, centerY);
+      path.AddBezier(centerX + r, centerY - Constants.SQRT_TWO * r, centerX - r, centerY - Constants.SQRT_TWO * r, centerX - r, centerY);
       Add(path);
 
       return path;
@@ -275,7 +276,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill)
     {
-      return AddRectangle(x1, y1, x2, y2, fill, new PdfLineStyle());
+      return AddRectangle(x1, y1, x2, y2, new PdfDrawStyle(fill));
     }
 
     /// <summary>
@@ -283,7 +284,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness)
     {
-      return AddRectangle(x1, y1, x2, y2, fill, new PdfLineStyle(borderThickness));
+      return AddRectangle(x1, y1, x2, y2, new PdfDrawStyle(borderThickness) { FillColor = fill });
     }
 
     /// <summary>
@@ -291,7 +292,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor)
     {
-      return AddRectangle(x1, y1, x2, y2, fill, new PdfLineStyle(borderThickness, borderColor));
+      return AddRectangle(x1, y1, x2, y2, new PdfDrawStyle(borderThickness, borderColor) { FillColor = fill });
     }
 
     /// <summary>
@@ -299,15 +300,15 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, float borderThickness, PdfColor borderColor, PdfLineType borderType)
     {
-      return AddRectangle(x1, y1, x2, y2, fill, new PdfLineStyle(borderThickness, borderColor, borderType));
+      return AddRectangle(x1, y1, x2, y2, new PdfDrawStyle(borderThickness, borderColor, borderType) { FillColor = fill });
     }
 
     /// <summary>
     /// Add rectangle primitive to the page
     /// </summary>
-    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfColor fill, PdfLineStyle style)
+    public RectangleElement AddRectangle(float x1, float y1, float x2, float y2, PdfDrawStyle style)
     {
-      var rectangle = new RectangleElement(x1, y1, x2, y2, fill, style);
+      var rectangle = new RectangleElement(x1, y1, x2, y2, style);
       Add(rectangle);
 
       return rectangle;

@@ -1,14 +1,15 @@
-﻿namespace NFX.Media.PDF.Elements
+﻿using NFX.Media.PDF.DocumentModel;
+
+namespace NFX.Media.PDF.Elements
 {
   /// <summary>
   /// PDF path primitive (a line, Bezier curve,...) as a part of path
   /// </summary>
-  public abstract class PathPrimitive
+  public abstract class PathPrimitive : IPdfWritable
   {
     /// <summary>
-    /// Returns PDF string representation on the primitive
+    /// Returns PDF string representation
     /// </summary>
-    /// <returns></returns>
     public abstract string ToPdfString();
   }
 }

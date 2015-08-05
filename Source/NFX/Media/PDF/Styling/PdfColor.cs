@@ -1,3 +1,4 @@
+using NFX.Media.PDF.DocumentModel;
 using NFX.Media.PDF.Text;
 
 namespace NFX.Media.PDF.Styling
@@ -5,10 +6,8 @@ namespace NFX.Media.PDF.Styling
   /// <summary>
   /// PDF Color
   /// </summary>
-  public class PdfColor
+  public class PdfColor : IPdfWritable
   {
-    private const string TO_STRING_FORMAT = "{0} {1} {2}";
-
     private PdfColor(byte r, byte g, byte b)
     {
       m_R = r;
@@ -201,14 +200,17 @@ namespace NFX.Media.PDF.Styling
     }
 
     #endregion Predefined
-
-    public override string ToString()
+      
+    /// <summary>
+    /// Returns PDF string representation
+    /// </summary>
+    public string ToPdfString()
     {
       var r = TextAdapter.FormatFloat((float)R / byte.MaxValue);
       var g = TextAdapter.FormatFloat((float)G / byte.MaxValue);
       var b = TextAdapter.FormatFloat((float)B / byte.MaxValue);
 
-      return TO_STRING_FORMAT.Args(r, g, b);
+      return string.Format("{0} {1} {2}", r, g, b);
     }
   }
 }

@@ -13,10 +13,10 @@ namespace NFX.Media.PDF.Elements
       X = x;
       Y = y;
       m_Primitives = new List<PathPrimitive>();
-      Style = new PdfLineStyle();
+      Style = new PdfDrawStyle();
     }
 
-    public PathElement(float x, float y, PdfLineStyle style)
+    public PathElement(float x, float y, PdfDrawStyle style)
       : this(x, y)
     {
       Style = style;
@@ -29,7 +29,9 @@ namespace NFX.Media.PDF.Elements
       get { return m_Primitives; }
     }
 
-    public PdfLineStyle Style { get; set; }
+    public bool IsClosed { get; set; }
+
+    public PdfDrawStyle Style { get; set; }
 
     public void AddLine(float endX, float endY)
     {

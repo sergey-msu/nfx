@@ -33,7 +33,9 @@ namespace NFX.Media.PDF.Elements
     /// <returns></returns>
     public override string ToPdfString()
     {
-      return string.Format("{0} {1} l", TextAdapter.FormatFloat(EndX), TextAdapter.FormatFloat(EndY));
+      return string.Format("{0} {1} l", 
+                          TextAdapter.FormatFloat(EndX), 
+                          TextAdapter.FormatFloat(EndY));
     }
   }
 }
