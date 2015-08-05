@@ -221,6 +221,10 @@
     <Compile Include="Media\PDF\DocumentModel\PdfRoot.cs" />
     <Compile Include="Media\PDF\Elements\CircleElement.cs" />
     <Compile Include="Media\PDF\Elements\LineElement.cs" />
+    <Compile Include="Media\PDF\Elements\PathElement.cs" />
+    <Compile Include="Media\PDF\Elements\PathPrimitive.cs" />
+    <Compile Include="Media\PDF\Elements\BezierPrimitive.cs" />
+    <Compile Include="Media\PDF\Elements\LinePrimitive.cs" />
     <Compile Include="Media\PDF\Elements\RectangleElement.cs" />
     <Compile Include="Media\PDF\ResourceRepository.cs" />
     <Compile Include="Media\PDF\ObjectRepository.cs" />

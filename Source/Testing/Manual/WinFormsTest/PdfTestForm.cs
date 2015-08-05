@@ -27,6 +27,13 @@ namespace WinFormsTest
       text.X = 10;
       text.Y = 730;
 
+      // path
+      var path = page.AddPath(200, 200);
+      path.AddLine(250, 250);
+      path.AddLine(300, 200);
+      path.AddBezier(300, 250, 350, 300, 400, 300);
+      path.AddBezier(500, 350, 450, 400, 400, 300);
+
       // lines
       page.AddLine(20, 620, 50, 620);
       page.AddLine(50, 620, 70, 600, 2.5F);

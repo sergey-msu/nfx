@@ -124,6 +124,53 @@ namespace NFX.Media.PDF.DocumentModel
 
     #endregion Add text
 
+    #region Add path
+
+    /// <summary>
+    /// Add path to the page
+    /// </summary>
+    public PathElement AddPath(float x, float y)
+    {
+      return AddPath(x, y, new PdfLineStyle());
+    }
+
+    /// <summary>
+    /// Add path to the page
+    /// </summary>
+    public PathElement AddPath(float x, float y, float thickness)
+    {
+      return AddPath(x, y, new PdfLineStyle(thickness));
+    }
+
+    /// <summary>
+    /// Add path to the page
+    /// </summary>
+    public PathElement AddPath(float x, float y, float thickness, PdfColor color)
+    {
+      return AddPath(x, y, new PdfLineStyle(thickness, color));
+    }
+
+    /// <summary>
+    /// Add path to the page
+    /// </summary>
+    public PathElement AddPath(float x, float y, float thickness, PdfColor color, PdfLineType type)
+    {
+      return AddPath(x, y, new PdfLineStyle(thickness, color, type));
+    }
+
+    /// <summary>
+    /// Add path to the page
+    /// </summary>
+    public PathElement AddPath(float x, float y, PdfLineStyle style)
+    {
+      var path = new PathElement(x, y, style);
+      Add(path);
+
+      return path;
+    }
+
+    #endregion Add path
+
     #region Add line
 
     /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -296,6 +297,29 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
+    /// Writes PDF path into file stream
+    /// </summary>
+    /// <param name="path">PDF path element</param>
+    internal void Write(PathElement path)
+    {
+      var x = TextAdapter.FormatFloat(path.X);
+      var y = TextAdapter.FormatFloat(path.Y);
+
+      var pathCoordinates = new List<string> { string.Format("{0} {1} m", x, y) };
+      pathCoordinates.AddRange(path.Primitives.Select(p => p.ToPdfString()));
+
+      var pathContent = new StringBuilder();
+      pathContent.AppendLine("q");
+      pathContent.AppendFormatLine("{0} RG", path.Style.Color);
+      pathContent.Append(path.Style);
+      pathContent.AppendFormatLine(string.Join(Constants.SPACE, pathCoordinates));
+      pathContent.AppendLine("S");
+      pathContent.Append("Q");
+
+      writeStreamedObject(path.ObjectId, pathContent.ToString());
+    }
+
+    /// <summary>
     /// Writes PDF line element into file stream
     /// </summary>
     /// <param name="line">PDF line element</param>
@@ -315,29 +339,6 @@ namespace NFX.Media.PDF
       lineContent.Append("Q");
 
       writeStreamedObject(line.ObjectId, lineContent.ToString());
-    }
-
-    /// <summary>
-    /// Writes PDF rectangle element into file stream
-    /// </summary>
-    /// <param name="rectangle">PDF rectangle element</param>
-    internal void Write(RectangleElement rectangle)
-    {
-      var x = TextAdapter.FormatFloat(rectangle.X);
-      var y = TextAdapter.FormatFloat(rectangle.Y);
-      var w = TextAdapter.FormatFloat(rectangle.X1 - rectangle.X);
-      var h = TextAdapter.FormatFloat(rectangle.Y1 - rectangle.Y);
-
-      var rectangleContent = new StringBuilder();
-      rectangleContent.AppendLine("q");
-      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderStyle.Color);
-      rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
-      rectangleContent.Append(rectangle.BorderStyle);
-      rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", x, y, w, h);
-      rectangleContent.AppendLine("B");
-      rectangleContent.Append("Q");
-
-      writeStreamedObject(rectangle.ObjectId, rectangleContent.ToString());
     }
 
     /// <summary>
@@ -365,6 +366,29 @@ namespace NFX.Media.PDF
       circleContent.Append("Q");
 
       writeStreamedObject(circle.ObjectId, circleContent.ToString());
+    }
+
+    /// <summary>
+    /// Writes PDF rectangle element into file stream
+    /// </summary>
+    /// <param name="rectangle">PDF rectangle element</param>
+    internal void Write(RectangleElement rectangle)
+    {
+      var x = TextAdapter.FormatFloat(rectangle.X);
+      var y = TextAdapter.FormatFloat(rectangle.Y);
+      var w = TextAdapter.FormatFloat(rectangle.X1 - rectangle.X);
+      var h = TextAdapter.FormatFloat(rectangle.Y1 - rectangle.Y);
+
+      var rectangleContent = new StringBuilder();
+      rectangleContent.AppendLine("q");
+      rectangleContent.AppendFormatLine("{0} RG", rectangle.BorderStyle.Color);
+      rectangleContent.AppendFormatLine("{0} rg", rectangle.Fill);
+      rectangleContent.Append(rectangle.BorderStyle);
+      rectangleContent.AppendFormatLine("{0} {1} {2} {3} re", x, y, w, h);
+      rectangleContent.AppendLine("B");
+      rectangleContent.Append("Q");
+
+      writeStreamedObject(rectangle.ObjectId, rectangleContent.ToString());
     }
 
     /// <summary>
