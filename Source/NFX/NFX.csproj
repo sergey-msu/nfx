@@ -219,8 +219,6 @@
     <Compile Include="Media\PDF\DocumentModel\PdfInfo.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfMeta.cs" />
     <Compile Include="Media\PDF\DocumentModel\PdfRoot.cs" />
-    <Compile Include="Media\PDF\Elements\CircleElement.cs" />
-    <Compile Include="Media\PDF\Elements\LineElement.cs" />
     <Compile Include="Media\PDF\Elements\PathElement.cs" />
     <Compile Include="Media\PDF\Elements\PathPrimitive.cs" />
     <Compile Include="Media\PDF\Elements\BezierPrimitive.cs" />

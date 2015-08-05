@@ -320,55 +320,6 @@ namespace NFX.Media.PDF
     }
 
     /// <summary>
-    /// Writes PDF line element into file stream
-    /// </summary>
-    /// <param name="line">PDF line element</param>
-    internal void Write(LineElement line)
-    {
-      var x = TextAdapter.FormatFloat(line.X);
-      var y = TextAdapter.FormatFloat(line.Y);
-      var x1 = TextAdapter.FormatFloat(line.X1);
-      var y1 = TextAdapter.FormatFloat(line.Y1);
-
-      var lineContent = new StringBuilder();
-      lineContent.AppendFormatLine("{0} RG", line.Style.Color);
-      lineContent.AppendLine("q");
-      lineContent.Append(line.Style);
-      lineContent.AppendFormatLine("{0} {1} m {2} {3} l", x, y, x1, y1);
-      lineContent.AppendLine("S");
-      lineContent.Append("Q");
-
-      writeStreamedObject(line.ObjectId, lineContent.ToString());
-    }
-
-    /// <summary>
-    /// Writes PDF circle element into file stream
-    /// </summary>
-    /// <param name="circle">PDF circle element</param>
-    internal void Write(CircleElement circle)
-    {
-      var xLeft = TextAdapter.FormatFloat(circle.X);
-      var xRight = TextAdapter.FormatFloat(circle.X + 2 * circle.R);
-      var centerY = TextAdapter.FormatFloat(circle.CenterY);
-      var positiveBezier = TextAdapter.FormatFloat(circle.CenterY + circle.R * Constants.SQRT_TWO);
-      var negativeBezier = TextAdapter.FormatFloat(circle.CenterY - circle.R * Constants.SQRT_TWO);
-
-      var circleContent = new StringBuilder();
-      circleContent.AppendLine("q");
-      circleContent.AppendFormatLine("{0} RG", circle.BorderStyle.Color);
-      circleContent.AppendFormatLine("{0} rg", circle.Fill);
-      circleContent.Append(circle.BorderStyle);
-      circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
-      circleContent.AppendFormatLine("{0} {1} {2} {1} {2} {3} c", xLeft, positiveBezier, xRight, centerY);
-      circleContent.AppendFormatLine("{0} {1} m", xLeft, centerY);
-      circleContent.AppendFormatLine("{0} {1} {2} {1} {2} {3} c", xLeft, negativeBezier, xRight, centerY);
-      circleContent.AppendLine("B");
-      circleContent.Append("Q");
-
-      writeStreamedObject(circle.ObjectId, circleContent.ToString());
-    }
-
-    /// <summary>
     /// Writes PDF rectangle element into file stream
     /// </summary>
     /// <param name="rectangle">PDF rectangle element</param>
@@ -410,6 +361,12 @@ namespace NFX.Media.PDF
       pdfStreamBuilder.Append("Q");
 
       writeStreamedObject(text.ObjectId, pdfStreamBuilder.ToString());
+    }
+
+    public void Dispose()
+    {
+      m_Writer.Flush();
+      m_Writer.Close();
     }
 
     #endregion Public
@@ -498,11 +455,5 @@ namespace NFX.Media.PDF
     }
 
     #endregion .pvt
-
-    public void Dispose()
-    {
-      m_Writer.Flush();
-      m_Writer.Close();
-    }
   }
 }

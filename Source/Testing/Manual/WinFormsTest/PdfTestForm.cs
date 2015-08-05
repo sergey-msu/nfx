@@ -51,9 +51,9 @@ namespace WinFormsTest
       page.AddRectangle(260, 600, 300, 700, PdfColor.FromRgb(10, 200, 100), 2.3F, PdfColor.DarkRed);
 
       // circles
-      page.AddCircle(-100, 100, 100, PdfColor.Blue);
-      page.AddCircle(-50, 100, 50, PdfColor.Red, 0.0F);
-      page.AddCircle(300, 700, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
+      page.AddCircle(0, 0, 100, PdfColor.Blue);
+      page.AddCircle(0, 50, 50, PdfColor.Red, 0.0F);
+      page.AddCircle(350, 650, 50, PdfColor.FromRgb(150, 150, 50), 2.0F, PdfColor.LightBlue);
 
       document.Save(@"test.pdf");
 
