@@ -14,6 +14,7 @@ namespace NFX.Media.PDF.Text
     private const char HEX_OPEN = '<';
     private const char HEX_CLOSE = '>';
     private const string HEX_STRING_PAIR = "{0:X2}{1:X2}";
+    private const string FLOAT_FORMAT = "{0:0.####}";
 
     #endregion CONSTS
 
@@ -83,7 +84,7 @@ namespace NFX.Media.PDF.Text
     /// <returns></returns>
     public static string FormatFloat(double number)
     {
-      return String.Format(CultureInfo.InvariantCulture, "{0:0.####}", number);
+      return FLOAT_FORMAT.Args(number);
     }
   }
 }

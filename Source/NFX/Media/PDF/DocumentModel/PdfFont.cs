@@ -7,6 +7,8 @@ namespace NFX.Media.PDF.DocumentModel
   {
     #region CONSTS
 
+    private const string FONT_REFERENCE_FORMAT = "/F{0}";
+
     private const string HELVETICA = "Helvetica";
     private const string HELVETICA_BOLD = "Helvetica-Bold";
     private const string HELVETICA_OBLIQUE = "Helvetica-Oblique";
@@ -57,7 +59,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public string GetResourceReference()
     {
-      return string.Format("/F{0}", ResourceId);
+      return FONT_REFERENCE_FORMAT.Args(ResourceId);
     }
 
     #region Predefined

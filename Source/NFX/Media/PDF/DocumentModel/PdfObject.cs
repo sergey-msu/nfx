@@ -5,6 +5,8 @@ namespace NFX.Media.PDF.DocumentModel
   /// </summary>
   public abstract class PdfObject : IPdfObject
   {
+    private const string REFERENCE_FORMAT = "{0} 0 R";
+
     /// <summary>
     /// Document-wide unique object Id
     /// </summary>
@@ -15,7 +17,7 @@ namespace NFX.Media.PDF.DocumentModel
     /// </summary>
     public string GetReference()
     {
-      return string.Format("{0} 0 R", ObjectId);
+      return REFERENCE_FORMAT.Args(ObjectId);
     }
   }
 }

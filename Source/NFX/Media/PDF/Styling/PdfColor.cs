@@ -8,6 +8,8 @@ namespace NFX.Media.PDF.Styling
   /// </summary>
   public class PdfColor : IPdfWritable
   {
+    private const string COLOR_PDF_FORMAT = "{0} {1} {2}";
+
     private PdfColor(byte r, byte g, byte b)
     {
       m_R = r;
@@ -210,7 +212,7 @@ namespace NFX.Media.PDF.Styling
       var g = TextAdapter.FormatFloat((float)G / byte.MaxValue);
       var b = TextAdapter.FormatFloat((float)B / byte.MaxValue);
 
-      return string.Format("{0} {1} {2}", r, g, b);
+      return COLOR_PDF_FORMAT.Args(r, g, b);
     }
   }
 }

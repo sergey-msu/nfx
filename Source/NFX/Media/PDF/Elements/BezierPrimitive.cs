@@ -7,6 +7,8 @@ namespace NFX.Media.PDF.Elements
   /// </summary>
   public class BezierPrimitive : PathPrimitive
   {
+    private const string BEZIER_TO_FORMAT = "{0} {1} {2} {3} {4} {5} c";
+
     public BezierPrimitive()
     {
     }
@@ -57,13 +59,12 @@ namespace NFX.Media.PDF.Elements
     /// <returns></returns>
     public override string ToPdfString()
     {
-      return string.Format("{0} {1} {2} {3} {4} {5} c", 
-                            TextAdapter.FormatFloat(FirstControlX), 
-                            TextAdapter.FormatFloat(FirstControlY), 
-                            TextAdapter.FormatFloat(SecondControlX), 
-                            TextAdapter.FormatFloat(SecondControlY), 
-                            TextAdapter.FormatFloat(EndX), 
-                            TextAdapter.FormatFloat(EndY));
+      return BEZIER_TO_FORMAT.Args(TextAdapter.FormatFloat(FirstControlX), 
+                                   TextAdapter.FormatFloat(FirstControlY), 
+                                   TextAdapter.FormatFloat(SecondControlX), 
+                                   TextAdapter.FormatFloat(SecondControlY), 
+                                   TextAdapter.FormatFloat(EndX), 
+                                   TextAdapter.FormatFloat(EndY));
     }
   }
 }

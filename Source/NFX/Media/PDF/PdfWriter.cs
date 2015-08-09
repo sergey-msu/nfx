@@ -14,6 +14,20 @@ namespace NFX.Media.PDF
   /// </summary>
   public sealed class PdfWriter : IDisposable
   {
+    #region CONSTS
+
+    private const string DATE_PDF_FORMAT = "(D:{0:yyyyMMddhhmmss})";
+    private const string ARRAY_PDF_FORMAT = "[{0}]";
+    private const string FONTS_REFERENCE_FORMAT =  "{0} {1}";
+    private const string DICTIONARY_PDF_FORMAT = "<<{0}>>";
+    private const string BOX_PDF_FORMAT = "[0 0 {0} {1}]";
+    private const string PROC_SET_STRING = "[/PDF /Text /ImageC]";
+    private const string PATH_START_FORMAT = "{0} {1} m";
+    private const string BEGIN_OBJ_FORMAT = "{0} 0 obj";
+    private const string BASE_FONT_FORMAT = "/{0}";
+
+    #endregion CONSTS
+
     public PdfWriter(Stream stream)
     {
       m_Stream = stream;
@@ -112,7 +126,7 @@ namespace NFX.Media.PDF
       writeDictionaryEntry("/Type", "/Font");
       writeDictionaryEntry("/Subtype", "/TrueType");
       writeDictionaryEntry("/Name", font.GetResourceReference());
-      writeDictionaryEntry("/BaseFont", string.Format("/{0}", font.Name));
+      writeDictionaryEntry("/BaseFont", BASE_FONT_FORMAT.Args(font.Name));
       writeDictionaryEntry("/Encoding", "/WinAnsiEncoding");
       writeEndDictionary();
       writeEndObject();
@@ -141,20 +155,20 @@ namespace NFX.Media.PDF
     {
       writeBeginObject(info.ObjectId);
       writeBeginDictionary();
-      if (!string.IsNullOrWhiteSpace(info.Title))
+      if (info.Title.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Title", info.Title);
-      if (!string.IsNullOrWhiteSpace(info.Subject))
+      if (info.Subject.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Subject", info.Subject);
-      if (!string.IsNullOrWhiteSpace(info.Keywords))
+      if (info.Keywords.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Keywords", info.Keywords);
-      if (!string.IsNullOrWhiteSpace(info.Author))
+      if (info.Author.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Author", info.Author);
-      if (!string.IsNullOrWhiteSpace(info.Creator))
+      if (info.Creator.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Creator", info.Creator);
-      if (!string.IsNullOrWhiteSpace(info.Producer))
+      if (info.Producer.IsNotNullOrWhiteSpace())
         writeDictionaryEntry("/Producer", info.Producer);
-      writeDictionaryEntry("/CreationDate", string.Format("(D:{0:yyyyMMddhhmmss})", info.CreationDate == DateTime.MinValue ? DateTime.UtcNow : info.CreationDate));
-      writeDictionaryEntry("/ModDate", string.Format("(D:{0:yyyyMMddhhmmss})", info.ModificationDate == DateTime.MinValue ? DateTime.UtcNow : info.ModificationDate));
+      writeDictionaryEntry("/CreationDate", DATE_PDF_FORMAT.Args(info.CreationDate == DateTime.MinValue ? DateTime.UtcNow : info.CreationDate));
+      writeDictionaryEntry("/ModDate", DATE_PDF_FORMAT.Args(info.ModificationDate == DateTime.MinValue ? DateTime.UtcNow : info.ModificationDate));
       writeEndDictionary();
       writeEndObject();
     }
@@ -182,13 +196,13 @@ namespace NFX.Media.PDF
       if (pageTree.Pages.Count == 0)
         throw new InvalidOperationException("PDF document has no pages");
 
-      var pages = string.Join(Constants.SPACE.ToString(), pageTree.Pages.Select(p => p.GetReference()));
+      var pages = string.Join(Constants.SPACE, pageTree.Pages.Select(p => p.GetReference()));
 
       writeBeginObject(pageTree.ObjectId);
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Pages");
-      writeDictionaryEntry("/Count", string.Format("{0}", pageTree.Pages.Count));
-      writeDictionaryEntry("/Kids", string.Format("[{0}]", pages));
+      writeDictionaryEntry("/Count", pageTree.Pages.Count);
+      writeDictionaryEntry("/Kids", ARRAY_PDF_FORMAT.Args(pages));
       writeEndDictionary();
       writeEndObject();
     }
@@ -200,9 +214,9 @@ namespace NFX.Media.PDF
     internal void Write(PdfPage page)
     {
       var resourcesBuilder = new StringBuilder();
-      var elements = string.Join(Constants.SPACE.ToString(), page.Elements.Select(p => p.GetReference()));
-      var images = string.Join(Constants.SPACE.ToString(), page.Elements.OfType<ImageElement>().Select(p => p.GetCoupledReference()));
-      var fonts = string.Join(Constants.SPACE.ToString(), page.Fonts.Select(p => string.Format("{0} {1}", p.GetResourceReference(), p.GetReference())));
+      var elements = string.Join(Constants.SPACE, page.Elements.Select(p => p.GetReference()));
+      var images = string.Join(Constants.SPACE, page.Elements.OfType<ImageElement>().Select(p => p.GetCoupledReference()));
+      var fonts = string.Join(Constants.SPACE, page.Fonts.Select(p => FONTS_REFERENCE_FORMAT.Args(p.GetResourceReference(), p.GetReference())));
 
       if (fonts.Length > 0)
         resourcesBuilder.AppendFormat(" /Font <<{0}>> ", fonts);
@@ -215,16 +229,16 @@ namespace NFX.Media.PDF
       writeBeginObject(page.ObjectId);
       writeBeginDictionary();
       writeDictionaryEntry("/Type", "/Page");
-      writeDictionaryEntry("/UserUnit", string.Format("{0}", TextAdapter.FormatFloat(page.UserUnit)));
+      writeDictionaryEntry("/UserUnit", TextAdapter.FormatFloat(page.UserUnit));
       writeDictionaryEntry("/Parent", page.Parent.GetReference());
-      writeDictionaryEntry("/Resources", string.Format("<<{0}>>", resourcesBuilder));
-      writeDictionaryEntry("/MediaBox", string.Format("[0 0 {0} {1}]", w, h));
-      writeDictionaryEntry("/CropBox", string.Format("[0 0 {0} {1}]", w, h));
-      writeDictionaryEntry("/Rotate", string.Format("0"));
-      writeDictionaryEntry("/ProcSet", string.Format("[/PDF /Text /ImageC]"));
+      writeDictionaryEntry("/Resources", DICTIONARY_PDF_FORMAT.Args(resourcesBuilder));
+      writeDictionaryEntry("/MediaBox", BOX_PDF_FORMAT.Args(w, h));
+      writeDictionaryEntry("/CropBox", BOX_PDF_FORMAT.Args(w, h));
+      writeDictionaryEntry("/Rotate", 0);
+      writeDictionaryEntry("/ProcSet", PROC_SET_STRING);
       if (elements.Length > 0)
       {
-        writeDictionaryEntry("/Contents", string.Format("[{0}]", elements));
+        writeDictionaryEntry("/Contents", ARRAY_PDF_FORMAT.Args(elements));
       }
       writeEndDictionary();
       writeEndObject();
@@ -305,7 +319,7 @@ namespace NFX.Media.PDF
       var x = TextAdapter.FormatFloat(path.X);
       var y = TextAdapter.FormatFloat(path.Y);
 
-      var pathCoordinates = new List<string> { string.Format("{0} {1} m", x, y) };
+      var pathCoordinates = new List<string> { PATH_START_FORMAT.Args(x, y) };
       pathCoordinates.AddRange(path.Primitives.Select(p => p.ToPdfString()));
 
       var closeTag = path.IsClosed ? "B" : "S";
@@ -400,7 +414,7 @@ namespace NFX.Media.PDF
 
     private void writeRaw(string str, params object[] parameters)
     {
-      str = string.Format(str, parameters);
+      str = str.Args(parameters);
       var bytes = Encoding.ASCII.GetBytes(str);
       writeRaw(bytes);
     }
@@ -413,7 +427,7 @@ namespace NFX.Media.PDF
 
     private void writeBeginObject(int objectId)
     {
-      var str = string.Format("{0} 0 obj", objectId);
+      var str = BEGIN_OBJ_FORMAT.Args(objectId);
       writeLineRaw(str);
     }
 

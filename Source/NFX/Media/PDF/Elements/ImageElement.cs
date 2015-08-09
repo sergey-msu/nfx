@@ -10,6 +10,9 @@ namespace NFX.Media.PDF.Elements
   /// </summary>
   public class ImageElement : PdfElement, IPdfXObject
   {
+    private const string XREFERENCE_FORMAT = "/I{0}";
+    private const string FULL_IMAGE_REFERENCE = "/I{0} {0} 0 R";
+
     public ImageElement(string filePath)
     {
       loadImage(filePath);
@@ -63,12 +66,12 @@ namespace NFX.Media.PDF.Elements
     /// </summary>
     public string GetXReference()
     {
-      return string.Format("/I{0}", XObjectId);
+      return XREFERENCE_FORMAT.Args(XObjectId);
     }
 
     public string GetCoupledReference()
     {
-      return string.Format("/I{0} {0} 0 R", XObjectId);
+      return FULL_IMAGE_REFERENCE.Args(XObjectId);
     }
 
     /// <summary>
