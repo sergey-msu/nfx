@@ -84,7 +84,7 @@ namespace NFX.Media.PDF.Text
     /// <returns></returns>
     public static string FormatFloat(double number)
     {
-      return FLOAT_FORMAT.Args(number);
+      return string.Format(CultureInfo.InvariantCulture, FLOAT_FORMAT, number);
     }
   }
 }
